@@ -1,0 +1,38 @@
+body {
+  overflow: hidden;
+  user-select: none;
+  text-rendering: optimizeLegibility;
+  margin: 0;
+}
+
+.drag-region {
+  -webkit-app-region: drag;
+  /* 设置此区域为可拖动 */
+  flex: 1;
+  top: 0;
+  width: -webkit-fill-available;
+  position: absolute;
+  padding-inline: 6px;
+  padding-block: 4px;
+  border-bottom: 1px solid #000000;
+}
+
+.logo {
+  width: 26px;
+}
+.ant-divider{
+  margin:12px 0px
+}
+.ant-layout {
+  height: 100vh;
+  padding: 8px;
+}
+
+.container {
+  margin: 0;
+  margin-block-start: 56px;
+  margin-inline: 12px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
