@@ -1,5 +1,6 @@
 use chrono::{Local, NaiveDateTime, NaiveTime};
-use std::process::Command;
+use std::ffi::OsStr;
+use std::os::windows::ffi::OsStrExt;
 use std::ptr;
 use std::sync::Arc;
 use tauri::command;
@@ -8,6 +9,9 @@ use tauri_plugin_autostart::MacosLauncher;
 use tokio::sync::Mutex;
 use tokio::task::JoinHandle;
 use tokio::time::{sleep, Duration};
+use winapi::shared::minwindef::{HKEY, DWORD};
+use winapi::shared::winerror::ERROR_SUCCESS;
+use winapi::um::winreg::{RegOpenKeyExW, RegSetValueExW, HKEY_CURRENT_USER};
 use winapi::{
     ctypes::c_void,
     um::winuser::{SendMessageTimeoutW, HWND_BROADCAST, WM_SETTINGCHANGE},
@@ -21,14 +25,12 @@ fn show_window(app: &AppHandle) {
         .set_focus()
         .expect("Can't Bring Window to Focus");
 }
-
 async fn notify_system_theme_changed() {
     // 发送系统广播通知
     unsafe {
         let wparam = 0;
         let flags = 0x0002; // SMTO_ABORTIFHUNG
-
-        // 转换为宽字符（UTF-16）
+                            // 转换为宽字符（UTF-16）
         let wide_str: Vec<u16> = "ImmersiveColorSet\0".encode_utf16().collect();
         let lparam_wide = wide_str.as_ptr() as *const c_void;
 
@@ -43,52 +45,63 @@ async fn notify_system_theme_changed() {
         );
     }
 }
+fn set_registry_value(reg_path: &str, value_name: &str, value: u32) -> Result<(), String> {
+    unsafe {
+        // 转换路径为宽字符
+        let reg_path_wide: Vec<u16> = OsStr::new(reg_path).encode_wide().chain(Some(0)).collect();
+        let value_name_wide: Vec<u16> = OsStr::new(value_name)
+            .encode_wide()
+            .chain(Some(0))
+            .collect();
 
-const REGKEY_THEME_PERSONALIZE: &str =
-    r"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-const REGNAME_TASKBAR_TRAY: &str = "SystemUsesLightTheme";
-const REGNAME_APP_LIGHT_THEME: &str = "AppsUseLightTheme";
+        // 打开注册表键
+        let mut hkey: HKEY = ptr::null_mut();
+        let status = RegOpenKeyExW(
+            HKEY_CURRENT_USER,
+            reg_path_wide.as_ptr(),
+            0,
+            winapi::um::winnt::KEY_SET_VALUE,
+            &mut hkey,
+        );
+
+        if status != ERROR_SUCCESS as i32 {
+            return Err(format!("Failed to open registry key. Error code: {}", status));
+        }
+        
+
+        // 设置值
+        let result = RegSetValueExW(
+            hkey,
+            value_name_wide.as_ptr(),
+            0,
+            winapi::um::winnt::REG_DWORD,
+            &value as *const u32 as *const u8,
+            std::mem::size_of::<u32>() as DWORD,
+        );
+
+        if status != ERROR_SUCCESS as i32 {
+            return Err(format!("Failed to open registry key. Error code: {}", status));
+        }
+        
+
+        Ok(())
+    }
+}
+
 #[command]
 async fn set_system_theme(is_light: bool) {
-    println!("Theme light mode: {}", is_light);
-    // 定义浅色模式（1）和深色模式（0）
     let theme_value = if is_light { 1 } else { 0 };
-    // 打印 theme_value
-    println!("Theme value: {}", theme_value);
-    // 打开注册表
-    let reg_path = REGKEY_THEME_PERSONALIZE;
-    let reg_key = REGNAME_TASKBAR_TRAY;
 
-    // 使用 PowerShell 来修改系统主题
-    let command = format!(
-        "powershell Set-ItemProperty -Path 'HKCU:\\{}' -Name '{}' -Value {}",
-        reg_path, reg_key, theme_value
-    );
+    // 修改系统主题相关的注册表键
+    let reg_path = "Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize";
 
-    // 执行命令
-    let _output = Command::new("powershell")
-        .arg("-WindowStyle")
-        .arg("Hidden")
-        .arg("-Command")
-        .arg(command)
-        .output()
-        .expect("Failed to execute PowerShell command");
-
-    // 更改另一个相关注册表键
-    let app_key = REGNAME_APP_LIGHT_THEME;
-    let command_app = format!(
-        "powershell Set-ItemProperty -Path 'HKCU:\\{}' -Name '{}' -Value {}",
-        reg_path, app_key, theme_value
-    );
-
-    // 执行命令
-    let _output_app = Command::new("powershell")
-        .arg("-WindowStyle")
-        .arg("Hidden")
-        .arg("-Command")
-        .arg(command_app)
-        .output()
-        .expect("Failed to execute PowerShell command for apps");
+    for reg_key in ["SystemUsesLightTheme", "AppsUseLightTheme"] {
+        match set_registry_value(reg_path, reg_key, theme_value) {
+            Ok(_) => println!("Registry value '{}' set successfully", reg_key),
+            Err(e) => eprintln!("Error setting registry value '{}': {}", reg_key, e),
+        }
+    }
+    // 调用通知函数
     println!(
         "System theme changed to {}",
         if is_light { "Light" } else { "Dark" }
@@ -100,7 +113,6 @@ async fn set_system_theme(is_light: bool) {
 fn parse_time(time_str: &str) -> NaiveTime {
     NaiveTime::parse_from_str(time_str, "%H:%M").unwrap()
 }
-
 // 任务类型枚举
 #[derive(Debug)]
 enum TaskType {

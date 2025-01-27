@@ -31,7 +31,7 @@ const App: React.FC<Props> = ({ locale }) => (
         <Divider />
         <Paragraph  type="secondary">
         {locale?.doc?.[5]}
-            <Text code>1.2.2</Text>
+            <Text code>1.2.3</Text>
             <Link
                 target='_blank'
                 href='https://github.com/tuyangJs/Windows_AutoTheme'
