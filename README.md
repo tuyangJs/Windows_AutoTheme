@@ -7,7 +7,11 @@
 前端使用：`Typescript`+`Ant Design 5`
 
 日落和日出功能，使用了和风天气免费Api，实现了获取日落和日出数据。
-![](pshotA.png)
+<div align="center">
+<img src="pshotA.png" align="center" width=500 />
+</div>
+
+
 ## 调试
 安装依赖
 ```
