@@ -18,12 +18,14 @@ h1,h2,h3,h4,h5{
   padding-block: 4px;
   border-bottom: 1px solid #000000;
 }
-
+.ant-radio-group{
+  display: unset !important;
+}
 .logo {
   width: 26px;
 }
 .ant-divider{
-  margin:12px 0px
+  margin:8px 0px
 }
 .ant-layout {
   height: 100vh;

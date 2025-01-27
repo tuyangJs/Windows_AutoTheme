@@ -3,6 +3,7 @@ use std::process::Command;
 use std::ptr;
 use std::sync::Arc;
 use tauri::command;
+use tauri::{AppHandle, Manager};
 use tauri_plugin_autostart::MacosLauncher;
 use tokio::sync::Mutex;
 use tokio::task::JoinHandle;
@@ -11,9 +12,18 @@ use winapi::{
     ctypes::c_void,
     um::winuser::{SendMessageTimeoutW, HWND_BROADCAST, WM_SETTINGCHANGE},
 };
+fn show_window(app: &AppHandle) {
+    let windows = app.webview_windows();
+    windows
+        .values()
+        .next()
+        .expect("Sorry, no window found")
+        .set_focus()
+        .expect("Can't Bring Window to Focus");
+}
 
-// 发送系统广播通知
 async fn notify_system_theme_changed() {
+    // 发送系统广播通知
     unsafe {
         let wparam = 0;
         let flags = 0x0002; // SMTO_ABORTIFHUNG
@@ -57,6 +67,8 @@ async fn set_system_theme(is_light: bool) {
 
     // 执行命令
     let _output = Command::new("powershell")
+        .arg("-WindowStyle")
+        .arg("Hidden")
         .arg("-Command")
         .arg(command)
         .output()
@@ -71,6 +83,8 @@ async fn set_system_theme(is_light: bool) {
 
     // 执行命令
     let _output_app = Command::new("powershell")
+        .arg("-WindowStyle")
+        .arg("Hidden")
         .arg("-Command")
         .arg(command_app)
         .output()
@@ -191,7 +205,7 @@ async fn add_task(times: Vec<String>, task_type: String) {
     let task_manager = TaskManager::new();
     // 将 Vec<String> 转换为 Vec<&str>
     let times_str: Vec<&str> = times.iter().map(|s| s.as_str()).collect();
-    
+
     task_manager.add_task(times_str, task_type).await; // 传递转换后的 Vec<&str>
 }
 
@@ -208,6 +222,9 @@ pub fn run() {
 
     rt.block_on(async {
         tauri::Builder::default()
+            .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
+                let _ = show_window(app);
+            }))
             .plugin(tauri_plugin_autostart::init(
                 MacosLauncher::LaunchAgent,
                 None, // 修改为 None

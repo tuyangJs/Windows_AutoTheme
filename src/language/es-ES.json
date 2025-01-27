@@ -1,0 +1,28 @@
+{
+    "Title": "Programa de Adaptación al Tema del Sistema",
+    "Switch": "Cambiar Tema del Sistema",
+    "main": {
+        "open": "Abrir",
+        "language": "Idioma",
+        "keyTitle": "Clave API de HeWeather",
+        "citiTitle": "Ciudad",
+        "citiPlaceholder": "Ingresa el nombre de la ciudad para buscar",
+        "TabsTitle": "Modo de Tema",
+        "Tabs": [
+            "Amanecer al Atardecer",
+            "Hora Personalizada"
+        ],
+        "TabsOptionA": "Amanecer al Atardecer",
+        "TabsOptionB": "Hora del Modo Claro",
+        "Autostart": "Iniciar con el Sistema"
+    },
+    "doc": [
+        "Instrucciones",
+        " Este programa ha sido desarrollado por Tuyang y es completamente de código abierto y gratuito.",
+        "Obtener Clave API de HeWeather",
+        "Haz clic aquí",
+        " Grupo de contacto QQ:",
+        "Versión actual de la aplicación:",
+        "Buscar Actualizaciones"
+    ]
+}

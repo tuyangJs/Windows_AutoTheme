@@ -1,7 +1,7 @@
 import { fetch } from '@tauri-apps/plugin-http';
 import dayjs from 'dayjs';
 import * as pako from 'pako';
-type Props = (key: string, name: string) => any;
+type Props = (key: string, name: string, lang?: string) => any;
 
 const GetHttp = async (url: string) => {
     const response = await fetch(url, {
@@ -28,12 +28,15 @@ const GetHttp = async (url: string) => {
     return false
 }
 
-const AppCiti: Props = async (key, name) => {
-    const url = `https://geoapi.qweather.com/v2/city/lookup?location=${encodeURI(name)}&key=${key}`;
+const AppCiti: Props = async (key, name, lang) => {
+    const langs = (lang || '').split('_')[0]
+    const url = `https://geoapi.qweather.com/v2/city/lookup?location=${encodeURI(name)}&key=${key}&lang=${langs}`;
+    console.log(url);
+
     const data = await GetHttp(url)
     return data
 }
-const Sunrise = async (key: string, id: string) => {
+const Sunrise: Props = async (key, id) => {
     const date = dayjs().format('YYYYMMDD')
     const url = `https://devapi.qweather.com/v7/astronomy/sun?key=${key}&location=${id}&date=${date}`
     const data = await GetHttp(url)

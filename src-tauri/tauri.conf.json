@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "tauri-app",
-  "version": "0.1.0",
-  "identifier": "com.tauri-app.cn",  
+  "productName": "WindowsThemeAuto",
+  "version": "1.2.2",
+  "identifier": "com.tauri-app.cn",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -25,24 +25,28 @@
         "center": true,
         "decorations": false,
         "maximized": false,
-        "resizable": false,
-        "width": 376,
-        "height": 572
+        "resizable": true,
+        "maxHeight": 736,
+        "maxWidth": 552,
+        "minHeight": 572,
+        "minWidth": 382,
+        "width": 402,
+        "height": 582
       }
     ],
     "security": {
       "csp": null
     }
   },
-"plugins": {
-  "autostart": null
-  
-},
+  "plugins": {
+    "autostart": null
+  },
   "bundle": {
     "active": true,
     "targets": "all",
+    "copyright": "Copyright © 2025 Tuyang All",
     "icon": [
-      "icons/icon.ico"
+      "src-tauri/icons/logo.png"
     ]
   }
 }

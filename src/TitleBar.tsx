@@ -13,6 +13,7 @@ interface Props {
     config: AliasToken
     themeDack: boolean
     setThemeDack: any
+    locale:any
 }
 
 const appWindow = new Window('main');
@@ -49,16 +50,14 @@ TrayIcon.getById("main").then(async e => {
         tray?.setTooltip('系统主题自适应');
         tray.setMenu(menu)
     } catch (error) {
-
     }
-
 })
 appWindow.onCloseRequested(e => {
     e.preventDefault()
     appWindow.hide()
 })
 
-const App: React.FC<Props> = ({ config, themeDack }) => {
+const App: React.FC<Props> = ({ config, themeDack,locale }) => {
     async function changeTheme() {
         try {
           await invoke('set_system_theme', { isLight: themeDack });
@@ -82,7 +81,7 @@ const App: React.FC<Props> = ({ config, themeDack }) => {
             data-tauri-drag-region>
             <Flex align='center' gap={'small'}>
                 <img className='logo' alt='logo' src={Logo} />
-                <Text strong style={{ margin: 0 }}> 系统主题自适应</Text>
+                <Text strong style={{ margin: 0 }}> {locale.Title}</Text>
             </Flex>
             <Flex align='center' gap={'small'}>
             <Tooltip title="切换系统主题">

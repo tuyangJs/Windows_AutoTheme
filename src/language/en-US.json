@@ -1,0 +1,28 @@
+{
+    "Title": "System Theme Adaptation Program",
+    "Switch": "Switch System Theme",
+    "main": {
+        "open": "Open",
+        "language":"Language",
+        "keyTitle": "HeWeather API Key",
+        "citiTitle": "City",
+        "citiPlaceholder": "Enter city name to search",
+        "TabsTitle": "Theme Mode",
+        "Tabs": [
+             "Sunrise to Sunset",
+            "Custom Time"
+        ],
+        "TabsOptionA": "Sunrise to Sunset",
+        "TabsOptionB": "Light Mode Time",
+        "Autostart": "Start with System"
+    },
+    "doc": [
+        "Instructions",
+        " This program is developed by Tuyang and is completely open-source and free.",
+        "Get HeWeather API Key",
+        "Click Here",
+        " Contact QQ Group:",
+        "Current App Version:",
+        "Check for Updates"
+    ]
+}
