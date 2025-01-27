@@ -16,6 +16,7 @@ interface Props {
 }
 
 const appWindow = new Window('main');
+
 const menu = await Menu.new({
     items: [
         {
@@ -57,12 +58,12 @@ appWindow.onCloseRequested(e => {
     appWindow.hide()
 })
 
-const App: React.FC<Props> = ({ config, themeDack, setThemeDack }) => {
+const App: React.FC<Props> = ({ config, themeDack }) => {
     async function changeTheme() {
         try {
           await invoke('set_system_theme', { isLight: themeDack });
-          setThemeDack(!themeDack)
-          console.log('Theme changed successfully');
+          //setThemeDack(!themeDack)
+          console.log('主题切换到:',themeDack);
         } catch (error) {
           console.error('Error changing theme:', error);
         }
@@ -84,6 +85,7 @@ const App: React.FC<Props> = ({ config, themeDack, setThemeDack }) => {
                 <Text strong style={{ margin: 0 }}> 系统主题自适应</Text>
             </Flex>
             <Flex align='center' gap={'small'}>
+            <Tooltip title="切换系统主题">
                 <Button
                     type="text"
                     shape="circle"
@@ -106,7 +108,8 @@ const App: React.FC<Props> = ({ config, themeDack, setThemeDack }) => {
                         </motion.div>
                     }
                 />
-                <Tooltip title="隐藏">
+                </Tooltip>
+ 
                     <Button
                         color="danger"
                         variant="text"
@@ -115,7 +118,6 @@ const App: React.FC<Props> = ({ config, themeDack, setThemeDack }) => {
                             appWindow.hide()
                         }}
                     />
-                </Tooltip>
             </Flex>
 
         </Flex>

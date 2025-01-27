@@ -5,8 +5,13 @@ import zhCN from 'antd/locale/zh_CN';
 import dayjs from 'dayjs';
 import { AppCiti, Sunrise } from './sociti'
 import "./App.css";
+import { enable, isEnabled, disable } from '@tauri-apps/plugin-autostart'
 import { AutoComplete, AutoCompleteProps, ConfigProvider, Divider, Flex, Input, Layout, message, Radio, Switch, theme, ThemeConfig, TimePicker, Tooltip, Typography } from "antd";
-import { useAsyncEffect, useLocalStorageState, useRequest } from "ahooks";
+import { useAsyncEffect, useLocalStorageState, useRequest, useUpdateEffect } from "ahooks";
+import Docs from'./doc'
+interface TimesProps {
+  disabled?: boolean;
+}
 const { Text } = Typography;
 
 const format = 'HH:mm';
@@ -22,7 +27,7 @@ type AppDataType = {
   city?: { id: string, name: string };
   Autostart?: boolean
 };
-
+const SystemStart = await isEnabled()
 function App() {
   const [AppData, setAppData] = useLocalStorageState<AppDataType>('AppData', {
     defaultValue: {
@@ -32,18 +37,17 @@ function App() {
       rcrl: false,
       city: { id: "101010100", name: '北京' },
       times: [""],
-      Autostart: true,
+      Autostart: SystemStart,
     }
   })
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
   const [Radios, setRadios] = useState<string>(AppData?.Radios || 'rcrl');
   const matchMedia = window.matchMedia('(prefers-color-scheme: light)');
   const [themeDack, setThemeDack] = useState(!matchMedia.matches);
   const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
   const [rcOpenLoad, setRcOpenLoad] = useState(false)
+  ///const [MainLoad, setMainLoad] = useState(true)
   const [messageApi, contextHolder] = message.useMessage();
-  useEffect(() => { //同步设置
+  useUpdateEffect(() => { //同步设置
     setData({ Radios })
   }, [Radios])
   const setData = (e: any) => {
@@ -52,24 +56,53 @@ function App() {
       ...e
     }))
   }
+
+  const StartRady = async () => {
+    const PresentTime = dayjs(); // 当前时间，dayjs 对象
+    const sunriseTime = dayjs(AppData?.times?.[0], 'HH:mm'); // 日出时间
+    const sunsetTime = dayjs(AppData?.times?.[1], 'HH:mm'); // 日落时间
+
+    if (sunriseTime.isBefore(PresentTime) && sunsetTime.isAfter(PresentTime)) {
+      // 现在是日出后，日落前
+      await invoke('set_system_theme', { isLight: true });
+    } else if (sunsetTime.isBefore(PresentTime)) {
+      // 现在是日落后
+      await invoke('set_system_theme', { isLight: false });
+    } else if (sunriseTime.isAfter(PresentTime)) {
+      // 现在是日出前
+      await invoke('set_system_theme', { isLight: false });
+    }
+   
+  };
+
+
+  useUpdateEffect (() => {
+    if(AppData?.open){
+      StartRady()
+    }
+  }, [AppData?.times,AppData?.open])
   useEffect(() => { //自动化获取日出日落数据
     if (AppData?.rcrl) {
       openRc()
     }
   }, [AppData?.city, AppData?.rcrl])
-  useEffect(() => { //主题自适应
-    const handleChange = function () {
+  useEffect(() => { //初始化-主题自适应
+    const handleChange = function (this: any) {
+      //appWindow.setTheme('')
       setThemeDack(!this.matches);
     };
     matchMedia.addEventListener('change', handleChange);
-
+    if (AppData?.open) {
+      StartRady()
+    }
     // 清除事件监听器
     return () => {
       matchMedia.removeEventListener('change', handleChange);
     };
   }, []);
   useAsyncEffect(async () => { //定时任务处理
-    await invoke('clear_tasks');
+    await invoke('clear_tasks'); //清除已有任务
+    if (!AppData?.open) return
     if (AppData?.times?.[0] && AppData?.times?.[1]) {
       try {
         await invoke('add_task', { times: [AppData?.times[0]], taskType: 'TypeA' });  // 传递时间数组和任务类型
@@ -79,15 +112,16 @@ function App() {
         console.error('Failed to add tasks:', error);
       }
     }
-  }, [AppData?.times])
+  }, [AppData?.times, AppData?.open])
 
   const handleTimeChange = (_e: any, dateStrings: [string, string]) => {  //更改时间
     setData({ times: dateStrings })
   }
   const startTime = dayjs(AppData?.times?.[0] || '08:08', 'HH:mm')
   const endTime = dayjs(AppData?.times?.[1] || '18:08', 'HH:mm')
-  const Times = () => ( //渲染时间选择器
-    <RangePicker defaultValue={[startTime, endTime]} format={format} onChange={handleTimeChange} />
+
+  const Times: React.FC<TimesProps> = ({ disabled }) => ( //渲染时间选择器
+    <RangePicker disabled={disabled} defaultValue={[startTime, endTime]} format={format} onChange={handleTimeChange} />
   );
   const searchResult = async (query: string) => { //渲染搜索结果
     if (!AppData?.Hfkey) return [];
@@ -131,12 +165,11 @@ function App() {
     debounceWait: 800,
     manual: true,
   });
-  const openRc = async () => { //开启日出日落开关
+  const openRc = async () => { //获取日出日落数据
     setRcOpenLoad(true)
     if (AppData?.Hfkey && AppData?.city?.id) {
       const data = await Sunrise(AppData?.Hfkey, AppData?.city?.id)
       if (data?.code === '200') {
-        const format = 'HH:mm'
         const sunrise = dayjs(data.sunrise).format(format)
         const sunset = dayjs(data.sunset).format(format)
         setData({ times: [sunrise, sunset], rcrl: true })
@@ -144,12 +177,14 @@ function App() {
       } else {
         messageApi.error('获取日出日落信息失败！')
           .then(() => {
+            setData({ rcrl: false })
             setRcOpenLoad(false)
           })
       }
     } else {
       messageApi.error('你还没有选择城市！')
         .then(() => {
+          setData({ rcrl: false })
           setRcOpenLoad(false)
         })
     }
@@ -179,6 +214,7 @@ function App() {
         defaultValue={AppData?.city?.name}
         onSelect={confirmCiti}
         onChange={run}
+        disabled={(AppData?.Hfkey || '').length <= 10}
       >
         <Input.Search placeholder="输入城市名" />
       </AutoComplete>)
@@ -203,13 +239,20 @@ function App() {
       key: 'dark',
       label: '浅色时间',
       hide: true,
-      change: <Times /> // 渲染时间选择器
+      change: <Times disabled={AppData?.rcrl} /> // 渲染时间选择器
     },
     {
       key: 'Autostart',
       label: '跟随系统启动',
       defaultvalue: AppData?.Autostart,
-      change: (e: boolean) => setData({ Autostart: e }),
+      change: async (e: boolean) => {
+        if (e) {
+          await enable();
+        } else {
+          disable();
+        }
+        setData({ Autostart: e })
+      },
     }
   ];
   const config: ThemeConfig = useMemo(() => ({ //主题渲染配置
@@ -257,8 +300,6 @@ function App() {
                           optionType="button"
                           onChange={e => {
                             const newValue = e.target.value;
-                            console.log(e.target);
-
                             setRadios(newValue); // 更新选中的选项
                             if (typeof item.setVal === 'function') {
                               item.setVal(newValue);
@@ -283,6 +324,7 @@ function App() {
                 </>
               );
             })}
+            <Docs />
           </Flex>
         </Content>
       </Layout>

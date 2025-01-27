@@ -27,13 +27,17 @@
         "maximized": false,
         "resizable": false,
         "width": 376,
-        "height": 556
+        "height": 572
       }
     ],
     "security": {
       "csp": null
     }
   },
+"plugins": {
+  "autostart": null
+  
+},
   "bundle": {
     "active": true,
     "targets": "all",
