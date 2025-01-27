@@ -10,6 +10,17 @@ import { useAsyncEffect, useLocalStorageState, useRequest, useUpdateEffect } fro
 import LanguageApp from './language/index'
 import type { AppDataType, TimesProps } from './Type'
 import Docs from './doc'
+document.addEventListener('keydown', function (e) {
+  if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
+    e.preventDefault(); // 禁止刷新
+  }
+});
+document.addEventListener('contextmenu', function (e) {
+    // @ts-ignore
+  if (e?.target?.tagName?.toLowerCase() !== 'input') {
+    e.preventDefault(); // 禁用右键菜单
+  }
+});
 
 const { Text } = Typography;
 

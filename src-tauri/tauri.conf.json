@@ -27,11 +27,11 @@
         "maximized": false,
         "resizable": true,
         "maxHeight": 736,
-        "maxWidth": 552,
+        "maxWidth": 500,
         "minHeight": 572,
         "minWidth": 382,
-        "width": 402,
-        "height": 582
+        "width": 382,
+        "height": 572
       }
     ],
     "security": {
@@ -41,12 +41,13 @@
   "plugins": {
     "autostart": null
   },
+  
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": "nsis",
     "copyright": "Copyright © 2025 Tuyang All",
     "icon": [
-      "src-tauri/icons/logo.png"
+      "icons/logo.png"
     ]
   }
 }

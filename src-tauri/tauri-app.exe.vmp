@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Document Version="2">
+    <Protection InputFileName="target\release\tauri-app.exe" Options="361416" VMCodeSectionName=".???" LicenseDataFileName="target\release\tauri-app.exe.vmp" OutputFileName="C:\Users\ihanl\Desktop\WindowsThemeAuto.exe">
+        <Messages />
+        <Folders />
+        <Procedures />
+        <Objects />
+    </Protection>
+    <DLLBox>
+        <Folders>
+            <Folder Name="icons" />
+        </Folders>
+        <DLL Name="logo.png" FileName="C:\UGit\Windows_AutoTheme\src-tauri\icons\logo.png" Folder="0" />
+    </DLLBox>
+    <Script />
+</Document>
