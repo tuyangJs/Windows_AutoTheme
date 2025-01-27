@@ -26,6 +26,7 @@ npm start
 npm run tauri build
 ```
 ## 如何获取Key
+打开和风天气控制台：https://console.qweather.com/#/apps/
 注册并登录后根据截图指引操作即可
 <div align="center">
 <img src="screenshot\1.png" align="center" width=500 />
