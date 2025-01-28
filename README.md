@@ -1,15 +1,15 @@
 # Windows主题自动切换程序
-
-这是一个简单的Windows主题模式切换工具，可以让你的系统支持日间浅色和夜间深色自动切换。
 <div align="center">
+这是一个简单的Windows主题模式切换工具，可以让你的系统支持日间浅色和夜间深色自动切换。
+<br /><br />
 <img src="screenshot\winset.png" align="center" width=500 />
-</div>
+<br /><br />
 它由`Rust`构建后端代码，用于执行系统操作。
 
 前端使用：`Typescript`+`Ant Design 5`
 
 日落和日出功能，使用了和风天气免费Api，实现了获取日落和日出数据。
-<div align="center">
+
 <img src="pshotA.png" align="center" width=500 />
 </div>
 
@@ -35,11 +35,15 @@ npm run tauri build
 
 注册并登录后根据截图指引操作即可
 <div align="center">
-<img src="\screenshot\1.png" align="center" width=500 />
-<img src="\screenshot\2.png" align="center" width=500 />
-<img src="\screenshot\3.png" align="center" width=500 />
-<img src="\screenshot\4.png" align="center" width=500 />
-<img src="\screenshot\5.png" align="center" width=500 />
+<img src="screenshot\1.png" align="center" width=500 />
+<br /><br />
+<img src="screenshot\2.png" align="center" width=500 />
+<br /><br />
+<img src="screenshot\3.png" align="center" width=500 />
+<br /><br />
+<img src="screenshot\4.png" align="center" width=500 />
+<br /><br />
+<img src="screenshot\5.png" align="center" width=500 />
 </div>
 
 
