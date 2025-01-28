@@ -1,8 +1,9 @@
 # Windows主题自动切换程序
 
 这是一个简单的Windows主题模式切换工具，可以让你的系统支持日间浅色和夜间深色自动切换。
+<div align="center">
 <img src="screenshot\winset.png" align="center" width=500 />
-
+</div>
 它由`Rust`构建后端代码，用于执行系统操作。
 
 前端使用：`Typescript`+`Ant Design 5`
