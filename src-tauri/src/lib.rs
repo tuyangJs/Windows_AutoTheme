@@ -9,7 +9,7 @@ use tauri_plugin_autostart::MacosLauncher;
 use tokio::sync::Mutex;
 use tokio::task::JoinHandle;
 use tokio::time::{sleep, Duration};
-use winapi::shared::minwindef::{HKEY, DWORD};
+use winapi::shared::minwindef::{DWORD, HKEY};
 use winapi::shared::winerror::ERROR_SUCCESS;
 use winapi::um::winreg::{RegOpenKeyExW, RegSetValueExW, HKEY_CURRENT_USER};
 use winapi::{
@@ -65,9 +65,11 @@ fn set_registry_value(reg_path: &str, value_name: &str, value: u32) -> Result<()
         );
 
         if status != ERROR_SUCCESS as i32 {
-            return Err(format!("Failed to open registry key. Error code: {}", status));
+            return Err(format!(
+                "Failed to open registry key. Error code: {}",
+                status
+            ));
         }
-        
 
         // 设置值
         let result = RegSetValueExW(
@@ -80,9 +82,11 @@ fn set_registry_value(reg_path: &str, value_name: &str, value: u32) -> Result<()
         );
 
         if status != ERROR_SUCCESS as i32 {
-            return Err(format!("Failed to open registry key. Error code: {}", status));
+            return Err(format!(
+                "Failed to open registry key. Error code: {}",
+                status
+            ));
         }
-        
 
         Ok(())
     }
@@ -234,6 +238,7 @@ pub fn run() {
 
     rt.block_on(async {
         tauri::Builder::default()
+            .plugin(tauri_plugin_window_state::Builder::new().build())
             .plugin(tauri_plugin_single_instance::init(|app, args, cwd| {
                 let _ = show_window(app);
             }))

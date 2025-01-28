@@ -8,12 +8,14 @@ import Logo from "./assets/logo.png";
 import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
 import { motion } from 'framer-motion'; // 引入 framer-motion
 import { invoke } from "@tauri-apps/api/core";
+import { restoreStateCurrent, saveWindowState, StateFlags } from '@tauri-apps/plugin-window-state';
 const { Text } = Typography;
 interface Props {
     config: AliasToken
     themeDack: boolean
     setThemeDack: any
     locale: any
+    setSpinning: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const appWindow = new Window('main');
@@ -31,6 +33,7 @@ const menu = await Menu.new({
             id: 'quit',
             text: '退出',
             action: () => {
+                saveWindowState(StateFlags.ALL);
                 appWindow.destroy()
             }
         },
@@ -47,6 +50,7 @@ const TrayOn = (e: any) => {
 }
 TrayIcon.getById("main").then(async e => {
     if (e?.id !== "main") {
+        restoreStateCurrent(StateFlags.ALL)//恢复窗口状态
         tray = await TrayIcon.new({
             id: "main",
             menu,
@@ -64,12 +68,14 @@ TrayIcon.getById("main").then(async e => {
 })
 appWindow.onCloseRequested(e => {
     e.preventDefault()
+    saveWindowState(StateFlags.ALL);
     appWindow.hide()
 })
 
-const App: React.FC<Props> = ({ config, themeDack, locale }) => {
+const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning }) => {
     async function changeTheme() {
         try {
+            setSpinning(true)
             await invoke('set_system_theme', { isLight: themeDack });
             //setThemeDack(!themeDack)
             console.log('主题切换到:', themeDack);

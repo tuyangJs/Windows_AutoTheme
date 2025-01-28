@@ -16,6 +16,7 @@
     "@tauri-apps/plugin-autostart": "^2.2.0",
     "@tauri-apps/plugin-http": "^2.2.0",
     "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-window-state": "^2.2.1",
     "ahooks": "^3.8.4",
     "antd": "^5.23.1",
     "dayjs": "^1.11.13",

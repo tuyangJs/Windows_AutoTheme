@@ -50,8 +50,6 @@ const Language = ({ AppData, setData }:Prop) => {
       console.warn(`Locale ${AppData?.language} is not supported.`);
     }
   }, [AppData?.language]);
-  console.log(locale);
-  
   return {
     Language: (
       <Dropdown

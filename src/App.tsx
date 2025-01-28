@@ -5,18 +5,19 @@ import dayjs from 'dayjs';
 import { AppCiti, Sunrise } from './sociti'
 import "./App.css";
 import { enable, isEnabled, disable } from '@tauri-apps/plugin-autostart'
-import { AutoComplete, AutoCompleteProps, ConfigProvider, Divider, Flex, Input, Layout, message, Radio, Switch, theme, ThemeConfig, TimePicker, Tooltip, Typography } from "antd";
+import { AutoComplete, AutoCompleteProps, ConfigProvider, Divider, Flex, Input, Layout, message, Radio, Spin, Switch, theme, ThemeConfig, TimePicker, Tooltip, Typography } from "antd";
 import { useAsyncEffect, useLocalStorageState, useRequest, useUpdateEffect } from "ahooks";
 import LanguageApp from './language/index'
 import type { AppDataType, TimesProps } from './Type'
 import Docs from './doc'
+import { LoadingOutlined } from "@ant-design/icons";
 document.addEventListener('keydown', function (e) {
   if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
     e.preventDefault(); // 禁止刷新
   }
 });
 document.addEventListener('contextmenu', function (e) {
-    // @ts-ignore
+  // @ts-ignore
   if (e?.target?.tagName?.toLowerCase() !== 'input') {
     e.preventDefault(); // 禁用右键菜单
   }
@@ -48,6 +49,7 @@ function App() {
   const [themeDack, setThemeDack] = useState(!matchMedia.matches);
   const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
   const [rcOpenLoad, setRcOpenLoad] = useState(false)
+  const [spinning, setSpinning] = useState(false)
 
   ///const [MainLoad, setMainLoad] = useState(true)
   const [messageApi, contextHolder] = message.useMessage();
@@ -96,6 +98,7 @@ function App() {
     const handleChange = function (this: any) {
       //appWindow.setTheme('')
       setThemeDack(!this.matches);
+      setSpinning(false)
     };
     matchMedia.addEventListener('change', handleChange);
     if (AppData?.open) {
@@ -291,61 +294,63 @@ function App() {
       theme={config}
     >
       {contextHolder}
-      <TitleBar locale={locale} config={antdToken} themeDack={themeDack} setThemeDack={setThemeDack} />
-      <Layout>
-        <Content className="container">
-          <Flex gap={0} vertical>
-            {mains.map((item, i) => {
-              // 只有当 item.hide 为 false 或者 当前选中的选项匹配时才渲染
-              if (item.hide && item.key !== Radios) {
-                return null;
-              }
-              return (
-                <>
-                  {i > 0 ? <Divider key={i} /> : null}
-                  <Flex key={item.key || i} justify='space-between' align="center">
-                    <Text>{item.label}</Text>
-                    {
-                      // 如果 change 是数组，渲染单选框
-                      Array.isArray(item.change) ? (
-                        <Radio.Group
-                          block
-                          defaultValue={item.default}
-                          options={item.change.map((key) => ({
-                            label: key.label,
-                            value: key.key, // 假设索引为值
-                          }))}
-                          optionType="button"
-                          onChange={e => {
-                            const newValue = e.target.value;
-                            setRadios(newValue); // 更新选中的选项
-                            if (typeof item.setVal === 'function') {
-                              item.setVal(newValue);
-                            }
-                          }}
-                        />
-                      ) : (
-                        // 如果 change 是函数，渲染开关
-                        typeof item.change === 'function' ? (
-                          <Switch
-                            loading={item.loading}
-                            defaultValue={item.defaultvalue}
-                            value={item.value}
-                            onChange={item.change} />
+      <Spin spinning={spinning} indicator={<LoadingOutlined spin  style={{ fontSize: 48 }}/>} >
+        <TitleBar locale={locale} setSpinning={setSpinning} config={antdToken} themeDack={themeDack} setThemeDack={setThemeDack} />
+        <Layout>
+          <Content className="container">
+            <Flex gap={0} vertical>
+              {mains.map((item, i) => {
+                // 只有当 item.hide 为 false 或者 当前选中的选项匹配时才渲染
+                if (item.hide && item.key !== Radios) {
+                  return null;
+                }
+                return (
+                  <>
+                    {i > 0 ? <Divider key={i} /> : null}
+                    <Flex key={item.key || i} justify='space-between' align="center">
+                      <Text>{item.label}</Text>
+                      {
+                        // 如果 change 是数组，渲染单选框
+                        Array.isArray(item.change) ? (
+                          <Radio.Group
+                            block
+                            defaultValue={item.default}
+                            options={item.change.map((key) => ({
+                              label: key.label,
+                              value: key.key, // 假设索引为值
+                            }))}
+                            optionType="button"
+                            onChange={e => {
+                              const newValue = e.target.value;
+                              setRadios(newValue); // 更新选中的选项
+                              if (typeof item.setVal === 'function') {
+                                item.setVal(newValue);
+                              }
+                            }}
+                          />
                         ) : (
-                          // 如果是组件，直接渲染
-                          <div>{item.change}</div>
+                          // 如果 change 是函数，渲染开关
+                          typeof item.change === 'function' ? (
+                            <Switch
+                              loading={item.loading}
+                              defaultValue={item.defaultvalue}
+                              value={item.value}
+                              onChange={item.change} />
+                          ) : (
+                            // 如果是组件，直接渲染
+                            <div>{item.change}</div>
+                          )
                         )
-                      )
-                    }
-                  </Flex>
-                </>
-              );
-            })}
-            <Docs locale={locale}/>
-          </Flex>
-        </Content>
-      </Layout>
+                      }
+                    </Flex>
+                  </>
+                );
+              })}
+              <Docs locale={locale} />
+            </Flex>
+          </Content>
+        </Layout>
+      </Spin>
     </ConfigProvider>
   );
 }

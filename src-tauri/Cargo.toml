@@ -41,5 +41,6 @@ strip = true # 确保移除调试符号。
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-autostart = "2"
 tauri-plugin-single-instance = "2"
+tauri-plugin-window-state = "2"
 
 
