@@ -34,7 +34,7 @@ npm run tauri build
 打开和风天气控制台：https://console.qweather.com/#/apps/
 
 注册并登录后根据截图指引操作即可
-<div align="center">
+
 <img src="screenshot\1.png" align="center" width=500 />
 <br /><br />
 <img src="screenshot\2.png" align="center" width=500 />
@@ -44,7 +44,7 @@ npm run tauri build
 <img src="screenshot\4.png" align="center" width=500 />
 <br /><br />
 <img src="screenshot\5.png" align="center" width=500 />
-</div>
+
 
 
 ## 联系作者
