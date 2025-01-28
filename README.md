@@ -12,6 +12,9 @@
 <img src="pshotA.png" align="center" width=500 />
 </div>
 
+## 其它仓库
+- Gitee (国内推荐): [https://gitee.com/ilinxuan/windows_-auto-theme](https://gitee.com/ilinxuan/windows_-auto-theme) 
+- GitHub: [https://github.com/tuyangJs/Windows_AutoTheme](https://github.com/tuyangJs/Windows_AutoTheme) 
 
 ## 调试
 安装依赖

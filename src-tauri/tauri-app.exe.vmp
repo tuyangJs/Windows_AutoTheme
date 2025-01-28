@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Document Version="2">
-    <Protection InputFileName="target\release\tauri-app.exe" Options="361416" VMCodeSectionName=".???" LicenseDataFileName="target\release\tauri-app.exe.vmp" OutputFileName="C:\Users\ihanl\Desktop\WindowsThemeAuto.exe">
+    <Protection InputFileName="target\release\tauri-app.exe" Options="361160" VMCodeSectionName=".???" LicenseDataFileName="target\release\tauri-app.exe.vmp" OutputFileName="C:\Users\ihanl\Desktop\WindowsThemeAuto.exe">
         <Messages />
         <Folders />
         <Procedures />
