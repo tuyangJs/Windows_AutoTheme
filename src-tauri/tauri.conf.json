@@ -13,8 +13,6 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "visible": false,
-        "visibleOnAllWorkspaces": false,
         "title": "系统主题自适应",
         "label": "main",
         "windowEffects": {
@@ -25,6 +23,8 @@
         },
         "transparent": true,
         "center": true,
+        "visible": false,
+        "visibleOnAllWorkspaces":false,
         "maximized": false,
         "resizable": true,
         "maxHeight": 736,
@@ -44,6 +44,7 @@
   },
   "bundle": {
     "active": true,
+    "targets": "nsis",
     "copyright": "Copyright © 2025 Tuyang All",
     "icon": [
       "icons/logo.png"
