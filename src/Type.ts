@@ -8,6 +8,7 @@ export interface AppDataType {
     city?: { id: string, name: string };
     Autostart?: boolean;
     language: string
+    StartShow:boolean
 }
 export interface TimesProps {
     disabled?: boolean;

@@ -3,25 +3,41 @@
     "Switch": "Switch System Theme",
     "main": {
         "open": "Open",
-        "language":"Language",
+        "language": "Language",
         "keyTitle": "HeWeather API Key",
         "citiTitle": "City",
         "citiPlaceholder": "Enter city name to search",
         "TabsTitle": "Theme Mode",
         "Tabs": [
-             "Sunrise to Sunset",
+            "Sunrise to Sunset",
             "Custom Time"
         ],
         "TabsOptionA": "Sunrise to Sunset",
         "TabsOptionB": "Light Mode Time",
-        "Autostart": "Start with System"
+        "Autostart": "Start with System",
+        "StartShow": "Show window at startup"
+    },
+    "upModal": {
+        "textA": [
+            "Checking: ",
+            "New version found",
+            "Already up-to-date"
+        ],
+        "textB": [
+            "Updating......",
+            "View updates",
+            "Check for updates"
+        ],
+        "title": "New version available: ",
+        "cancelText": "Cancel",
+        "okText": "Go to update",
+        "upData": "Update log"
     },
     "doc": [
         "Instructions",
         " This program is developed by Tuyang and is completely open-source and free.",
         "Get HeWeather API Key",
         "Click Here",
-        "Current App Version:",
-        "Check for Updates"
+        "Documentation : "
     ]
 }

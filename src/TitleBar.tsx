@@ -17,7 +17,6 @@ interface Props {
     locale: any
     setSpinning: React.Dispatch<React.SetStateAction<boolean>>
 }
-
 const appWindow = new Window('main');
 
 const menu = await Menu.new({
@@ -62,14 +61,16 @@ TrayIcon.getById("main").then(async e => {
     try {
         tray?.setTooltip('系统主题自适应');
         tray.setMenu(menu)
-        appWindow.show()
     } catch (error) {
     }
 })
+const HideWindow = ()=>{
+    saveWindowState(StateFlags.ALL)
+    appWindow.hide()
+}
 appWindow.onCloseRequested(e => {
     e.preventDefault()
-    saveWindowState(StateFlags.ALL);
-    appWindow.hide()
+    HideWindow()
 })
 
 const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning }) => {

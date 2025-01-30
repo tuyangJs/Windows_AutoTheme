@@ -1,0 +1,43 @@
+{
+    "Title": "系統主題自適應程式",
+    "Switch": "切換系統主題",
+    "main": {
+        "open": "開啟",
+        "language": "多語言",
+        "keyTitle": "和風天氣Key",
+        "citiTitle": "城市",
+        "citiPlaceholder": "輸入城市名搜尋",
+        "TabsTitle": "主題模式",
+        "Tabs": [
+            "日出到日落",
+            "自定義時段"
+        ],
+        "TabsOptionA": "日出到日落",
+        "TabsOptionB": "淺色時間",
+        "Autostart": "跟隨系統啟動",
+        "StartShow": "啟動時顯示視窗"
+    },
+    "upModal": {
+        "textA": [
+            "正在檢查：",
+            "發現新版本",
+            "已是最新版"
+        ],
+        "textB": [
+            "更新......",
+            "檢視更新",
+            "檢查更新"
+        ],
+        "title": "程式有新版本：",
+        "cancelText": "取消",
+        "okText": "前往更新",
+        "upData": "更新日誌"
+    },
+    "doc": [
+        "說明",
+        " 本程式由：荼泱Tuyang 個人開發完全開源免費。",
+        "獲取和風天氣Key",
+        "點擊此處",
+        "幫助文檔："
+    ]
+}

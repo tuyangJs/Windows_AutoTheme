@@ -3,7 +3,7 @@
     "Switch": "切换系统主题",
     "main": {
         "open": "开启",
-        "language":"多语言",
+        "language": "多语言",
         "keyTitle": "和风天气Key",
         "citiTitle": "城市",
         "citiPlaceholder": "输入城市名搜索",
@@ -14,14 +14,30 @@
         ],
         "TabsOptionA": "日出到日落",
         "TabsOptionB": "浅色时间",
-        "Autostart": "跟随系统启动"
+        "Autostart": "跟随系统启动",
+        "StartShow": "启动时显示窗口"
+    },
+    "upModal": {
+        "textA": [
+            "正在检查：",
+            "发现新版本",
+            "已是最新版"
+        ],
+        "textB": [
+            "更新......",
+            "查看更新",
+            "检查更新"
+        ],
+        "title": "程序有新版本：",
+        "cancelText": "取消",
+        "okText": "前往更新",
+        "upData": "更新日志"
     },
     "doc": [
         "说明",
         " 本程序由：荼泱Tuyang 个人开发完全开源免费。",
         "获取和风天气Key",
         "点击此处",
-        "当前程序版本：",
-        "前往检查更新"
+        "帮助文档："
     ]
 }

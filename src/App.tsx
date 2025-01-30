@@ -11,6 +11,9 @@ import LanguageApp from './language/index'
 import type { AppDataType, TimesProps } from './Type'
 import Docs from './doc'
 import { LoadingOutlined } from "@ant-design/icons";
+import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
+import {Updates} from './updates'
+const version='1.2.4'
 document.addEventListener('keydown', function (e) {
   if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
     e.preventDefault(); // 禁止刷新
@@ -22,7 +25,7 @@ document.addEventListener('contextmenu', function (e) {
     e.preventDefault(); // 禁用右键菜单
   }
 });
-
+const appWindow = new Window('main');
 const { Text } = Typography;
 
 const format = 'HH:mm';
@@ -41,7 +44,8 @@ function App() {
       city: { id: "101010100", name: '北京' },
       times: [""],
       Autostart: SystemStart,
-      language: 'zh_CN'
+      language: 'zh_CN',
+      StartShow: true
     }
   })
   const [Radios, setRadios] = useState<string>(AppData?.Radios || 'rcrl');
@@ -94,7 +98,7 @@ function App() {
       openRc()
     }
   }, [AppData?.city, AppData?.rcrl])
-  useEffect(() => { //初始化-主题自适应
+  useEffect(() => { //初始化 -主题自适应
     const handleChange = function (this: any) {
       //appWindow.setTheme('')
       setThemeDack(!this.matches);
@@ -103,6 +107,11 @@ function App() {
     matchMedia.addEventListener('change', handleChange);
     if (AppData?.open) {
       StartRady()
+    }
+    if (AppData?.StartShow) {
+      appWindow.show()
+    } else {
+      appWindow.hide()
     }
     // 清除事件监听器
     return () => {
@@ -269,6 +278,12 @@ function App() {
         }
         setData({ Autostart: e })
       },
+    },
+    {
+      key: "StartShow",
+      label: locale.main?.StartShow || '启动时显示窗口',
+      defaultvalue: AppData?.StartShow,
+      change: ((e: boolean) => setData({ StartShow: e }))
     }
   ];
   const config: ThemeConfig = useMemo(() => ({ //主题渲染配置
@@ -294,7 +309,8 @@ function App() {
       theme={config}
     >
       {contextHolder}
-      <Spin spinning={spinning} indicator={<LoadingOutlined spin  style={{ fontSize: 48 }}/>} >
+      
+      <Spin spinning={spinning} indicator={<LoadingOutlined spin style={{ fontSize: 48 }} />} >
         <TitleBar locale={locale} setSpinning={setSpinning} config={antdToken} themeDack={themeDack} setThemeDack={setThemeDack} />
         <Layout>
           <Content className="container">
@@ -346,7 +362,8 @@ function App() {
                   </>
                 );
               })}
-              <Docs locale={locale} />
+              <Docs locale={locale}  version={version}/>
+              <Updates locale={locale}  version={version}/>
             </Flex>
           </Content>
         </Layout>

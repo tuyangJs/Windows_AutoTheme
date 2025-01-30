@@ -7,8 +7,12 @@ const items: MenuProps['items'] = [
     label: "简体中文",
   },
   {
+    key: 'zh_HK',
+    label: "繁体中文",
+  },
+  {
     key: 'en_US',
-    label: "English-US",
+    label: "English",
   },
   {
     key: 'es_ES',
@@ -18,9 +22,11 @@ const items: MenuProps['items'] = [
     key: 'ja_JP',
     label: "日本語にほんご",
   }
+
 ] as MenuProps['items']
 const locales: Record<string, any> = {
   'zh_CN': () => import('./zh-CN.json'),
+  'zh_HK': () => import('./zh-HK.json'),
   'en_US': () => import('./en-US.json'),
   'es_ES': () => import('./es-ES.json'),
   'ja_JP': () => import('./ja-JP.json'),
@@ -36,8 +42,8 @@ function getLabelByKey(key: string): string | undefined {
   // @ts-ignore
   return item?.label
 }
-const Language = ({ AppData, setData }:Prop) => {
-  const [locale, setLocale] = useState<any>( locales[AppData?.language || '']);//Antd语言包
+const Language = ({ AppData, setData }: Prop) => {
+  const [locale, setLocale] = useState<any>(locales[AppData?.language || '']);//Antd语言包
   useEffect(() => {
     const loadLocale = locales[AppData?.language || ''];
     if (loadLocale) {

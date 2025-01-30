@@ -14,14 +14,30 @@
         ],
         "TabsOptionA": "Amanecer al Atardecer",
         "TabsOptionB": "Hora del Modo Claro",
-        "Autostart": "Iniciar con el Sistema"
+        "Autostart": "Iniciar con el Sistema",
+        "StartShow": "Mostrar al iniciar"
+    },
+    "upModal": {
+        "textA": [
+            "Comprobando: ",
+            "Nueva versión encontrada",
+            "Ya está actualizado"
+        ],
+        "textB": [
+            "Actualizando......",
+            "Ver actualizaciones",
+            "Comprobar actualizaciones"
+        ],
+        "title": "Nueva versión disponible: ",
+        "cancelText": "Cancelar",
+        "okText": "Ir a actualizar",
+        "upData": "Registro de actualizaciones"
     },
     "doc": [
         "Instrucciones",
         " Este programa ha sido desarrollado por Tuyang y es completamente de código abierto y gratuito.",
         "Obtener Clave API de HeWeather",
         "Haz clic aquí",
-        "Versión actual de la aplicación:",
-        "Buscar Actualizaciones"
+        "Documentación de ayuda : "
     ]
 }
