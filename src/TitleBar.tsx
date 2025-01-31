@@ -102,7 +102,7 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
                 <Text strong style={{ margin: 0 }}> {locale?.Title}</Text>
             </Flex>
             <Flex align='center' gap={'small'}>
-                <Tooltip title="切换系统主题">
+                <Tooltip title={locale.Switch}>
                     <Switch
                         loading={spinning}
                         defaultValue={themeDack}

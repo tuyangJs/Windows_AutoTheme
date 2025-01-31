@@ -6,6 +6,7 @@
         "language": "多语言",
         "keyTitle": "和风天气Key",
         "citiTitle": "城市",
+        "citiError":"你还没有选择城市！",
         "citiPlaceholder": "输入城市名搜索",
         "TabsTitle": "主题模式",
         "Tabs": [
@@ -13,6 +14,7 @@
             "自定义时段"
         ],
         "TabsOptionA": "日出到日落",
+        "TabsOptionAError":"获取日出日落信息失败！",
         "TabsOptionB": "浅色时间",
         "Autostart": "跟随系统启动",
         "StartShow": "启动时显示窗口"

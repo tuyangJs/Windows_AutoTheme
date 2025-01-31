@@ -6,6 +6,7 @@
         "language": "Language",
         "keyTitle": "HeWeather API Key",
         "citiTitle": "City",
+        "citiError": "City not selected!",
         "citiPlaceholder": "Enter city name to search",
         "TabsTitle": "Theme Mode",
         "Tabs": [
@@ -13,6 +14,7 @@
             "Custom Time"
         ],
         "TabsOptionA": "Sunrise to Sunset",
+        "TabsOptionAError": "Sunrise/sunset fetch failed!",
         "TabsOptionB": "Light Mode Time",
         "Autostart": "Start with System",
         "StartShow": "Show window at startup"

@@ -183,6 +183,7 @@ function App() {
     debounceWait: 800,
     manual: true,
   });
+
   const openRc = async () => { //获取日出日落数据
     setRcOpenLoad(true)
     if (AppData?.Hfkey && AppData?.city?.id) {
@@ -193,14 +194,14 @@ function App() {
         setData({ times: [sunrise, sunset], rcrl: true })
         setRcOpenLoad(false)
       } else {
-        messageApi.error('获取日出日落信息失败！')
+        messageApi.error(locale.main.TabsOptionAError)
           .then(() => {
             setData({ rcrl: false })
             setRcOpenLoad(false)
           })
       }
     } else {
-      messageApi.error('你还没有选择城市！')
+      messageApi.error(locale.main.citiError)
         .then(() => {
           setData({ rcrl: false })
           setRcOpenLoad(false)

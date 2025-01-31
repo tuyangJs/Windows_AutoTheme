@@ -6,6 +6,7 @@
         "language": "多言語",
         "keyTitle": "HeWeather APIキー",
         "citiTitle": "都市",
+        "citiError": "都市が未選択です！",
         "citiPlaceholder": "都市名を入力して検索",
         "TabsTitle": "テーマモード",
         "Tabs": [
@@ -13,6 +14,7 @@
             "カスタム時間"
         ],
         "TabsOptionA": "日の出から日没まで",
+        "TabsOptionAError": "日の出・日の入り取得失敗！",
         "TabsOptionB": "ライトモード時間",
         "Autostart": "システムと一緒に起動",
         "StartShow": "起動時に表示 (きどうじにひょうじ)"
