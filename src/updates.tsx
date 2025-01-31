@@ -80,16 +80,6 @@ const Updates: React.FC<Props> = ({ version, locale }) => {
     setIsModalOpen(true);
   };
 
-  const handleOk = () => {
-    if (update) {
-      const link = document.createElement('a');
-      link.href = update?.releaseUrl;
-      link.target = '_blank'; // 可选，设置为在新窗口打开
-      link.click();
-    }
-    handleCancel()
-  };
-
   const handleCancel = () => {
     setIsModalOpen(false);
   };
@@ -124,12 +114,30 @@ const Updates: React.FC<Props> = ({ version, locale }) => {
       <Modal
         title={`${upModal?.title}${update?.latestVersion}`}
         open={isModalOpen}
+        style={{ userSelect: 'text' }}
         centered
-        cancelText={upModal?.cancelText}
-        okText={upModal?.okText}
-        onOk={handleOk}
+        footer={[
+          <Button
+            key="submit"
+            type="primary"
+            href="https://gitee.com/ilinxuan/windows_-auto-theme/releases/latest"
+            target="_blank"
+            onClick={handleCancel}>
+            {upModal?.okText} (Gitee)
+          </Button>,
+          <Button
+            key="link"
+            href={update?.releaseUrl}
+            target="_blank"
+            type="primary"
+            onClick={handleCancel}
+          >
+            {upModal?.okText} (GitHub)
+          </Button>,
+        ]}
         maskClosable={false}
-        onCancel={handleCancel}>
+        onCancel={handleCancel}
+      >
         <Markdown>{`#### ${upModal?.upData} :\n ${update?.releaseNotes}`}</Markdown>
       </Modal></>
   )
