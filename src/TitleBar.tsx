@@ -1,6 +1,6 @@
 import React from 'react';
 import { MoonOutlined, PoweroffOutlined, SunOutlined } from '@ant-design/icons';
-import { Button, Flex, Tooltip, Typography } from 'antd';
+import { Button, Flex, Switch, Tooltip, Typography } from 'antd';
 import { AliasToken } from 'antd/es/theme/internal';
 import { TrayIcon } from '@tauri-apps/api/tray';
 import { Menu } from '@tauri-apps/api/menu';
@@ -16,6 +16,7 @@ interface Props {
     setThemeDack: any
     locale: any
     setSpinning: React.Dispatch<React.SetStateAction<boolean>>
+    spinning: boolean
 }
 const appWindow = new Window('main');
 
@@ -64,7 +65,7 @@ TrayIcon.getById("main").then(async e => {
     } catch (error) {
     }
 })
-const HideWindow = ()=>{
+const HideWindow = () => {
     saveWindowState(StateFlags.ALL)
     appWindow.hide()
 }
@@ -73,7 +74,7 @@ appWindow.onCloseRequested(e => {
     HideWindow()
 })
 
-const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning }) => {
+const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning }) => {
     async function changeTheme() {
         try {
             setSpinning(true)
@@ -98,31 +99,22 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning }) => {
             data-tauri-drag-region>
             <Flex align='center' gap={'small'}>
                 <img className='logo' alt='logo' src={Logo} />
-                <Text strong style={{ margin: 0 }}> {locale.Title}</Text>
+                <Text strong style={{ margin: 0 }}> {locale?.Title}</Text>
             </Flex>
             <Flex align='center' gap={'small'}>
                 <Tooltip title="切换系统主题">
-                    <Button
-                        type="text"
-                        shape="circle"
-                        onClick={async () => {
-                            console.log('Changing theme...');
-                            await changeTheme();  // Wait for the theme change to complete
+                    <Switch
+                        loading={spinning}
+                        defaultValue={themeDack}
+                        value={themeDack}
+                        onChange={() => {
+                            setTimeout(async () => {
+                                await changeTheme();
+                            }, 1);
+                            // Wait for the theme change to complete
                         }}
-                        icon={
-                            <motion.div
-                                key={themeDack ? "moon" : "sun"}  // 使用 key 确保每次切换时都触发动画
-                                initial={{ opacity: 0, y: 20 }}  // 初始时从下方开始
-                                animate={{ opacity: 1, y: 0 }}   // 动画结束时回到正常位置
-                                exit={{ opacity: 0, y: 20 }}    // 退出时从当前位置向上消失
-                                transition={{
-                                    duration: 0.5,
-                                    ease: [0.68, -0.55, 0.27, 1.55], // 弹性缓动
-                                }}
-                            >
-                                {themeDack ? <MoonOutlined /> : <SunOutlined />}
-                            </motion.div>
-                        }
+                        checkedChildren={<MoonOutlined />}
+                        unCheckedChildren={<SunOutlined />}
                     />
                 </Tooltip>
 

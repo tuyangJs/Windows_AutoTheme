@@ -31,7 +31,9 @@ h1,h2,h3,h4,h5{
   height: 100vh;
   padding: 8px;
 }
-
+.ant-typography{
+  margin-bottom:2px !important
+}
 .container {
   margin: 0;
   margin-block-start: 46px;

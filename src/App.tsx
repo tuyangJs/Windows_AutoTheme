@@ -44,7 +44,7 @@ function App() {
       city: { id: "101010100", name: '北京' },
       times: [""],
       Autostart: SystemStart,
-      language: 'zh_CN',
+      language: '',
       StartShow: true
     }
   })
@@ -210,7 +210,7 @@ function App() {
   const mains = [ //  全部选项数据
     {
       key: 'open',
-      label: locale.main?.open || "开启",
+      label: locale?.main?.open,
       defaultvalue: AppData?.open,
       change: (e: boolean) => {
         setData({ open: e })
@@ -218,12 +218,12 @@ function App() {
     },
     {
       key: "language",
-      label: locale?.main?.language || "多语言",
+      label: locale?.main?.language,
       change: Language
     },
     {
       key: "hfkey",
-      label: locale.main?.keyTitle || '和风天气key',
+      label: locale?.main?.keyTitle,
       change: (
         <Tooltip title="日出日落需要key" placement="bottom">
           <Input.Password placeholder="key" defaultValue={AppData?.Hfkey} width={220} onChange={e => setData({ Hfkey: e.target.value })} />
@@ -231,7 +231,7 @@ function App() {
     },
     {
       key: 'city',
-      label: locale.main?.citiTitle || '城市',
+      label: locale?.main?.citiTitle,
       change: (<AutoComplete
         popupMatchSelectWidth={252}
         options={options}
@@ -240,21 +240,21 @@ function App() {
         onChange={run}
         disabled={(AppData?.Hfkey || '').length <= 10}
       >
-        <Input.Search placeholder={locale.main?.citiPlaceholder || "输入城市名"} />
+        <Input.Search placeholder={locale?.main?.citiPlaceholder} />
       </AutoComplete>)
     },
     {
       key: 'radios',
-      label: locale.main?.TabsTitle || '选项',
+      label: locale?.main?.TabsTitle,
       default: Radios,
       setVal: setRadios,
-      change: [{ key: 'rcrl', label: locale.main?.Tabs?.[0] || '日出到日落' },
-      { key: 'dark', label: locale.main?.Tabs?.[1] || '自定义时段' }] // 如果是数组，渲染单选项
+      change: [{ key: 'rcrl', label: locale?.main?.Tabs?.[0] },
+      { key: 'dark', label: locale?.main?.Tabs?.[1] }] // 如果是数组，渲染单选项
     },
 
     {
       key: "rcrl",
-      label: locale.main?.TabsOptionA || '日出到日落',
+      label: locale?.main?.TabsOptionA,
       hide: true,
       value: AppData?.rcrl,
       loading: rcOpenLoad,
@@ -262,13 +262,13 @@ function App() {
     },
     {
       key: 'dark',
-      label: locale.main?.TabsOptionB || '浅色时间',
+      label: locale?.main?.TabsOptionB,
       hide: true,
       change: <Times disabled={AppData?.rcrl} /> // 渲染时间选择器
     },
     {
       key: 'Autostart',
-      label: locale.main?.Autostart || '跟随系统启动',
+      label: locale?.main?.Autostart,
       defaultvalue: AppData?.Autostart,
       change: async (e: boolean) => {
         if (e) {
@@ -281,7 +281,7 @@ function App() {
     },
     {
       key: "StartShow",
-      label: locale.main?.StartShow || '启动时显示窗口',
+      label: locale?.main?.StartShow,
       defaultvalue: AppData?.StartShow,
       change: ((e: boolean) => setData({ StartShow: e }))
     }
@@ -311,7 +311,7 @@ function App() {
       {contextHolder}
       
       <Spin spinning={spinning} indicator={<LoadingOutlined spin style={{ fontSize: 48 }} />} >
-        <TitleBar locale={locale} setSpinning={setSpinning} config={antdToken} themeDack={themeDack} setThemeDack={setThemeDack} />
+        <TitleBar spinning={spinning} locale={locale} setSpinning={setSpinning} config={antdToken} themeDack={themeDack} setThemeDack={setThemeDack} />
         <Layout>
           <Content className="container">
             <Flex gap={0} vertical>

@@ -100,15 +100,16 @@ const Updates: React.FC<Props> = ({ version, locale }) => {
       updates()
     }
   }
+  const { upModal } = locale || { upModal: null }
   return (
     <>
       <Flex justify="center" align="center" gap={8}>
         {
-          btnLoad ? <Text >{locale.upModal?.textA[0]}</Text> :
+          btnLoad ? <Text >{upModal?.textA[0]}</Text> :
             update ? (
-              <Text >{locale.upModal?.textA[1]}</Text>
+              <Text >{upModal?.textA[1]}</Text>
             ) : (
-              <Text type="secondary">{locale.upModal?.textA[2]}</Text>
+              <Text type="secondary">{upModal?.textA[2]}</Text>
             )
         }
         <Button
@@ -116,20 +117,20 @@ const Updates: React.FC<Props> = ({ version, locale }) => {
           color={update ? "yellow" : "primary"}
           variant="link"
           loading={btnLoad}>
-          {btnLoad ? locale.upModal?.textB[0] : update ? locale.upModal?.textB[1] : locale.upModal?.textB[2]}
+          {btnLoad ? upModal?.textB[0] : update ? upModal?.textB[1] : upModal?.textB[2]}
         </Button>
       </Flex>
 
       <Modal
-        title={`${locale.upModal?.title}${update?.latestVersion}`}
+        title={`${upModal?.title}${update?.latestVersion}`}
         open={isModalOpen}
         centered
-        cancelText={locale.upModal?.cancelText}
-        okText={locale.upModal?.okText}
+        cancelText={upModal?.cancelText}
+        okText={upModal?.okText}
         onOk={handleOk}
         maskClosable={false}
         onCancel={handleCancel}>
-        <Markdown>{`#### ${locale.upModal?.upData} :\n ${update?.releaseNotes}`}</Markdown>
+        <Markdown>{`#### ${upModal?.upData} :\n ${update?.releaseNotes}`}</Markdown>
       </Modal></>
   )
 }
