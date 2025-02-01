@@ -1,5 +1,5 @@
 import { useLocalStorageState } from "ahooks";
-import { AppDataType } from "./Type";
+import { AppDataType } from "../Type";
 import { isEnabled } from "@tauri-apps/plugin-autostart";
 const SystemStart = await isEnabled()
 

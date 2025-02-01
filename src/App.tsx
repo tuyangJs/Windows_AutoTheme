@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import TitleBar from "./TitleBar";
 import dayjs from 'dayjs';
-import { AppCiti } from './sociti'
+import { AppCiti } from './mod/sociti'
 import "./App.css";
 import { AutoCompleteProps, ConfigProvider, Divider, Flex, Layout, message, Radio, Spin, Switch, Typography } from "antd";
 import { useAsyncEffect, useUpdateEffect } from "ahooks";
@@ -11,9 +11,11 @@ import Docs from './doc'
 import { LoadingOutlined } from "@ant-design/icons";
 import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
 import { Updates } from './updates'
-import { ThemeFun } from './ThemeConfig'
-import Mainoption from "./Mainoption";
-import DataSave from './DataSave'
+import { ThemeFun } from './mod/ThemeConfig'
+import Mainoption from "./mod/Mainoption";
+import DataSave from './mod/DataSave'
+import OpContent from './Content'
+import { searchResult } from "./mod/searchCiti";
 const version = '1.2.6'
 document.addEventListener('keydown', function (e) {
   if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
@@ -27,11 +29,11 @@ document.addEventListener('contextmenu', function (e) {
   }
 });
 const appWindow = new Window('main');
-const { Text } = Typography;
+
 const { Content } = Layout;
 function App() {
   const { setData, AppData } = DataSave()
-  
+
   const [Radios, setRadios] = useState<string>(AppData?.Radios || 'rcrl');
   const matchMedia = window.matchMedia('(prefers-color-scheme: light)');
   const [themeDack, setThemeDack] = useState(!matchMedia.matches);
@@ -126,38 +128,10 @@ function App() {
   }, [AppData?.times, AppData?.open])
 
 
-  const searchResult = async (query: string) => { //渲染搜索结果
-    if (!AppData?.Hfkey) return [];
-    const data = await AppCiti(AppData.Hfkey, query, AppData.language)
-    if (data.code !== '200') return [];
-    return data.location
-      .map((e: any) => {
-        return {
-          value: ` ${e.adm1} - ${e.name}`,
-          key: e.id,
-          label: (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-              }}
-            >
-              <span>
-                {e.country}
-                <a
-                >
-                  {` ${e.adm1} - ${e.name}`}
-                </a>
-              </span>
-
-            </div>
-          ),
-        };
-      });
-  }
+ 
   async function getCity(search?: string) { //搜索城市
     if (search) {
-      setOptions(await searchResult(search))
+      setOptions(await searchResult(search,AppData))
     }
   }
 
@@ -168,59 +142,19 @@ function App() {
       theme={Themeconfig}
     >
       {contextHolder}
-
       <Spin spinning={spinning} indicator={<LoadingOutlined spin style={{ fontSize: 48 }} />} >
-        <TitleBar spinning={spinning} locale={locale} setSpinning={setSpinning} config={antdToken} themeDack={themeDack} setThemeDack={setThemeDack} />
+        <TitleBar
+          spinning={spinning}
+          locale={locale}
+          setSpinning={setSpinning}
+          config={antdToken}
+          themeDack={themeDack}
+          setThemeDack={setThemeDack}
+        />
         <Layout>
           <Content className="container">
             <Flex gap={0} vertical>
-              {mains.map((item, i) => {
-                // 只有当 item.hide 为 false 或者 当前选中的选项匹配时才渲染
-                if (item.hide && item.key !== Radios) {
-                  return null;
-                }
-                return (
-                  < >
-                    {i > 0 ? <Divider key={i} /> : null}
-                    <Flex key={item.key || i} justify='space-between' align="center">
-                      <Text>{item.label}</Text>
-                      {
-                        // 如果 change 是数组，渲染单选框
-                        Array.isArray(item.change) ? (
-                          <Radio.Group
-                            block
-                            defaultValue={item.default}
-                            options={item.change.map((key) => ({
-                              label: key.label,
-                              value: key.key, // 假设索引为值
-                            }))}
-                            optionType="button"
-                            onChange={e => {
-                              const newValue = e.target.value;
-                              setRadios(newValue); // 更新选中的选项
-                              if (typeof item.setVal === 'function') {
-                                item.setVal(newValue);
-                              }
-                            }}
-                          />
-                        ) : (
-                          // 如果 change 是函数，渲染开关
-                          typeof item.change === 'function' ? (
-                            <Switch
-                              loading={item.loading}
-                              defaultValue={item.defaultvalue}
-                              value={item.value as boolean}
-                              onChange={item.change} />
-                          ) : (
-                            // 如果是组件，直接渲染
-                            <div>{item.change}</div>
-                          )
-                        )
-                      }
-                    </Flex>
-                  </>
-                );
-              })}
+              <OpContent mains={mains} Radios={Radios} setRadios={setRadios} />
               <Docs locale={locale} version={version} />
               <Updates locale={locale} version={version} />
             </Flex>
