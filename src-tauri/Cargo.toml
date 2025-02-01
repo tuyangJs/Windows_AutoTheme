@@ -1,6 +1,6 @@
 [package]
-name = "tauri-app"
-version = "0.1.0"
+name = "WindowsThemeAuto"
+version = "1.2.7"
 description = "A Tauri App"
 authors = ["you"]
 edition = "2021"
