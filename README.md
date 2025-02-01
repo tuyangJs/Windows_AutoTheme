@@ -2,7 +2,7 @@
 <div align="center">
 这是一个简单的Windows主题模式切换工具，可以让你的系统支持日间浅色和夜间深色自动切换。
 <br /><br />
-<img src="screenshot\winset.png" align="center" width=500 />
+<img src="winset.png" align="center" width=500 />
 <br /><br />
 它由`Rust`构建后端代码，用于执行系统操作。
 
@@ -35,15 +35,15 @@ npm run tauri build
 
 注册并登录后根据截图指引操作即可
 
-<img src="screenshot\1.png" align="center" width=500 />
-<br /><br />
-<img src="screenshot\2.png" align="center" width=500 />
-<br /><br />
-<img src="screenshot\3.png" align="center" width=500 />
-<br /><br />
-<img src="screenshot\4.png" align="center" width=500 />
-<br /><br />
-<img src="screenshot\5.png" align="center" width=500 />
+<img src="1.png" align="center" width=500 />
+<br />
+<img src="2.png" align="center" width=500 />
+<br />
+<img src="3.png" align="center" width=500 />
+<br />
+<img src="4.png" align="center" width=500 />
+<br />
+<img src="5.png" align="center" width=500 />
 
 
 

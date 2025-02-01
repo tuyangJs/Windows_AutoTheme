@@ -46,7 +46,16 @@
     "active": true,
     "targets": "nsis",
     "copyright": "Copyright © 2025 Tuyang All",
+    "windows": {
+      "nsis": {
+        "languages":["SimpChinese", "TradChinese", "English", "Spanish", "Japanese"],
+        "displayLanguageSelector": true
+      }
+    },
     "icon": [
+      "icons/logo.png"
+    ],
+    "resources": [
       "icons/logo.png"
     ]
   }
