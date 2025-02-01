@@ -24,6 +24,7 @@
         "transparent": true,
         "center": true,
         "visible": false,
+        "decorations": false,
         "visibleOnAllWorkspaces":false,
         "maximized": false,
         "resizable": true,
