@@ -13,7 +13,7 @@ import Docs from './doc'
 import { LoadingOutlined } from "@ant-design/icons";
 import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
 import {Updates} from './updates'
-const version='1.2.5'
+const version='1.2.7'
 document.addEventListener('keydown', function (e) {
   if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
     e.preventDefault(); // 禁止刷新
