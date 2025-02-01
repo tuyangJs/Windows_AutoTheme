@@ -1,19 +1,20 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import TitleBar from "./TitleBar";
 import dayjs from 'dayjs';
-import { AppCiti, Sunrise } from './sociti'
+import { AppCiti } from './sociti'
 import "./App.css";
-import { enable, isEnabled, disable } from '@tauri-apps/plugin-autostart'
-import { AutoComplete, AutoCompleteProps, ConfigProvider, Divider, Flex, Input, Layout, message, Radio, Spin, Switch, theme, ThemeConfig, TimePicker, Tooltip, Typography } from "antd";
-import { useAsyncEffect, useLocalStorageState, useRequest, useUpdateEffect } from "ahooks";
+import { AutoCompleteProps, ConfigProvider, Divider, Flex, Layout, message, Radio, Spin, Switch, Typography } from "antd";
+import { useAsyncEffect, useUpdateEffect } from "ahooks";
 import LanguageApp from './language/index'
-import type { AppDataType, TimesProps } from './Type'
 import Docs from './doc'
 import { LoadingOutlined } from "@ant-design/icons";
 import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
-import {Updates} from './updates'
-const version='1.2.7'
+import { Updates } from './updates'
+import { ThemeFun } from './ThemeConfig'
+import Mainoption from "./Mainoption";
+import DataSave from './DataSave'
+const version = '1.2.6'
 document.addEventListener('keydown', function (e) {
   if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
     e.preventDefault(); // 禁止刷新
@@ -27,32 +28,15 @@ document.addEventListener('contextmenu', function (e) {
 });
 const appWindow = new Window('main');
 const { Text } = Typography;
-
-const format = 'HH:mm';
-
 const { Content } = Layout;
-const { RangePicker } = TimePicker;
-
-const SystemStart = await isEnabled()
 function App() {
-  const [AppData, setAppData] = useLocalStorageState<AppDataType>('AppData', {
-    defaultValue: {
-      Radios: "rcrl",
-      Hfkey: "",
-      open: false,
-      rcrl: false,
-      city: { id: "101010100", name: '北京' },
-      times: [""],
-      Autostart: SystemStart,
-      language: '',
-      StartShow: true
-    }
-  })
+  const { setData, AppData } = DataSave()
+  
   const [Radios, setRadios] = useState<string>(AppData?.Radios || 'rcrl');
   const matchMedia = window.matchMedia('(prefers-color-scheme: light)');
   const [themeDack, setThemeDack] = useState(!matchMedia.matches);
   const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
-  const [rcOpenLoad, setRcOpenLoad] = useState(false)
+
   const [spinning, setSpinning] = useState(false)
 
   ///const [MainLoad, setMainLoad] = useState(true)
@@ -61,14 +45,23 @@ function App() {
   useUpdateEffect(() => { //同步设置
     setData({ Radios })
   }, [Radios])
-  const setData = (e: any) => {
-    setAppData((prevData) => ({
-      ...prevData,
-      ...e
-    }))
-  }
+
   const { Language, locale } = LanguageApp({ AppData, setData })
   //----EDN ---- Language
+
+  //导入设置选项
+  const { openRc, mains } = Mainoption({
+    setData,
+    messageApi,
+    locale,
+    options,
+    getCity,
+    setRadios,
+    Radios,
+    Language,
+    AppData
+  })
+
   const StartRady = async () => {
     const PresentTime = dayjs(); // 当前时间，dayjs 对象
     const sunriseTime = dayjs(AppData?.times?.[0], 'HH:mm'); // 日出时间
@@ -111,7 +104,7 @@ function App() {
     if (AppData?.StartShow) {
       appWindow.show()
     } else {
-      appWindow.hide()
+      //appWindow.hide()
     }
     // 清除事件监听器
     return () => {
@@ -132,15 +125,7 @@ function App() {
     }
   }, [AppData?.times, AppData?.open])
 
-  const handleTimeChange = (_e: any, dateStrings: [string, string]) => {  //更改时间
-    setData({ times: dateStrings })
-  }
-  const startTime = dayjs(AppData?.times?.[0] || '08:08', 'HH:mm')
-  const endTime = dayjs(AppData?.times?.[1] || '18:08', 'HH:mm')
 
-  const Times: React.FC<TimesProps> = ({ disabled }) => ( //渲染时间选择器
-    <RangePicker disabled={disabled} defaultValue={[startTime, endTime]} format={format} onChange={handleTimeChange} />
-  );
   const searchResult = async (query: string) => { //渲染搜索结果
     if (!AppData?.Hfkey) return [];
     const data = await AppCiti(AppData.Hfkey, query, AppData.language)
@@ -176,141 +161,14 @@ function App() {
     }
   }
 
-  const confirmCiti = (_e: any, err: any) => { //确认选择城市
-    setData({ city: { id: err.key, name: err.value } })
-  }
-  const { run } = useRequest(getCity, {
-    debounceWait: 800,
-    manual: true,
-  });
-
-  const openRc = async () => { //获取日出日落数据
-    setRcOpenLoad(true)
-    if (AppData?.Hfkey && AppData?.city?.id) {
-      const data = await Sunrise(AppData?.Hfkey, AppData?.city?.id)
-      if (data?.code === '200') {
-        const sunrise = dayjs(data.sunrise).format(format)
-        const sunset = dayjs(data.sunset).format(format)
-        setData({ times: [sunrise, sunset], rcrl: true })
-        setRcOpenLoad(false)
-      } else {
-        messageApi.error(locale.main.TabsOptionAError)
-          .then(() => {
-            setData({ rcrl: false })
-            setRcOpenLoad(false)
-          })
-      }
-    } else {
-      messageApi.error(locale.main.citiError)
-        .then(() => {
-          setData({ rcrl: false })
-          setRcOpenLoad(false)
-        })
-    }
-  }
-  const mains = [ //  全部选项数据
-    {
-      key: 'open',
-      label: locale?.main?.open,
-      defaultvalue: AppData?.open,
-      change: (e: boolean) => {
-        setData({ open: e })
-      }
-    },
-    {
-      key: "language",
-      label: locale?.main?.language,
-      change: Language
-    },
-    {
-      key: "hfkey",
-      label: locale?.main?.keyTitle,
-      change: (
-        <Tooltip title="日出日落需要key" placement="bottom">
-          <Input.Password placeholder="key" defaultValue={AppData?.Hfkey} width={220} onChange={e => setData({ Hfkey: e.target.value })} />
-        </Tooltip>)
-    },
-    {
-      key: 'city',
-      label: locale?.main?.citiTitle,
-      change: (<AutoComplete
-        popupMatchSelectWidth={252}
-        options={options}
-        defaultValue={AppData?.city?.name}
-        onSelect={confirmCiti}
-        onChange={run}
-        disabled={(AppData?.Hfkey || '').length <= 10}
-      >
-        <Input.Search placeholder={locale?.main?.citiPlaceholder} />
-      </AutoComplete>)
-    },
-    {
-      key: 'radios',
-      label: locale?.main?.TabsTitle,
-      default: Radios,
-      setVal: setRadios,
-      change: [{ key: 'rcrl', label: locale?.main?.Tabs?.[0] },
-      { key: 'dark', label: locale?.main?.Tabs?.[1] }] // 如果是数组，渲染单选项
-    },
-
-    {
-      key: "rcrl",
-      label: locale?.main?.TabsOptionA,
-      hide: true,
-      value: AppData?.rcrl,
-      loading: rcOpenLoad,
-      change: (e: boolean) => setData({ rcrl: e })
-    },
-    {
-      key: 'dark',
-      label: locale?.main?.TabsOptionB,
-      hide: true,
-      change: <Times disabled={AppData?.rcrl} /> // 渲染时间选择器
-    },
-    {
-      key: 'Autostart',
-      label: locale?.main?.Autostart,
-      defaultvalue: AppData?.Autostart,
-      change: async (e: boolean) => {
-        if (e) {
-          await enable();
-        } else {
-          disable();
-        }
-        setData({ Autostart: e })
-      },
-    },
-    {
-      key: "StartShow",
-      label: locale?.main?.StartShow,
-      defaultvalue: AppData?.StartShow,
-      change: ((e: boolean) => setData({ StartShow: e }))
-    }
-  ];
-  const config: ThemeConfig = useMemo(() => ({ //主题渲染配置
-    algorithm: themeDack ? theme.darkAlgorithm : theme.defaultAlgorithm,
-    components: {
-      Divider: {
-        colorSplit: themeDack ? '#484848a3' : '#b3b3b3a3'
-      }
-    },
-    token: {
-      colorPrimary: '#fda800',
-      colorBgLayout: themeDack ? 'linear-gradient(33deg, #12131796, #323b427a)' : 'linear-gradient(33deg, #F0EFF096, #FAF8F97a)',
-      colorBgBase: themeDack ? '#00000096' : '#ffffff96',
-      colorBorder: themeDack ? '#87878796' : '#bfbfbf96',
-      colorBgElevated: themeDack ? '#313131' : '#f1f1f1',
-
-    },
-  }), [themeDack]);
-  const antdToken = useMemo(() => theme.getDesignToken(config), [config]); //主题渲染
+  const { Themeconfig, antdToken } = ThemeFun(themeDack)
 
   return (
     <ConfigProvider
-      theme={config}
+      theme={Themeconfig}
     >
       {contextHolder}
-      
+
       <Spin spinning={spinning} indicator={<LoadingOutlined spin style={{ fontSize: 48 }} />} >
         <TitleBar spinning={spinning} locale={locale} setSpinning={setSpinning} config={antdToken} themeDack={themeDack} setThemeDack={setThemeDack} />
         <Layout>
@@ -322,7 +180,7 @@ function App() {
                   return null;
                 }
                 return (
-                  <>
+                  < >
                     {i > 0 ? <Divider key={i} /> : null}
                     <Flex key={item.key || i} justify='space-between' align="center">
                       <Text>{item.label}</Text>
@@ -351,7 +209,7 @@ function App() {
                             <Switch
                               loading={item.loading}
                               defaultValue={item.defaultvalue}
-                              value={item.value}
+                              value={item.value as boolean}
                               onChange={item.change} />
                           ) : (
                             // 如果是组件，直接渲染
@@ -363,8 +221,8 @@ function App() {
                   </>
                 );
               })}
-              <Docs locale={locale}  version={version}/>
-              <Updates locale={locale}  version={version}/>
+              <Docs locale={locale} version={version} />
+              <Updates locale={locale} version={version} />
             </Flex>
           </Content>
         </Layout>
