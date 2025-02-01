@@ -18,12 +18,16 @@ use winapi::{
 };
 fn show_window(app: &AppHandle) {
     let windows = app.webview_windows();
-    windows
+    let window = windows
         .values()
         .next()
-        .expect("Sorry, no window found")
-        .set_focus()
-        .expect("Can't Bring Window to Focus");
+        .expect("没有找到窗口");
+
+    // 首先调用 show() 显示窗口
+    window.show().expect("无法显示窗口");
+
+    // 然后可以设置窗口焦点
+    window.set_focus().expect("无法设置窗口焦点");
 }
 async fn notify_system_theme_changed() {
     // 发送系统广播通知
