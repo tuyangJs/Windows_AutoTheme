@@ -14,7 +14,8 @@ const DataSave = () => {
             times: [""],
             Autostart: SystemStart,
             language: '',
-            StartShow: true
+            StartShow: true,
+            Skipversion:''
         }
     })
 

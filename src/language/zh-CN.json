@@ -33,7 +33,8 @@
         "title": "程序有新版本：",
         "cancelText": "取消",
         "okText": "前往更新",
-        "upData": "更新日志"
+        "upData": "更新日志",
+        "noText":"忽略本次更新"
     },
     "doc": [
         "说明",

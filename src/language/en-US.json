@@ -1,5 +1,5 @@
 {
-    "Title": "System Theme Adaptation Program",
+    "Title": "System Theme Adaptation App",
     "Switch": "Switch System Theme",
     "main": {
         "open": "Open",
@@ -33,7 +33,8 @@
         "title": "New version available: ",
         "cancelText": "Cancel",
         "okText": "Go to update",
-        "upData": "Update log"
+        "upData": "Update log",
+        "noText": "Skip this update"
     },
     "doc": [
         "Instructions",

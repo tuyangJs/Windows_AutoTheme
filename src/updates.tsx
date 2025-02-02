@@ -1,6 +1,7 @@
 import { Button, Flex, Modal, Typography } from "antd";
 import { useEffect, useState } from "react";
 import Markdown from 'react-markdown'
+import { AppDataType } from "./Type";
 async function checkForUpdates(currentVersion: string) {
   const repo = "tuyangJs/Windows_AutoTheme"; // 你的 GitHub 仓库
   const apiUrl = `https://api.github.com/repos/${repo}/releases/latest`;
@@ -52,6 +53,8 @@ function isNewerVersion(current: string, latest: string): boolean {
 interface Props {
   version: string
   locale: any
+  setData: any
+  AppData: AppDataType
 }
 interface updateType {
   releaseNotes: string
@@ -59,16 +62,22 @@ interface updateType {
   releaseUrl: string
 }
 const { Text } = Typography;
-const Updates: React.FC<Props> = ({ version, locale }) => {
+const Updates: React.FC<Props> = ({ version, locale, setData, AppData }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [btnLoad, setBtnLoad] = useState(false);
   const [update, setUpdate] = useState<updateType | undefined>();
+  const nomitCancel = () => {
+    setData({ Skipversion: update?.latestVersion })
+    setIsModalOpen(false);
+  }
   const updates = () => {
     setBtnLoad(true)
     checkForUpdates(version).then((update) => {
       if (update) {
         setUpdate(update)
-        showModal()
+        if (update.latestVersion != AppData.Skipversion) {
+          showModal()
+        }
       } else {
         setUpdate(undefined)
       }
@@ -117,6 +126,12 @@ const Updates: React.FC<Props> = ({ version, locale }) => {
         style={{ userSelect: 'text' }}
         centered
         footer={[
+          <Button
+            key="nomit"
+            type="default"
+            onClick={nomitCancel}>
+            {upModal?.noText}
+          </Button>,
           <Button
             key="submit"
             type="primary"

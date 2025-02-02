@@ -9,6 +9,7 @@ export interface AppDataType {
     Autostart?: boolean;
     language: string
     StartShow:boolean
+    Skipversion:string
 }
 export interface TimesProps {
     disabled?: boolean;

@@ -1,13 +1,13 @@
 import React from 'react';
 import { Divider, Typography } from 'antd';
 
-const { Paragraph, Link } = Typography;
+const { Paragraph, Link, Text } = Typography;
 
 interface Props {
     locale: any
-    version:string
+    version: string
 }
-const App: React.FC<Props> = ({ locale}) => (
+const App: React.FC<Props> = ({ locale, version }) => (
     <Typography>
         <Divider style={{ marginBlock: 6 }}>
             {locale?.doc?.[0]}
@@ -24,10 +24,10 @@ const App: React.FC<Props> = ({ locale}) => (
                 {' '} {locale?.doc?.[3]} {' '}
             </Link>
         </Paragraph>
-        <Divider />
+        <Divider style={{margin:0}}><Text type="secondary"> v{version}</Text> </Divider>
         <Paragraph type="secondary">
             <Paragraph type="secondary">
-            {locale?.doc?.[4]}
+                {locale?.doc?.[4]}
                 <Link
                     target='_blank'
                     href='https://github.com/tuyangJs/Windows_AutoTheme/blob/main/README.md'
@@ -42,10 +42,7 @@ const App: React.FC<Props> = ({ locale}) => (
                     Gitee
                 </Link>
             </Paragraph>
-
         </Paragraph>
-
-
     </Typography>
 );
 

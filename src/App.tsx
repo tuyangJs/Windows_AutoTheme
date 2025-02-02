@@ -180,7 +180,7 @@ function App() {
             <Flex gap={0} vertical>
               <OpContent mains={mains} Radios={Radios} setRadios={setRadios} />
               <Docs locale={locale} version={version} />
-              <Updates locale={locale} version={version} />
+              <Updates locale={locale} version={version} setData={setData} AppData={AppData}/>
             </Flex>
           </Content>
         </Layout>

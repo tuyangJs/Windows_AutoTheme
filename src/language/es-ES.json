@@ -1,5 +1,5 @@
 {
-    "Title": "Programa de Adaptación al Tema del Sistema",
+    "Title": "App de Adaptación al Tema del Sistema",
     "Switch": "Cambiar Tema del Sistema",
     "main": {
         "open": "Abrir",
@@ -33,7 +33,8 @@
         "title": "Nueva versión disponible: ",
         "cancelText": "Cancelar",
         "okText": "Ir a actualizar",
-        "upData": "Registro de actualizaciones"
+        "upData": "Registro de actualizaciones",
+        "noText": "Omitir esta actualización"
     },
     "doc": [
         "Instrucciones",
