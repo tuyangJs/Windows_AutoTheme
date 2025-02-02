@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { invoke } from "@tauri-apps/api/core";
 import TitleBar from "./TitleBar";
 import dayjs from 'dayjs';
-import { AppCiti } from './mod/sociti'
 import "./App.css";
-import { AutoCompleteProps, ConfigProvider, Divider, Flex, Layout, message, Radio, Spin, Switch, Typography } from "antd";
+import { AutoCompleteProps, ConfigProvider, Flex, Layout, message, Spin } from "antd";
 import { useAsyncEffect, useUpdateEffect } from "ahooks";
 import LanguageApp from './language/index'
 import Docs from './doc'
@@ -15,7 +13,9 @@ import { ThemeFun } from './mod/ThemeConfig'
 import Mainoption from "./mod/Mainoption";
 import DataSave from './mod/DataSave'
 import OpContent from './Content'
+import { CrontabTask, CrontabManager } from './mod/Crontab'
 import { searchResult } from "./mod/searchCiti";
+import { invoke } from "@tauri-apps/api/core";
 const version = '1.2.6'
 document.addEventListener('keydown', function (e) {
   if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
@@ -64,23 +64,6 @@ function App() {
     AppData
   })
 
-  const StartRady = async () => {
-    const PresentTime = dayjs(); // 当前时间，dayjs 对象
-    const sunriseTime = dayjs(AppData?.times?.[0], 'HH:mm'); // 日出时间
-    const sunsetTime = dayjs(AppData?.times?.[1], 'HH:mm'); // 日落时间
-
-    if (sunriseTime.isBefore(PresentTime) && sunsetTime.isAfter(PresentTime)) {
-      // 现在是日出后，日落前
-      await invoke('set_system_theme', { isLight: true });
-    } else if (sunsetTime.isBefore(PresentTime)) {
-      // 现在是日落后
-      await invoke('set_system_theme', { isLight: false });
-    } else if (sunriseTime.isAfter(PresentTime)) {
-      // 现在是日出前
-      await invoke('set_system_theme', { isLight: false });
-    }
-
-  };
 
 
   useUpdateEffect(() => {
@@ -113,13 +96,54 @@ function App() {
       matchMedia.removeEventListener('change', handleChange);
     };
   }, []);
+  const StartRady = async () => {
+    const PresentTime = dayjs(); // 当前时间，dayjs 对象
+    const sunriseTime = dayjs(AppData?.times?.[0], 'HH:mm'); // 日出时间
+    const sunsetTime = dayjs(AppData?.times?.[1], 'HH:mm'); // 日落时间
+
+    if (sunriseTime.isBefore(PresentTime) && sunsetTime.isAfter(PresentTime)) {
+      // 现在是日出后，日落前
+      await invoke('set_system_theme', { isLight: true });
+      console.log('现在是日出后，日落前');
+
+    } else if (sunsetTime.isBefore(PresentTime)) {
+      // 现在是日落后
+      await invoke('set_system_theme', { isLight: false });
+      console.log('现在是日落后');
+    } else if (sunriseTime.isAfter(PresentTime)) {
+      // 现在是日出前
+      console.log('现在是日出前');
+      await invoke('set_system_theme', { isLight: false });
+    }
+
+  };
+
   useAsyncEffect(async () => { //定时任务处理
-    await invoke('clear_tasks'); //清除已有任务
-    if (!AppData?.open) return
+
+    if (AppData?.open === false) {
+      console.log("清楚所有任务列表:", CrontabManager.listTasks());
+      return
+    }
+    const onTaskExecute = async (time: string, data: { msg: string }) => {
+      console.log(`执行任务: ${time}, 数据:`, data);
+      switch (data.msg) {
+        case 'TypeA':
+          console.log(`执行任务: ${time}, 数据:`, data.msg);
+          await invoke('set_system_theme', { isLight: true });
+          break;
+        case 'TypeB':
+          console.log(`执行任务: ${time}, 数据:`, data.msg);
+          await invoke('set_system_theme', { isLight: false });
+          break;
+      }
+    };
     if (AppData?.times?.[0] && AppData?.times?.[1]) {
       try {
-        await invoke('add_task', { times: [AppData?.times[0]], taskType: 'TypeA' });  // 传递时间数组和任务类型
-        await invoke('add_task', { times: [AppData?.times[1]], taskType: 'TypeB' });  // 传递时间数组和任务类型
+        // 添加定时任务
+        const task1: CrontabTask = { time: AppData?.times[0], data: { msg: 'TypeA' }, onExecute: onTaskExecute };
+        const task2: CrontabTask = { time: AppData?.times[1], data: { msg: 'TypeB' }, onExecute: onTaskExecute };
+        CrontabManager.addTask(task1);
+        CrontabManager.addTask(task2);
         console.log('Tasks added successfully');
       } catch (error) {
         console.error('Failed to add tasks:', error);
@@ -128,10 +152,10 @@ function App() {
   }, [AppData?.times, AppData?.open])
 
 
- 
+
   async function getCity(search?: string) { //搜索城市
     if (search) {
-      setOptions(await searchResult(search,AppData))
+      setOptions(await searchResult(search, AppData))
     }
   }
 
