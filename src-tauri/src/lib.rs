@@ -4,7 +4,7 @@ use std::ptr;
 use tauri::command;
 use tauri::{AppHandle, Manager};
 use tauri_plugin_autostart::MacosLauncher;
-
+use tauri_plugin_log::{Target, TargetKind};
 use tokio::time::{sleep, Duration};
 use winapi::shared::minwindef::{DWORD, HKEY};
 use winapi::shared::winerror::ERROR_SUCCESS;
@@ -63,7 +63,10 @@ fn set_registry_value(reg_path: &str, value_name: &str, value: u32) -> Result<()
         );
 
         if status != ERROR_SUCCESS as i32 {
-            return Err(format!("Failed to open registry key. Error code: {}", status));
+            return Err(format!(
+                "Failed to open registry key. Error code: {}",
+                status
+            ));
         }
 
         let result = RegSetValueExW(
@@ -76,7 +79,10 @@ fn set_registry_value(reg_path: &str, value_name: &str, value: u32) -> Result<()
         );
 
         if result != ERROR_SUCCESS as i32 {
-            return Err(format!("Failed to set registry value. Error code: {}", result));
+            return Err(format!(
+                "Failed to set registry value. Error code: {}",
+                result
+            ));
         }
 
         Ok(())
@@ -101,14 +107,29 @@ async fn set_system_theme(is_light: bool) {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let rt = tokio::runtime::Runtime::new().unwrap();
-
     rt.block_on(async {
         tauri::Builder::default()
+            .plugin(
+                tauri_plugin_log::Builder::new()
+                    .targets([
+                        Target::new(TargetKind::Folder {
+                            path:  std::path::PathBuf::from("/logs"),
+                            file_name: Some("app.log".to_string()),
+                        }),
+                        Target::new(TargetKind::Stdout),
+                        Target::new(TargetKind::LogDir { file_name: None }),
+                        Target::new(TargetKind::Webview),
+                    ])
+                    .build(),
+            )
             .plugin(tauri_plugin_window_state::Builder::new().build())
             .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
                 show_window(app);
             }))
-            .plugin(tauri_plugin_autostart::init(MacosLauncher::LaunchAgent, None))
+            .plugin(tauri_plugin_autostart::init(
+                MacosLauncher::LaunchAgent,
+                None,
+            ))
             .plugin(tauri_plugin_http::init())
             .plugin(tauri_plugin_opener::init())
             .invoke_handler(tauri::generate_handler![set_system_theme])
