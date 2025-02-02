@@ -17,7 +17,7 @@ import { CrontabTask, CrontabManager } from './mod/Crontab'
 import { searchResult } from "./mod/searchCiti";
 import { invoke } from "@tauri-apps/api/core";
 import { AppDataType } from "./Type";
-const version = '1.2.6'
+const version = '1.3.1'
 document.addEventListener('keydown', function (e) {
   if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
     e.preventDefault(); // 禁止刷新
