@@ -16,6 +16,7 @@ import OpContent from './Content'
 import { CrontabTask, CrontabManager } from './mod/Crontab'
 import { searchResult } from "./mod/searchCiti";
 import { invoke } from "@tauri-apps/api/core";
+import { AppDataType } from "./Type";
 const version = '1.2.6'
 document.addEventListener('keydown', function (e) {
   if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
@@ -180,7 +181,7 @@ function App() {
             <Flex gap={0} vertical>
               <OpContent mains={mains} Radios={Radios} setRadios={setRadios} />
               <Docs locale={locale} version={version} />
-              <Updates locale={locale} version={version} setData={setData} AppData={AppData}/>
+              <Updates locale={locale} version={version} setData={setData} AppData={AppData as AppDataType}/>
             </Flex>
           </Content>
         </Layout>
