@@ -2,20 +2,18 @@ import { useLocalStorageState } from "ahooks";
 import { AppDataType } from "../Type";
 import { isEnabled } from "@tauri-apps/plugin-autostart";
 const SystemStart = await isEnabled()
-
 const DataSave = () => {
     const [AppData, setAppData] = useLocalStorageState<AppDataType>('AppData', {
         defaultValue: {
             Radios: "rcrl",
-            Hfkey: "",
             open: false,
             rcrl: false,
-            city: { id: "101010100", name: '北京' },
+            city: { id: "", name: '' },
             times: [""],
             Autostart: SystemStart,
             language: '',
             StartShow: true,
-            Skipversion:''
+            Skipversion: ''
         }
     })
 

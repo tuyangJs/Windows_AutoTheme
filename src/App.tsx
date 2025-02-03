@@ -17,7 +17,7 @@ import { CrontabTask, CrontabManager } from './mod/Crontab'
 import { searchResult } from "./mod/searchCiti";
 import { invoke } from "@tauri-apps/api/core";
 import { AppDataType } from "./Type";
-const version = '1.3.1'
+const version = '1.3.2'
 document.addEventListener('keydown', function (e) {
   if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
     e.preventDefault(); // 禁止刷新
@@ -65,8 +65,6 @@ function App() {
     AppData
   })
 
-
-
   useUpdateEffect(() => {
     if (AppData?.open) {
       StartRady()
@@ -77,6 +75,8 @@ function App() {
       openRc()
     }
   }, [AppData?.city, AppData?.rcrl])
+ 
+
   useEffect(() => { //初始化 -主题自适应
     const handleChange = function (this: any) {
       //appWindow.setTheme('')
@@ -120,7 +120,6 @@ function App() {
   };
 
   useAsyncEffect(async () => { //定时任务处理
-
     if (AppData?.open === false) {
       console.log("清楚所有任务列表:", CrontabManager.listTasks());
       return
@@ -181,7 +180,7 @@ function App() {
             <Flex gap={0} vertical>
               <OpContent mains={mains} Radios={Radios} setRadios={setRadios} />
               <Docs locale={locale} version={version} />
-              <Updates locale={locale} version={version} setData={setData} AppData={AppData as AppDataType}/>
+              <Updates locale={locale} version={version} setData={setData} AppData={AppData as AppDataType} />
             </Flex>
           </Content>
         </Layout>

@@ -1,11 +1,12 @@
 import { enable, disable } from "@tauri-apps/plugin-autostart"
-import { Tooltip, Input, AutoComplete, AutoCompleteProps, TimePicker } from "antd"
+import { Input, AutoComplete, AutoCompleteProps, TimePicker, Button, Flex } from "antd"
 import dayjs from "dayjs"
-import { Sunrise } from "./sociti"
+import { AppCiti, Sunrise } from "./sociti"
 import { AppDataType, TimesProps } from "../Type"
 import type { MessageInstance } from "antd/es/message/interface"
-import { useRequest } from "ahooks"
+import { useRequest, useUpdateEffect } from "ahooks"
 import { useState } from "react"
+import { EnvironmentOutlined, LoadingOutlined } from "@ant-design/icons"
 
 export interface mainsType {
     key: string;
@@ -49,14 +50,34 @@ const Mainoption: MainopType = ({
 }) => {
     const [rcOpenLoad, setRcOpenLoad] = useState(false)
     const [startOpenLoad, setStartOpenLoad] = useState(false)
+    const [CitiLoad, setCitiLoad] = useState(false)
+    const [Citiname, setCitiname] = useState(AppData?.city?.name)
     const confirmCiti = (_e: any, err: any) => { //确认选择城市
         setData({ city: { id: err.key, name: err.value } })
+        setCitiname(err.value)
     }
 
     const { run } = useRequest(getCity, {
         debounceWait: 800,
         manual: true,
     });
+    const CitiInit = async () => {
+        setCitiLoad(true)
+        if (AppData?.language) { //必须初始语言才会开始自动获取定位
+            const citiID = await Sunrise('')
+            if (citiID?.hid) {
+                const Citiop = await AppCiti(citiID?.hid, AppData?.language)
+                const err = Citiop.location?.[0]
+                const names = `${err.adm1} - ${err.name}`
+                setCitiname(names)
+                setData({ city: { id: err?.id, name: names }, rcrl: true })
+            }
+        }
+        setCitiLoad(false)
+    }
+    useUpdateEffect(() => { //只要首次运行时才会启动
+        CitiInit()
+    }, [AppData?.language])
     const AutostartOpen = async (e: boolean) => {
         setStartOpenLoad(true)
         try {
@@ -76,21 +97,40 @@ const Mainoption: MainopType = ({
     }
     const startTime = dayjs(AppData?.times?.[0] || '08:08', 'HH:mm')
     const endTime = dayjs(AppData?.times?.[1] || '18:08', 'HH:mm')
-
+    const Citidiv = ( //城市选择器
+        <Flex gap={4}>
+            <Button type="text"
+                disabled={CitiLoad}
+                onClick={CitiInit}
+                icon={CitiLoad ? <LoadingOutlined /> : <EnvironmentOutlined />}
+            />
+            <AutoComplete
+                popupMatchSelectWidth={252}
+                options={options}
+                value={Citiname}
+                onSelect={confirmCiti}
+                onChange={run}
+                disabled={CitiLoad}
+            >
+                <Input
+                    disabled={CitiLoad}
+                    onChange={e => setCitiname(e.target.value)}
+                    placeholder={locale?.main?.citiPlaceholder} />
+            </AutoComplete>
+        </Flex>
+    )
     const Times: React.FC<TimesProps> = ({ disabled }) => ( //渲染时间选择器
         <RangePicker disabled={disabled} defaultValue={[startTime, endTime]} format={format} onChange={handleTimeChange} />
     );
-    const openRc = async () => { //渲染搜索结果
+    const openRc = async () => { //处理日出日落数据
         setRcOpenLoad(true)
-        if (AppData?.Hfkey && AppData?.city?.id) {
-            const data = await Sunrise(AppData?.Hfkey, AppData?.city?.id)
-            if (data?.code === '200') {
-                const sunrise = dayjs(data.sunrise).format(format)
-                const sunset = dayjs(data.sunset).format(format)
-                setData({ times: [sunrise, sunset], rcrl: true })
+        if (AppData?.city?.id) {
+            const data = await Sunrise(AppData?.city?.id)
+            if (data?.rise && data?.set) {
+                setData({ times: [data.rise, data.set], rcrl: true })
                 setRcOpenLoad(false)
             } else {
-                messageApi.error(locale.main.TabsOptionAError)
+                messageApi.error(locale.main?.TabsOptionAError) //获取日出日落数据失败
                     .then(() => {
                         setData({ rcrl: false })
                         setRcOpenLoad(false)
@@ -120,26 +160,9 @@ const Mainoption: MainopType = ({
             change: Language
         },
         {
-            key: "hfkey",
-            label: locale?.main?.keyTitle,
-            change: (
-                <Tooltip title="日出日落需要key" placement="bottom">
-                    <Input.Password placeholder="key" defaultValue={AppData?.Hfkey} width={220} onChange={e => setData({ Hfkey: e.target.value })} />
-                </Tooltip>)
-        },
-        {
             key: 'city',
             label: locale?.main?.citiTitle,
-            change: (<AutoComplete
-                popupMatchSelectWidth={252}
-                options={options}
-                defaultValue={AppData?.city?.name}
-                onSelect={confirmCiti}
-                onChange={run}
-                disabled={(AppData?.Hfkey || '').length <= 10}
-            >
-                <Input.Search placeholder={locale?.main?.citiPlaceholder} />
-            </AutoComplete>)
+            change: Citidiv
         },
         {
             key: 'radios',

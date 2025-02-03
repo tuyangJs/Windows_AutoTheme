@@ -1,7 +1,6 @@
 
 export interface AppDataType {
     Radios?: string;
-    Hfkey?: string;
     open?: boolean;
     rcrl?: boolean;
     times?: string[];
