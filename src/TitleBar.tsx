@@ -1,6 +1,6 @@
 import React from 'react';
-import { MoonOutlined, PoweroffOutlined, SunOutlined } from '@ant-design/icons';
-import { Button, ButtonProps, Divider, Flex, Segmented, Tooltip, Typography } from 'antd';
+import { MoonOutlined, SunOutlined } from '@ant-design/icons';
+import { Button, ButtonProps, Divider, Flex, Segmented, Typography } from 'antd';
 import { AliasToken } from 'antd/es/theme/internal';
 import Logo from "./assets/logo.png";
 import { Window } from '@tauri-apps/api/window'; // 引入 appWindow

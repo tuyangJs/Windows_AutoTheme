@@ -55,6 +55,9 @@
     },
     "icon": [
       "icons/logo.png"
+    ],
+    "resources": [
+      "logs/"
     ]
   }
 }

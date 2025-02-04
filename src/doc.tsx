@@ -1,5 +1,5 @@
 import React from 'react';
-import { Divider, Skeleton, Typography } from 'antd';
+import { Divider, Typography } from 'antd';
 
 const { Paragraph, Link, Text } = Typography;
 
