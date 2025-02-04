@@ -18,6 +18,7 @@ import { searchResult } from "./mod/searchCiti";
 import { invoke } from "@tauri-apps/api/core";
 import { AppDataType } from "./Type";
 import { getVersion } from '@tauri-apps/api/app';
+import { isEnabled } from "@tauri-apps/plugin-autostart";
 async function fetchAppVersion() {
   try {
     const version = await getVersion();
@@ -62,8 +63,8 @@ function App() {
 
   const { Language, locale } = LanguageApp({ AppData, setData })
   //----EDN ---- Language
-   
- 
+
+
   //导入设置选项
   const { openRc, mains } = Mainoption({
     setData,
@@ -102,8 +103,13 @@ function App() {
     if (AppData?.StartShow) {
       appWindow.show()
     } else {
-      //appWindow.hide()
+      appWindow.hide()
     }
+    const isAutostart = async () => {
+      setData({ Autostart: await isEnabled() })
+    }
+    //检测开机启动
+    isAutostart()
     // 清除事件监听器
     return () => {
       matchMedia.removeEventListener('change', handleChange);

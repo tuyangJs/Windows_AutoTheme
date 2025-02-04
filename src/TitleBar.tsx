@@ -1,6 +1,6 @@
 import React from 'react';
 import { MoonOutlined, PoweroffOutlined, SunOutlined } from '@ant-design/icons';
-import { Button, Flex, Switch, Tooltip, Typography } from 'antd';
+import { Button, Flex, Segmented, Tooltip, Typography } from 'antd';
 import { AliasToken } from 'antd/es/theme/internal';
 import Logo from "./assets/logo.png";
 import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
@@ -60,31 +60,37 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
             </Flex>
             <Flex align='center' gap={'small'}>
                 <Tooltip title={locale.Switch}>
-                    <Switch
-                        loading={spinning}
-                        defaultValue={themeDack}
-                        value={themeDack}
-                        onChange={() => {
-                            setTimeout(async () => {
-                                await changeTheme();
-                            }, 1);
-                            // Wait for the theme change to complete
-                        }}
-                        checkedChildren={<MoonOutlined />}
-                        unCheckedChildren={<SunOutlined />}
+                    <Segmented
+                        disabled={spinning}
+                        size='small'
+                        block
+                        value={themeDack ? 'Moon' : 'Sun'}
+                        options={[
+                            { value: 'Moon', icon: <MoonOutlined /> },
+                            { value: 'Sun', icon: <SunOutlined /> },
+                        ]}
+                        onChange={async () => {
+                            await changeTheme();
+                        }
+                        }
                     />
                 </Tooltip>
+                <Flex
+                    className='ant-segmented '
+                >
+                    <Button
+                        size='small'
+                        color="danger"
+                        shape="round"
+                        variant="text"
+                        icon={<PoweroffOutlined />}
+                        onClick={() => {
+                            appWindow.hide()
+                        }}
+                    />
+                </Flex>
 
-                <Button
-                    color="danger"
-                    variant="text"
-                    icon={<PoweroffOutlined />}
-                    onClick={() => {
-                        appWindow.hide()
-                    }}
-                />
             </Flex>
-
         </Flex>
     );
 }

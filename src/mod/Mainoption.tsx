@@ -78,7 +78,10 @@ const Mainoption: MainopType = ({
         setCitiLoad(false)
     }
     useEffect(() => {
-         invoke('update_tray_menu_item_title', { quit: locale?.quit, show: locale?.show })
+        if(locale?.quit){
+            invoke('update_tray_menu_item_title', { quit: locale?.quit, show: locale?.show })
+        }
+
     }, [locale])
     useUpdateEffect(() => { //只要首次运行时才会启动
         CitiInit()

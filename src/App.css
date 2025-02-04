@@ -4,9 +4,15 @@ body {
   text-rendering: optimizeLegibility;
   margin: 0;
 }
-h1,h2,h3,h4,h5{
+
+h1,
+h2,
+h3,
+h4,
+h5 {
   margin: 6px 0 !important;
 }
+
 .drag-region {
   -webkit-app-region: drag;
   /* 设置此区域为可拖动 */
@@ -18,25 +24,47 @@ h1,h2,h3,h4,h5{
   padding-block: 4px;
   border-bottom: 1px solid #000000;
 }
-.ant-radio-group{
+
+.ant-radio-group {
   display: unset !important;
 }
+
 .logo {
   width: 26px;
 }
-.ant-divider{
-  margin:8px 0px
+
+.ant-divider {
+  margin: 8px 0px
 }
+
 .ant-layout {
   height: 100vh;
   padding: 8px;
 }
-.ant-typography{
-  margin-bottom:1px !important
+
+.ant-segmented-group {
+  gap: 2px;
 }
+
+.ant-segmented {
+  border-radius: 15px !important;
+}
+
+.ant-segmented-item {
+  border-radius: 50% !important;
+}
+
+.ant-segmented-item-label {
+  padding: 2px 5px !important;
+}
+
+.ant-typography {
+  margin-bottom: 1px !important
+}
+
 .container {
   margin: 0;
-  margin-block-start: 46px;
+  margin-block-start: 38px;
   margin-inline: 12px;
   display: flex;
   flex-direction: column;

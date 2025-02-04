@@ -122,7 +122,7 @@ fn create_system_tray(app: &AppHandle) -> tauri::Result<()> {
     let trays = TrayIconBuilder::new()
         .menu(&menu)
         .icon(app.default_window_icon().unwrap().clone())
-        .show_menu_on_left_click(true)
+        .show_menu_on_left_click(false)
         .on_menu_event(|tray, event| match event.id.as_ref() {
             "quit" => {
                 println!("quit menu item was clicked");
