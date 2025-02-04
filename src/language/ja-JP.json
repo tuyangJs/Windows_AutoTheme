@@ -1,10 +1,9 @@
 {
-    "Title": "システムテーマ自動適応",
+    "Title": "自動テーマ切り替え",
     "Switch": "システムテーマを切り替え",
     "main": {
         "open": "開始",
         "language": "多言語",
-        "keyTitle": "HeWeather APIキー",
         "citiTitle": "都市",
         "citiError": "都市が未選択です！",
         "citiPlaceholder": "都市名を入力して検索",
@@ -41,8 +40,6 @@
     "doc": [
         "説明",
         " このプログラムはTuyangによって個人的に開発され、完全にオープンソースで無料です。",
-        "HeWeather APIキーを取得",
-        "ここをクリック",
         "ヘルプドキュメント :"
     ]
 }

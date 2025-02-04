@@ -1,10 +1,9 @@
 {
-    "Title": "System Theme Auto-Adapt",
+    "Title": "Auto Theme Switching",
     "Switch": "Switch System Theme",
     "main": {
         "open": "Open",
         "language": "Language",
-        "keyTitle": "HeWeather API Key",
         "citiTitle": "City",
         "citiError": "City not selected!",
         "citiPlaceholder": "Enter city name to search",
@@ -41,8 +40,6 @@
     "doc": [
         "Instructions",
         " This program is developed by Tuyang and is completely open-source and free.",
-        "Get HeWeather API Key",
-        "Click Here",
         "Documentation : "
     ]
 }

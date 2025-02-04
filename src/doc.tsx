@@ -15,19 +15,10 @@ const App: React.FC<Props> = ({ locale, version }) => (
         <Paragraph type="secondary">
             {locale?.doc?.[1]}
         </Paragraph>
-        <Paragraph type="secondary">
-            {locale?.doc?.[2]}
-            <Link
-                target='_blank'
-                href='https://console.qweather.com/#/apps'
-            >
-                {' '} {locale?.doc?.[3]} {' '}
-            </Link>
-        </Paragraph>
         <Divider style={{margin:0}}><Text type="secondary"> v{version}</Text> </Divider>
         <Paragraph type="secondary">
             <Paragraph type="secondary">
-                {locale?.doc?.[4]}
+                {locale?.doc?.[2]}
                 <Link
                     target='_blank'
                     href='https://github.com/tuyangJs/Windows_AutoTheme'

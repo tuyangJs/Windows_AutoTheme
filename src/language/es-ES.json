@@ -1,10 +1,9 @@
 {
-    "Title": "Tema del sistema adaptable",
+    "Title": " Cambio automático de tema",
     "Switch": "Cambiar Tema del Sistema",
     "main": {
         "open": "Abrir",
         "language": "Idioma",
-        "keyTitle": "Clave API de HeWeather",
         "citiTitle": "Ciudad",
         "citiError": "Ciudad no seleccionada!",
         "citiPlaceholder": "Ingresa el nombre de la ciudad para buscar",
@@ -41,8 +40,6 @@
     "doc": [
         "Instrucciones",
         " Este programa ha sido desarrollado por Tuyang y es completamente de código abierto y gratuito.",
-        "Obtener Clave API de HeWeather",
-        "Haz clic aquí",
         "Documentación de ayuda : "
     ]
 }

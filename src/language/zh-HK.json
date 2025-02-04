@@ -4,7 +4,6 @@
     "main": {
         "open": "開啟",
         "language": "多語言",
-        "keyTitle": "和風天氣Key",
         "citiTitle": "城市",
         "citiError": "尚未選擇城市！",
         "citiPlaceholder": "輸入城市名搜尋",
@@ -41,8 +40,6 @@
     "doc": [
         "說明",
         " 本程式由：荼泱Tuyang 個人開發完全開源免費。",
-        "獲取和風天氣Key",
-        "點擊此處",
         "幫助文檔："
     ]
 }
