@@ -1,45 +1,45 @@
 {
-    "Title": " Cambio automático de tema",
-    "Switch": "Cambiar Tema del Sistema",
+    "Title": "Cambio Automático de Tema",
     "main": {
-        "open": "Abrir",
-        "language": "Idioma",
-        "citiTitle": "Ciudad",
-        "citiError": "Ciudad no seleccionada!",
-        "citiPlaceholder": "Ingresa el nombre de la ciudad para buscar",
-        "TabsTitle": "Modo de Tema",
-        "Tabs": [
-            "Amanecer al Atardecer",
-            "Hora Personalizada"
-        ],
-        "TabsOptionA": "Amanecer al Atardecer",
-        "TabsOptionAError": "Error al obtener amanecer/atardecer!",
-        "TabsOptionB": "Hora del Modo Claro",
-        "Autostart": "Iniciar con el Sistema",
-        "StartShow": "Mostrar al iniciar"
+      "open": "Activar",
+      "language": "Idioma",
+      "citiTitle": "Ciudad",
+      "citiError": "¡No se ha seleccionado ninguna ciudad!",
+      "citiPlaceholder": "Buscar ciudad",
+      "TabsTitle": "Modo de Tema",
+      "Tabs": [
+        "Amanecer a Atardecer",
+        "Horario Personalizado"
+      ],
+      "TabsOptionA": "Amanecer a Atardecer",
+      "TabsOptionAError": "¡Error al obtener datos de amanecer/atardecer!",
+      "TabsOptionB": "Hora de Tema Claro",
+      "Autostart": "Iniciar con el sistema",
+      "StartShow": "Mostrar ventana al inicio"
     },
     "upModal": {
-        "textA": [
-            "Comprobando: ",
-            "Nueva versión encontrada",
-            "Ya está actualizado"
-        ],
-        "textB": [
-            "Actualizando......",
-            "Ver actualizaciones",
-            "Comprobar actualizaciones"
-        ],
-        "title": "Nueva versión disponible: ",
-        "cancelText": "Cancelar",
-        "okText": "Ir a actualizar",
-        "upData": "Registro de actualizaciones",
-        "noText": "Omitir esta actualización"
+      "textA": [
+        "Comprobando actualizaciones...",
+        "Nueva versión disponible",
+        "Actualizado"
+      ],
+      "textB": [
+        "Actualizando...",
+        "Ver actualización",
+        "Buscar actualizaciones"
+      ],
+      "title": "Nueva versión disponible:",
+      "cancelText": "Cancelar",
+      "okText": "Actualizar",
+      "upData": "Registro de Actualizaciones",
+      "noText": "Omitir esta actualización"
     },
-     "quit": "Salir",
+    "quit": "Salir",
     "show": "Mostrar",
     "doc": [
-        "Instrucciones",
-        " Este programa ha sido desarrollado por Tuyang y es completamente de código abierto y gratuito.",
-        "Documentación de ayuda : "
+      "Tiempo",
+      "Acerca de",
+      "Desarrollado por: Tuyang (Código abierto y gratuito)",
+      "Documentación:"
     ]
-}
+  }

@@ -1,45 +1,45 @@
 {
     "Title": "Auto Theme Switching",
-    "Switch": "Switch System Theme",
     "main": {
-        "open": "Open",
-        "language": "Language",
-        "citiTitle": "City",
-        "citiError": "City not selected!",
-        "citiPlaceholder": "Enter city name to search",
-        "TabsTitle": "Theme Mode",
-        "Tabs": [
-            "Sunrise to Sunset",
-            "Custom Time"
-        ],
-        "TabsOptionA": "Sunrise to Sunset",
-        "TabsOptionAError": "Sunrise/sunset fetch failed!",
-        "TabsOptionB": "Light Mode Time",
-        "Autostart": "Start with System",
-        "StartShow": "Show window at startup"
+      "open": "Enable",
+      "language": "Language",
+      "citiTitle": "City",
+      "citiError": "No city selected!",
+      "citiPlaceholder": "Search city",
+      "TabsTitle": "Theme Mode",
+      "Tabs": [
+        "Sunrise to Sunset",
+        "Custom Time"
+      ],
+      "TabsOptionA": "Sunrise to Sunset",
+      "TabsOptionAError": "Failed to get sunrise/sunset data!",
+      "TabsOptionB": "Light Theme Time",
+      "Autostart": "Start with system",
+      "StartShow": "Show window on startup"
     },
     "upModal": {
-        "textA": [
-            "Checking: ",
-            "New version found",
-            "Already up-to-date"
-        ],
-        "textB": [
-            "Updating......",
-            "View updates",
-            "Check for updates"
-        ],
-        "title": "New version available: ",
-        "cancelText": "Cancel",
-        "okText": "Go to update",
-        "upData": "Update log",
-        "noText": "Skip this update"
+      "textA": [
+        "Checking for updates...",
+        "New version available",
+        "Up to date"
+      ],
+      "textB": [
+        "Updating...",
+        "View update",
+        "Check for updates"
+      ],
+      "title": "New version available:",
+      "cancelText": "Cancel",
+      "okText": "Update",
+      "upData": "Update Log",
+      "noText": "Skip this update"
     },
-    "quit": "Exit",
+    "quit": "Quit",
     "show": "Show",
     "doc": [
-        "Instructions",
-        " This program is developed by Tuyang and is completely open-source and free.",
-        "Documentation : "
+      "Weather",
+      "About",
+      "Developed by: Tuyang (Open source and free)",
+      "Documentation:"
     ]
-}
+  }

@@ -9,11 +9,11 @@ const ThemeFun = (themeDack: boolean) => {
                 colorSplit: themeDack ? '#484848a3' : '#b3b3b3a3'
             },
             Segmented: {
-                trackBg:  themeDack ? '#87878796' : '#bfbfbf96',
+                trackBg:  themeDack ? '#87878745' : '#bfbfbf45',
             }
         },
         token: {
-            colorPrimary: '#ff4d4f',
+            colorPrimary: '#c65edb',
             colorBgLayout: themeDack ? 'linear-gradient(33deg, #12131796, #323b427a)' : 'linear-gradient(33deg, #F0EFF096, #FAF8F97a)',
             colorBgBase: themeDack ? '#00000096' : '#ffffff96',
             colorBorder: themeDack ? '#87878796' : '#bfbfbf96',

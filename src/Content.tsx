@@ -17,7 +17,7 @@ const Content: React.FC<props> = ({ mains, Radios, setRadios }) => (
             return (
                 < >
                     {i > 0 ? <Divider key={i} /> : null}
-                    <Flex key={item.key || i} justify='space-between' align="center">
+                    <Flex key={'a' + item.key || i} justify='space-between' align="center">
                         <Text>{item.label}</Text>
                         {
                             // 如果 change 是数组，渲染单选框

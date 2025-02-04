@@ -3,33 +3,24 @@ import * as pako from 'pako';
 type Props = (key: string, lang?: string) => any;
 
 //寻找html中的指定变量
-const extractSunMoonData = async (text: string) => {
-    let hid = ''
-    // 使用正则表达式匹配 window.sunMoon 变量
-    const hidMatch = text.match(/var\s+hid\s*=\s*"([^"]+)"/);
-    if (hidMatch && hidMatch[1]) {
-        hid = hidMatch[1];
-    }
-    const match = text.match(/window\.sunMoon\s*=\s*(\{.*?\});/s);
-    if (match && match[1]) {
-        try {
-            const json = JSON.parse(match[1]); // 解析 JSON 数据
-            return {
-                rise: json.sun.rise,
-                set: json.sun.set,
-                hid
-            }
-        } catch (error) {
-            console.error("JSON 解析错误:", error);
-        }
-    } else {
-        return {
-            hid
-        }
+const extractSunMoonData = (text: string) => {
+    const getMatch = (regex: RegExp) => text.match(regex)?.[1]?.trim() || "";
+
+    const hid = getMatch(/var\s+hid\s*=\s*"([^"]+)"/);
+    const abstract = getMatch(/<div\s+class="current-abstract"\s*>(.*?)<\/div>/s);
+    const sunMoonJson = getMatch(/window\.sunMoon\s*=\s*(\{.*?\});/s);
+
+    try {
+        const { sun: { rise, set } = { rise: "", set: "" } } = JSON.parse(sunMoonJson || "{}");
+        return { rise, set, hid, abstract };
+    } catch (error) {
+        console.error("JSON 解析错误:", error);
     }
 
-    return false; // 没有找到变量时返回 null
+    return { hid, abstract }; // 解析失败时仍返回基本数据
 };
+
+
 
 const GetHttp = async (url: string) => {
     const response = await fetch(url, {
@@ -68,9 +59,11 @@ const AppCiti: Props = async (name, lang) => {
     const data = await GetHttp(url)
     return data
 }
-const Sunrise: Props = async (id) => {
+const Sunrise: Props = async (id, lang) => {
+    const langs = (lang || '').split('_')[0]
+    lang = (langs === "zh") ? '' : '/en'
     const is = id ? `${id}.html` : ''
-    const url = `https://www.qweather.com/weather/${is}`
+    const url = `https://www.qweather.com${lang}/weather/${is}`
     const data = await GetHttp(url)
     const json = await extractSunMoonData(data)
     return json

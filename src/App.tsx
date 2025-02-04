@@ -51,9 +51,8 @@ function App() {
   const matchMedia = window.matchMedia('(prefers-color-scheme: light)');
   const [themeDack, setThemeDack] = useState(!matchMedia.matches);
   const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
-
   const [spinning, setSpinning] = useState(false)
-
+  const [Weather, setWeather] = useState('')
   ///const [MainLoad, setMainLoad] = useState(true)
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -75,7 +74,8 @@ function App() {
     setRadios,
     Radios,
     Language,
-    AppData
+    AppData,
+    setWeather
   })
 
   useUpdateEffect(() => {
@@ -178,7 +178,6 @@ function App() {
   }
 
   const { Themeconfig, antdToken } = ThemeFun(themeDack)
-
   return (
     <ConfigProvider
       theme={Themeconfig}
@@ -197,7 +196,7 @@ function App() {
           <Content className="container">
             <Flex gap={0} vertical>
               <OpContent mains={mains} Radios={Radios} setRadios={setRadios} />
-              <Docs locale={locale} version={version} />
+              <Docs locale={locale} version={version} Weather={Weather}/>
               <Updates locale={locale} version={version} setData={setData} AppData={AppData as AppDataType} />
             </Flex>
           </Content>

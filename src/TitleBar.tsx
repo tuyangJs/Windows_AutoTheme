@@ -1,12 +1,14 @@
 import React from 'react';
 import { MoonOutlined, PoweroffOutlined, SunOutlined } from '@ant-design/icons';
-import { Button, Flex, Segmented, Tooltip, Typography } from 'antd';
+import { Button, ButtonProps, Flex, Segmented, Tooltip, Typography } from 'antd';
 import { AliasToken } from 'antd/es/theme/internal';
 import Logo from "./assets/logo.png";
 import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
 //import { motion } from 'framer-motion'; // 引入 framer-motion
 import { invoke } from "@tauri-apps/api/core";
 import { restoreStateCurrent, saveWindowState, StateFlags } from '@tauri-apps/plugin-window-state';
+import Close from "./assets/closed.svg?react";
+import Mins from './assets/min.svg?react';
 const { Text } = Typography;
 interface Props {
     config: AliasToken
@@ -30,6 +32,24 @@ appWindow.onCloseRequested(e => {
     e.preventDefault()
     HideWindow()
 })
+
+const TitleButton: ButtonProps[] = [
+    {
+        icon: <Mins />,
+        size: 'small',
+        shape: "round",
+        type: "text",
+        onClick: () => appWindow.minimize()
+    },
+    {
+        size: 'small',
+        color: "danger",
+        shape: "round",
+        variant: "text",
+        icon: <Close />,
+        onClick: () => appWindow.hide()
+    }
+]
 
 const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning }) => {
     async function changeTheme() {
@@ -56,10 +76,9 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
             data-tauri-drag-region>
             <Flex align='center' gap={'small'}>
                 <img className='logo' alt='logo' src={Logo} />
-                <Text strong style={{ margin: 0 }}> {locale?.Title}</Text>
+                <Text strong style={{ margin: 0 }} ellipsis={true}> {locale?.Title}</Text>
             </Flex>
             <Flex align='center' gap={'small'}>
-                <Tooltip title={locale.Switch}>
                     <Segmented
                         disabled={spinning}
                         size='small'
@@ -74,20 +93,18 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
                         }
                         }
                     />
-                </Tooltip>
                 <Flex
-                    className='ant-segmented '
+                    className='ant-segmented'
+                    style={{
+                        minWidth:83
+                    }}
                 >
-                    <Button
-                        size='small'
-                        color="danger"
-                        shape="round"
-                        variant="text"
-                        icon={<PoweroffOutlined />}
-                        onClick={() => {
-                            appWindow.hide()
-                        }}
-                    />
+                    {TitleButton.map((item, index) => (
+                        <Button
+                            key={index}
+                            {...item}
+                        />
+                    ))}
                 </Flex>
 
             </Flex>

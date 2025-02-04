@@ -19,6 +19,7 @@ export interface mainsType {
     hide?: boolean;
     value?: string | boolean | undefined;
     loading?: boolean;
+
 }
 export type MainopType = (e: {
     AppData?: AppDataType;
@@ -30,6 +31,7 @@ export type MainopType = (e: {
     setRadios: React.Dispatch<React.SetStateAction<string>>
     Radios: string
     Language: JSX.Element
+    setWeather: React.Dispatch<React.SetStateAction<string>>
 }) => {
     openRc: () => Promise<void>,
     mains: mainsType[]
@@ -47,7 +49,8 @@ const Mainoption: MainopType = ({
     getCity,
     Radios,
     setRadios,
-    Language
+    Language,
+    setWeather
 }) => {
     const [rcOpenLoad, setRcOpenLoad] = useState(false)
     const [startOpenLoad, setStartOpenLoad] = useState(false)
@@ -62,23 +65,49 @@ const Mainoption: MainopType = ({
         debounceWait: 800,
         manual: true,
     });
+    const openRc = async () => { //处理日出日落数据
+        setRcOpenLoad(true)
+        if (AppData?.city?.id) {
+            const data = await Sunrise(AppData?.city?.id,AppData?.language)
+            if (data?.rise && data?.set) {
+                setData({ times: [data.rise, data.set], rcrl: true })
+                setRcOpenLoad(false)
+                setWeather(data.abstract)
+
+            } else {
+                messageApi.error(locale.main?.TabsOptionAError) //获取日出日落数据失败
+                    .then(() => {
+                        setData({ rcrl: false })
+                        setRcOpenLoad(false)
+                    })
+            }
+        } else {
+            messageApi.error(locale.main.citiError)
+                .then(() => {
+                    setData({ rcrl: false })
+                    setRcOpenLoad(false)
+                })
+        }
+
+    }
     const CitiInit = async () => {
         setCitiLoad(true)
         if (AppData?.language) { //必须初始语言才会开始自动获取定位
-            const citiID = AppData.city?.id ? { hid: AppData.city?.id } : await Sunrise('')
+            const citiID = AppData.city?.id ? { hid: AppData.city?.id } : await Sunrise('',AppData?.language)
             if (citiID?.hid) {
                 const Citiop = await AppCiti(citiID?.hid, AppData?.language)
                 const err = Citiop.location?.[0]
                 const names = `${err.adm1} - ${err.name}`
                 setCitiname(names)
                 setData({ city: { id: err?.id, name: names }, rcrl: true })
+                setWeather(citiID.abstract)
             }
 
         }
         setCitiLoad(false)
     }
     useEffect(() => {
-        if(locale?.quit){
+        if (locale?.quit) {
             invoke('update_tray_menu_item_title', { quit: locale?.quit, show: locale?.show })
         }
 
@@ -130,29 +159,7 @@ const Mainoption: MainopType = ({
     const Times: React.FC<TimesProps> = ({ disabled }) => ( //渲染时间选择器
         <RangePicker disabled={disabled} defaultValue={[startTime, endTime]} format={format} onChange={handleTimeChange} />
     );
-    const openRc = async () => { //处理日出日落数据
-        setRcOpenLoad(true)
-        if (AppData?.city?.id) {
-            const data = await Sunrise(AppData?.city?.id)
-            if (data?.rise && data?.set) {
-                setData({ times: [data.rise, data.set], rcrl: true })
-                setRcOpenLoad(false)
-            } else {
-                messageApi.error(locale.main?.TabsOptionAError) //获取日出日落数据失败
-                    .then(() => {
-                        setData({ rcrl: false })
-                        setRcOpenLoad(false)
-                    })
-            }
-        } else {
-            messageApi.error(locale.main.citiError)
-                .then(() => {
-                    setData({ rcrl: false })
-                    setRcOpenLoad(false)
-                })
-        }
 
-    }
     const mains: mainsType[] = [ //  全部选项数据
         {
             key: 'open',
