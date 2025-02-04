@@ -1,5 +1,6 @@
 import { Divider, Flex, Radio, Switch, Typography } from "antd";
 import type { mainsType } from "./mod/Mainoption";
+import React from "react";
 
 export interface props {
     mains: mainsType[];
@@ -15,7 +16,7 @@ const Content: React.FC<props> = ({ mains, Radios, setRadios }) => (
                 return null;
             }
             return (
-                < >
+                <React.Fragment key={`s-${i}`}>
                     {i > 0 ? <Divider key={i} /> : null}
                     <Flex key={'a' + item.key || i} justify='space-between' align="center">
                         <Text>{item.label}</Text>
@@ -53,7 +54,7 @@ const Content: React.FC<props> = ({ mains, Radios, setRadios }) => (
                             )
                         }
                     </Flex>
-                </>
+                </React.Fragment>
             );
         })}
     </>

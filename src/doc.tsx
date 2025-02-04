@@ -10,15 +10,19 @@ interface Props {
 }
 const App: React.FC<Props> = ({ locale, version, Weather }) => (
     <Typography>
-        <Divider style={{ marginBlock: 6 }}>
-            <Text type="secondary"> {locale?.doc?.[0]}</Text>
-        </Divider>
-        <Paragraph
-            type="secondary"
-            ellipsis={{ rows: 2,expandable: true }}
-        >
-            {Weather || <Skeleton paragraph={{ rows: 1 }} title={false} />}
-        </Paragraph>
+        {Weather ? (
+            <>
+                <Divider style={{ marginBlock: 6 }}>
+                    <Text type="secondary"> {locale?.doc?.[0]}</Text>
+                </Divider><Paragraph
+                    type="secondary"
+                    ellipsis={{ rows: 2, expandable: true }}
+                >
+                    {Weather}
+                </Paragraph>
+            </>
+        ) : null}
+
         <Divider style={{ marginBlock: 6 }}>
             {locale?.doc?.[1]}
         </Divider>

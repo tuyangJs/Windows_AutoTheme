@@ -13,7 +13,7 @@ const ThemeFun = (themeDack: boolean) => {
             }
         },
         token: {
-            colorPrimary: '#c65edb',
+           // colorPrimary: '#c65edb',
             colorBgLayout: themeDack ? 'linear-gradient(33deg, #12131796, #323b427a)' : 'linear-gradient(33deg, #F0EFF096, #FAF8F97a)',
             colorBgBase: themeDack ? '#00000096' : '#ffffff96',
             colorBorder: themeDack ? '#87878796' : '#bfbfbf96',

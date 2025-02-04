@@ -1,6 +1,6 @@
 import React from 'react';
 import { MoonOutlined, PoweroffOutlined, SunOutlined } from '@ant-design/icons';
-import { Button, ButtonProps, Flex, Segmented, Tooltip, Typography } from 'antd';
+import { Button, ButtonProps, Divider, Flex, Segmented, Tooltip, Typography } from 'antd';
 import { AliasToken } from 'antd/es/theme/internal';
 import Logo from "./assets/logo.png";
 import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
@@ -76,34 +76,47 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
             data-tauri-drag-region>
             <Flex align='center' gap={'small'}>
                 <img className='logo' alt='logo' src={Logo} />
-                <Text strong style={{ margin: 0 }} ellipsis={true}> {locale?.Title}</Text>
+                <Text
+                    strong
+                    style={{
+                        margin: 0,
+                        maxWidth: 'calc(100vw - 222px)'
+                    }}
+                    ellipsis={true}
+                >
+                    {locale?.Title}
+                </Text>
             </Flex>
             <Flex align='center' gap={'small'}>
-                    <Segmented
-                        disabled={spinning}
-                        size='small'
-                        block
-                        value={themeDack ? 'Moon' : 'Sun'}
-                        options={[
-                            { value: 'Moon', icon: <MoonOutlined /> },
-                            { value: 'Sun', icon: <SunOutlined /> },
-                        ]}
-                        onChange={async () => {
-                            await changeTheme();
-                        }
-                        }
-                    />
+                <Segmented
+                    disabled={spinning}
+                    size='small'
+                    block
+                    value={themeDack ? 'Moon' : 'Sun'}
+                    options={[
+                        { value: 'Moon', icon: <MoonOutlined /> },
+                        { value: 'Sun', icon: <SunOutlined /> },
+                    ]}
+                    onChange={async () => {
+                        await changeTheme();
+                    }
+                    }
+                />
                 <Flex
                     className='ant-segmented'
-                    style={{
-                        minWidth:83
-                    }}
                 >
                     {TitleButton.map((item, index) => (
-                        <Button
-                            key={index}
-                            {...item}
-                        />
+                        <React.Fragment key={`fragment-${index}`}>
+                            {index > 0 ?
+                                <Divider
+                                    style={{ marginInline: 2, marginBlock: 0 }}
+                                    type='vertical' />
+                                : null}
+                            <Button
+                                {...item}
+                            />
+                        </React.Fragment>
+
                     ))}
                 </Flex>
 
