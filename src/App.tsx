@@ -17,7 +17,18 @@ import { CrontabTask, CrontabManager } from './mod/Crontab'
 import { searchResult } from "./mod/searchCiti";
 import { invoke } from "@tauri-apps/api/core";
 import { AppDataType } from "./Type";
-const version = '1.3.2'
+import { getVersion } from '@tauri-apps/api/app';
+async function fetchAppVersion() {
+  try {
+    const version = await getVersion();
+    return version
+    // 在需要的地方使用版本号，例如显示在界面上
+  } catch (error) {
+    return '0.1.1'
+  }
+}
+
+const version = await fetchAppVersion();
 document.addEventListener('keydown', function (e) {
   if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
     e.preventDefault(); // 禁止刷新
@@ -51,7 +62,8 @@ function App() {
 
   const { Language, locale } = LanguageApp({ AppData, setData })
   //----EDN ---- Language
-
+   
+ 
   //导入设置选项
   const { openRc, mains } = Mainoption({
     setData,
@@ -75,7 +87,7 @@ function App() {
       openRc()
     }
   }, [AppData?.city, AppData?.rcrl])
- 
+
 
   useEffect(() => { //初始化 -主题自适应
     const handleChange = function (this: any) {
@@ -121,7 +133,7 @@ function App() {
 
   useAsyncEffect(async () => { //定时任务处理
     if (AppData?.open === false) {
-      console.log("清楚所有任务列表:", CrontabManager.listTasks());
+      CrontabManager.listTasks()
       return
     }
     const onTaskExecute = async (time: string, data: { msg: string }) => {

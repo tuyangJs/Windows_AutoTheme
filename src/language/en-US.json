@@ -36,6 +36,8 @@
         "upData": "Update log",
         "noText": "Skip this update"
     },
+    "quit": "Exit",
+    "show": "Show",
     "doc": [
         "Instructions",
         " This program is developed by Tuyang and is completely open-source and free.",

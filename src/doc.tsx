@@ -30,14 +30,14 @@ const App: React.FC<Props> = ({ locale, version }) => (
                 {locale?.doc?.[4]}
                 <Link
                     target='_blank'
-                    href='https://github.com/tuyangJs/Windows_AutoTheme/blob/main/README.md'
+                    href='https://github.com/tuyangJs/Windows_AutoTheme'
                 >{' '}
                     GitHub
                 </Link>
                 <Divider style={{ marginInline: 6 }} type='vertical' />
                 <Link
                     target='_blank'
-                    href='https://gitee.com/ilinxuan/windows_-auto-theme/blob/main/README.md'
+                    href='https://gitee.com/ilinxuan/windows_-auto-theme'
                 >{' '}
                     Gitee
                 </Link>

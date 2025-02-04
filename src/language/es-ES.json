@@ -36,6 +36,8 @@
         "upData": "Registro de actualizaciones",
         "noText": "Omitir esta actualización"
     },
+     "quit": "Salir",
+    "show": "Mostrar",
     "doc": [
         "Instrucciones",
         " Este programa ha sido desarrollado por Tuyang y es completamente de código abierto y gratuito.",

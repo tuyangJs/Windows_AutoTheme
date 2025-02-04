@@ -5,8 +5,9 @@ import { AppCiti, Sunrise } from "./sociti"
 import { AppDataType, TimesProps } from "../Type"
 import type { MessageInstance } from "antd/es/message/interface"
 import { useRequest, useUpdateEffect } from "ahooks"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { EnvironmentOutlined, LoadingOutlined } from "@ant-design/icons"
+import { invoke } from "@tauri-apps/api/core"
 
 export interface mainsType {
     key: string;
@@ -64,7 +65,7 @@ const Mainoption: MainopType = ({
     const CitiInit = async () => {
         setCitiLoad(true)
         if (AppData?.language) { //必须初始语言才会开始自动获取定位
-            const citiID = await Sunrise('')
+            const citiID = AppData.city?.id ? { hid: AppData.city?.id } : await Sunrise('')
             if (citiID?.hid) {
                 const Citiop = await AppCiti(citiID?.hid, AppData?.language)
                 const err = Citiop.location?.[0]
@@ -72,9 +73,13 @@ const Mainoption: MainopType = ({
                 setCitiname(names)
                 setData({ city: { id: err?.id, name: names }, rcrl: true })
             }
+
         }
         setCitiLoad(false)
     }
+    useEffect(() => {
+         invoke('update_tray_menu_item_title', { quit: locale?.quit, show: locale?.show })
+    }, [locale])
     useUpdateEffect(() => { //只要首次运行时才会启动
         CitiInit()
     }, [AppData?.language])
