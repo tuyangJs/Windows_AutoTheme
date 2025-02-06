@@ -3,7 +3,7 @@ use std::os::windows::ffi::OsStrExt;
 use std::ptr;
 use std::sync::Mutex;
 use tauri::command;
-use tauri::window::{EffectsBuilder,Effect,EffectState};
+use tauri::window::{Effect, EffectState, EffectsBuilder};
 use tauri::{
     menu::{Menu, MenuItem},
     tray::{MouseButton, TrayIcon, TrayIconBuilder, TrayIconEvent},
@@ -162,7 +162,7 @@ fn create_system_tray(app: &AppHandle) -> tauri::Result<()> {
     Ok(())
 }
 #[tauri::command]
-fn update_tray_menu_item_title(app: tauri::AppHandle, quit: String, show: String,tooltip:String) {
+fn update_tray_menu_item_title(app: tauri::AppHandle, quit: String, show: String, tooltip: String) {
     let app_handle = app.app_handle();
     let state: State<AppState> = app.state();
     // 获取托盘
@@ -243,7 +243,7 @@ pub fn run() {
                     .set_effects(
                         EffectsBuilder::new()
                             .effect(Effect::Acrylic)
-                            .state(EffectState::FollowsWindowActiveState)  
+                            .state(EffectState::FollowsWindowActiveState)
                             .build(),
                     )
                     .expect("Failed to set window effect");

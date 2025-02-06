@@ -64,7 +64,7 @@
       }
     },
     "icon": [
-      "icons/logo.png"
+      "icons/icon.png"
     ],
     "resources": [
       "logs/app.log"

@@ -2,7 +2,7 @@ import React from 'react';
 import { MoonOutlined, SunOutlined } from '@ant-design/icons';
 import { Button, ButtonProps, Divider, Flex, Segmented, Typography } from 'antd';
 import { AliasToken } from 'antd/es/theme/internal';
-import Logo from "./assets/logo.png";
+import Logo from "./assets/logo.svg?react";
 import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
 //import { motion } from 'framer-motion'; // 引入 framer-motion
 import { invoke } from "@tauri-apps/api/core";
@@ -87,7 +87,7 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
             align='center'
             data-tauri-drag-region>
             <Flex align='center' gap={'small'}>
-                <img className='logo' alt='logo' src={Logo} />
+                <Logo className='logo'   />
                 <Text
                     strong
                     style={{
