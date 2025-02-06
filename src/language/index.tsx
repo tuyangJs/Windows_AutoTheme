@@ -42,7 +42,7 @@ function getLabelByKey(key: string): string | undefined {
   // @ts-ignore
   return item?.label
 }
-const navigatorlLanguage = navigator.language.replace('-','_')
+const navigatorlLanguage = navigator.language.replace('-', '_')
 const Language = ({ AppData, setData }: Prop) => {
   const Userlanguage = AppData?.language || (locales?.[navigatorlLanguage] ? navigatorlLanguage : 'en_US')//如果没有默认设置则取用户语言设置
   const [locale, setLocale] = useState<any>(locales.en_US);//Antd语言包
@@ -66,7 +66,11 @@ const Language = ({ AppData, setData }: Prop) => {
           items,
           onClick: ({ key }) => setData({ language: key })
         }} placement="bottom" arrow>
-        <Button>{getLabelByKey(Userlanguage)}</Button>
+        <Button
+          color="default"
+          variant="filled"
+        >
+          {getLabelByKey(Userlanguage)}</Button>
       </Dropdown>
     ),
     locale

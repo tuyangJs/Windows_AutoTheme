@@ -145,6 +145,8 @@ const Mainoption: MainopType = ({
         <Flex gap={4}>
             <Button type="text"
                 disabled={CitiLoad}
+                color="default"
+                variant="filled"
                 onClick={() => CitiInit()}
                 icon={CitiLoad ? <LoadingOutlined /> : <EnvironmentOutlined />}
             />
@@ -158,13 +160,14 @@ const Mainoption: MainopType = ({
             >
                 <Input
                     disabled={CitiLoad}
+                    variant="filled"
                     onChange={e => setCitiname(e.target.value)}
                     placeholder={locale?.main?.citiPlaceholder} />
             </AutoComplete>
         </Flex>
     )
     const Times: React.FC<TimesProps> = ({ disabled }) => ( //渲染时间选择器
-        <RangePicker disabled={disabled} defaultValue={[startTime, endTime]} format={format} onChange={handleTimeChange} />
+        <RangePicker variant="filled" disabled={disabled} defaultValue={[startTime, endTime]} format={format} onChange={handleTimeChange} />
     );
 
     const mains: mainsType[] = [ //  全部选项数据
