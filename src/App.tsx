@@ -165,7 +165,9 @@ function App() {
           break;
       }
         //执行完重新获取时间数据
-        CitiInit(AppData?.city?.id)
+        if(AppData?.rcrl){ 
+          CitiInit(AppData?.city?.id)
+        }
     };
     if (AppData?.times?.[0] && AppData?.times?.[1]) {
       try {

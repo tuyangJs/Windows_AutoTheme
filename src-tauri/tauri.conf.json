@@ -1,7 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "WindowsThemeAuto",
-  "version": "1.3.7",
   "identifier": "com.WindowsThemeAuto.cn",
   "build": {
     "beforeDevCommand": "npm run dev",
