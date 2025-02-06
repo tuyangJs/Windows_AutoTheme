@@ -109,7 +109,7 @@ const Mainoption: MainopType = ({
     }
     useEffect(() => {
         if (locale?.quit) {
-            invoke('update_tray_menu_item_title', { quit: locale?.quit, show: locale?.show })
+            invoke('update_tray_menu_item_title', { quit: locale?.quit, show: locale?.show,tooltip:`${locale?.Title} - App`})
         }
 
     }, [locale])

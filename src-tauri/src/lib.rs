@@ -132,6 +132,7 @@ fn create_system_tray(app: &AppHandle) -> tauri::Result<()> {
         .menu(&menu)
         .icon(app.default_window_icon().unwrap().clone())
         .show_menu_on_left_click(false)
+        .tooltip("Auto Theme Switching App")
         .on_menu_event(|tray, event| match event.id.as_ref() {
             "quit" => {
                 println!("通知前端关闭应用...");
@@ -161,7 +162,7 @@ fn create_system_tray(app: &AppHandle) -> tauri::Result<()> {
     Ok(())
 }
 #[tauri::command]
-fn update_tray_menu_item_title(app: tauri::AppHandle, quit: String, show: String) {
+fn update_tray_menu_item_title(app: tauri::AppHandle, quit: String, show: String,tooltip:String) {
     let app_handle = app.app_handle();
     let state: State<AppState> = app.state();
     // 获取托盘
@@ -203,6 +204,11 @@ fn update_tray_menu_item_title(app: tauri::AppHandle, quit: String, show: String
         eprintln!("Failed to set tray menu: {}", e);
     } else {
         println!("菜单项标题已更新");
+    }
+    if let Err(e) = tray.set_tooltip(Some(tooltip)) {
+        eprintln!("Failed to set tray menu: {}", e);
+    } else {
+        println!("托盘标题已更新");
     }
 }
 
