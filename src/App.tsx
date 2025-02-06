@@ -135,14 +135,15 @@ function App() {
     } else {
       message = '现在是日落后';
     }
-  
-    setSpinning(true);
-    try {
-      await invoke('set_system_theme', { isLight });
-      console.log(message);
-    } finally {
-      setSpinning(false);
-    }
+     if(themeDack === isLight){
+      setSpinning(true);
+      try {
+        await invoke('set_system_theme', { isLight });
+        console.log(message);
+      } finally {
+        setSpinning(false);
+      }
+     } 
   };
   
 
