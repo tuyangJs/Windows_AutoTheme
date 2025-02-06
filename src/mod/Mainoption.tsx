@@ -57,6 +57,7 @@ const Mainoption: MainopType = ({
     const [startOpenLoad, setStartOpenLoad] = useState(false)
     const [CitiLoad, setCitiLoad] = useState(false)
     const [Citiname, setCitiname] = useState(AppData?.city?.name)
+
     const confirmCiti = (_e: any, err: any) => { //确认选择城市
         setData({ city: { id: err.key, name: err.value } })
         setCitiname(err.value)
@@ -66,6 +67,9 @@ const Mainoption: MainopType = ({
         debounceWait: 800,
         manual: true,
     });
+    const upTary = (e:string) => { //更新托盘数据
+        invoke('update_tray_menu_item_title', { quit: locale?.quit, show: locale?.show, tooltip:e })
+    }
     const openRc = async () => { //处理日出日落数据
         setRcOpenLoad(true)
         if (AppData?.city?.id) {
@@ -107,12 +111,14 @@ const Mainoption: MainopType = ({
         }
         setCitiLoad(false)
     }
+
     useEffect(() => {
         if (locale?.quit) {
-            invoke('update_tray_menu_item_title', { quit: locale?.quit, show: locale?.show,tooltip:`${locale?.Title} - App`})
+            const tooltip = `${locale?.Title} - App \n${locale.Time}: ${AppData?.times?.[0]} - ${AppData?.times?.[1]}`
+            upTary(tooltip)
         }
 
-    }, [locale])
+    }, [locale,AppData?.times])
     useUpdateEffect(() => { //只要首次运行时才会启动
         CitiInit(AppData?.city?.id)
     }, [AppData?.language])
@@ -131,7 +137,7 @@ const Mainoption: MainopType = ({
         setStartOpenLoad(false)
     }
     const handleTimeChange = (_e: any, dateStrings: [string, string]) => {  //更改时间
-        setData({ times: dateStrings })
+        setData({ times: dateStrings }) 
     }
     const startTime = dayjs(AppData?.times?.[0] || '08:08', 'HH:mm')
     const endTime = dayjs(AppData?.times?.[1] || '18:08', 'HH:mm')
@@ -139,7 +145,7 @@ const Mainoption: MainopType = ({
         <Flex gap={4}>
             <Button type="text"
                 disabled={CitiLoad}
-                onClick={()=>CitiInit()}
+                onClick={() => CitiInit()}
                 icon={CitiLoad ? <LoadingOutlined /> : <EnvironmentOutlined />}
             />
             <AutoComplete
@@ -217,7 +223,7 @@ const Mainoption: MainopType = ({
             change: ((e: boolean) => setData({ StartShow: e }))
         }
     ];
-    return { openRc, mains,CitiInit }
+    return { openRc, mains, CitiInit }
 }
 
 export default Mainoption
