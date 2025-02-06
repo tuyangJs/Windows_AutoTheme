@@ -34,7 +34,8 @@ export type MainopType = (e: {
     setWeather: React.Dispatch<React.SetStateAction<string>>
 }) => {
     openRc: () => Promise<void>,
-    mains: mainsType[]
+    mains: mainsType[],
+    CitiInit: (citiids?: string) => Promise<void>
 }
 
 
@@ -68,7 +69,7 @@ const Mainoption: MainopType = ({
     const openRc = async () => { //处理日出日落数据
         setRcOpenLoad(true)
         if (AppData?.city?.id) {
-            const data = await Sunrise(AppData?.city?.id,AppData?.language)
+            const data = await Sunrise(AppData?.city?.id, AppData?.language)
             if (data?.rise && data?.set) {
                 setData({ times: [data.rise, data.set], rcrl: true })
                 setRcOpenLoad(false)
@@ -90,10 +91,10 @@ const Mainoption: MainopType = ({
         }
 
     }
-    const CitiInit = async () => {
+    const CitiInit = async (citiids?: string) => {
         setCitiLoad(true)
         if (AppData?.language) { //必须初始语言才会开始自动获取定位
-            const citiID = AppData.city?.id ? { hid: AppData.city?.id } : await Sunrise('',AppData?.language)
+            const citiID = citiids ? { hid: citiids } : await Sunrise('', AppData?.language)
             if (citiID?.hid) {
                 const Citiop = await AppCiti(citiID?.hid, AppData?.language)
                 const err = Citiop.location?.[0]
@@ -113,7 +114,7 @@ const Mainoption: MainopType = ({
 
     }, [locale])
     useUpdateEffect(() => { //只要首次运行时才会启动
-        CitiInit()
+        CitiInit(AppData?.city?.id)
     }, [AppData?.language])
     const AutostartOpen = async (e: boolean) => {
         setStartOpenLoad(true)
@@ -138,7 +139,7 @@ const Mainoption: MainopType = ({
         <Flex gap={4}>
             <Button type="text"
                 disabled={CitiLoad}
-                onClick={CitiInit}
+                onClick={()=>CitiInit()}
                 icon={CitiLoad ? <LoadingOutlined /> : <EnvironmentOutlined />}
             />
             <AutoComplete
@@ -216,7 +217,7 @@ const Mainoption: MainopType = ({
             change: ((e: boolean) => setData({ StartShow: e }))
         }
     ];
-    return { openRc, mains }
+    return { openRc, mains,CitiInit }
 }
 
 export default Mainoption

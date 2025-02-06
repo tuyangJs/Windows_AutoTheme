@@ -3,11 +3,12 @@ use std::os::windows::ffi::OsStrExt;
 use std::ptr;
 use std::sync::Mutex;
 use tauri::command;
+use tauri::window::{EffectsBuilder,Effect,EffectState};
 use tauri::{
     menu::{Menu, MenuItem},
     tray::{MouseButton, TrayIcon, TrayIconBuilder, TrayIconEvent},
 };
-use tauri::{AppHandle, Manager, State};
+use tauri::{AppHandle, Emitter, Manager, State};
 use tauri_plugin_autostart::MacosLauncher;
 use tauri_plugin_log::{Target, TargetKind};
 use tokio::time::{sleep, Duration};
@@ -33,7 +34,6 @@ fn show_window(app: &AppHandle) {
         if let Err(e) = window.set_focus() {
             eprintln!("无法设置窗口焦点: {}", e);
         }
-     
     }
 }
 
@@ -114,7 +114,16 @@ async fn set_system_theme(is_light: bool) {
     sleep(Duration::from_millis(10)).await;
     notify_system_theme_changed().await;
 } //
-
+fn send_event(app_handle: &AppHandle) {
+    app_handle.emit("close-app", "quit").unwrap();
+    let app_handle_clone = app_handle.clone();
+    // 等待 3 秒
+    tokio::spawn(async move {
+        sleep(Duration::from_millis(3000)).await;
+        app_handle_clone.exit(0);
+        // 如果到达 3 秒后，程序还未结束，强制退出
+    });
+}
 fn create_system_tray(app: &AppHandle) -> tauri::Result<()> {
     let quit_i = MenuItem::with_id(app, "quit", "退出", true, None::<&str>)?;
     let show_i = MenuItem::with_id(app, "show", "显示窗口", true, None::<&str>)?;
@@ -125,8 +134,8 @@ fn create_system_tray(app: &AppHandle) -> tauri::Result<()> {
         .show_menu_on_left_click(false)
         .on_menu_event(|tray, event| match event.id.as_ref() {
             "quit" => {
-                println!("quit menu item was clicked");
-                tray.app_handle().exit(0);
+                println!("通知前端关闭应用...");
+                send_event(tray.app_handle());
             }
             "show" => {
                 show_window(&tray.app_handle());
@@ -182,7 +191,7 @@ fn update_tray_menu_item_title(app: tauri::AppHandle, quit: String, show: String
         }
     };
     // 创建菜单
-    let menu = match Menu::with_items(app_handle, &[&show_i,&quit_i]) {
+    let menu = match Menu::with_items(app_handle, &[&show_i, &quit_i]) {
         Ok(menu) => menu,
         Err(e) => {
             eprintln!("Failed to create menu: {}", e);
@@ -215,6 +224,29 @@ pub fn run() {
                     ])
                     .build(),
             )
+            .setup(|app| -> Result<(), Box<dyn std::error::Error>> {
+                let app_handle = app.handle();
+                let main_window = app_handle
+                    .get_webview_window("main")
+                    .expect("Failed to get the main window");
+                main_window.hide().expect("Failed to hide the window");
+                main_window
+                    .set_always_on_top(false)
+                    .expect("Failed to set always on top");
+                main_window
+                    .set_effects(
+                        EffectsBuilder::new()
+                            .effect(Effect::Acrylic)
+                            .state(EffectState::FollowsWindowActiveState)  
+                            .build(),
+                    )
+                    .expect("Failed to set window effect");
+                main_window.set_shadow(true).expect("Failed to set shadow");
+
+                create_system_tray(&app_handle)?;
+                Ok(())
+            })
+            .plugin(tauri_plugin_persisted_scope::init())
             .plugin(tauri_plugin_window_state::Builder::new().build())
             .plugin(tauri_plugin_single_instance::init(|app, _args, _cwd| {
                 show_window(app);
@@ -232,11 +264,6 @@ pub fn run() {
                 set_system_theme,
                 update_tray_menu_item_title
             ])
-            .setup(|app| -> Result<(), Box<dyn std::error::Error>> {
-                let app_handle = app.handle();
-                create_system_tray(&app_handle)?;
-                Ok(())
-            })
             .run(tauri::generate_context!())
             .expect("error while running tauri application");
     });

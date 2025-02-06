@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "start": "tauri dev",
-    "tauribuild":"tauri build"
+    "tauribuild": "tauri build"
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.2",

@@ -3,7 +3,7 @@ import { AppDataType } from "../Type";
 import { isEnabled } from "@tauri-apps/plugin-autostart";
 const SystemStart = await isEnabled()
 const DataSave = () => {
-    const [AppData, setAppData] = useLocalStorageState<AppDataType>('AppData', {
+    const [AppData, setAppData] = useLocalStorageState<AppDataType>('Data', {
         defaultValue: {
             Radios: "rcrl",
             open: false,
@@ -18,6 +18,8 @@ const DataSave = () => {
     })
 
     const setData = (e: any) => {
+        console.log('修改值AppData',e);
+        
         setAppData((prevData) => ({
             ...prevData,
             ...e

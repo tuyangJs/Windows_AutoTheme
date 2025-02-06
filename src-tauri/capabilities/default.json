@@ -15,11 +15,11 @@
     "core:window:allow-close",
     "core:window:allow-destroy",
     "core:window:allow-minimize",
+    "core:window:allow-set-decorations",
     "autostart:allow-enable",
     "autostart:allow-disable",
     "autostart:allow-is-enabled",
     "window-state:allow-save-window-state",
-    "window-state:allow-restore-state",
     "log:default",
     {
       "identifier": "http:default",

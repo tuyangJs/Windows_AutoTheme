@@ -9,6 +9,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { restoreStateCurrent, saveWindowState, StateFlags } from '@tauri-apps/plugin-window-state';
 import Close from "./assets/closed.svg?react";
 import Mins from './assets/min.svg?react';
+import { listen } from '@tauri-apps/api/event';
 const { Text } = Typography;
 interface Props {
     config: AliasToken
@@ -20,7 +21,10 @@ interface Props {
 }
 const appWindow = new Window('main');
 let WinS = true
-
+listen("close-app", async () => {
+    console.log("收到后端关闭指令，正在退出应用...");
+    await appWindow.destroy();
+});
 if (WinS) {
     WinS = false
     restoreStateCurrent(StateFlags.ALL);
@@ -39,7 +43,11 @@ const TitleButton: ButtonProps[] = [
         size: 'small',
         shape: "round",
         type: "text",
-        onClick: () => appWindow.minimize()
+        onClick: e => {
+            // @ts-ignore
+            e.target?.blur()
+            appWindow.minimize()
+        }
     },
     {
         size: 'small',
@@ -47,7 +55,11 @@ const TitleButton: ButtonProps[] = [
         shape: "round",
         variant: "text",
         icon: <Close />,
-        onClick: () => appWindow.hide()
+        onClick: e => {
+            // @ts-ignore
+            e.target?.blur()
+            appWindow.hide()
+        }
     }
 ]
 

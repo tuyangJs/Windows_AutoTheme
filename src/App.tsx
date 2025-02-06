@@ -42,7 +42,7 @@ document.addEventListener('contextmenu', function (e) {
   }
 });
 const appWindow = new Window('main');
-
+//appWindow.setDecorations(false)
 const { Content } = Layout;
 function App() {
   const { setData, AppData } = DataSave()
@@ -51,7 +51,7 @@ function App() {
   const matchMedia = window.matchMedia('(prefers-color-scheme: light)');
   const [themeDack, setThemeDack] = useState(!matchMedia.matches);
   const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
-  const [spinning, setSpinning] = useState(false)
+  const [spinning, setSpinning] = useState(true)
   const [Weather, setWeather] = useState('')
   ///const [MainLoad, setMainLoad] = useState(true)
   const [messageApi, contextHolder] = message.useMessage();
@@ -65,7 +65,7 @@ function App() {
 
 
   //导入设置选项
-  const { openRc, mains } = Mainoption({
+  const { openRc, mains,CitiInit } = Mainoption({
     setData,
     messageApi,
     locale,
@@ -101,9 +101,10 @@ function App() {
       StartRady()
     }
     if (AppData?.StartShow) {
-      appWindow.show()
+      appWindow.show() 
+      appWindow.setFocus()
     } else {
-      appWindow.hide()
+     // appWindow.hide()
     }
     const isAutostart = async () => {
       setData({ Autostart: await isEnabled() })
@@ -111,31 +112,39 @@ function App() {
     //检测开机启动
     isAutostart()
     // 清除事件监听器
+    setTimeout(() => {
+      setSpinning(false)
+    }, 100);
     return () => {
       matchMedia.removeEventListener('change', handleChange);
     };
   }, []);
   const StartRady = async () => {
-    const PresentTime = dayjs(); // 当前时间，dayjs 对象
+    const presentTime = dayjs(); // 当前时间
     const sunriseTime = dayjs(AppData?.times?.[0], 'HH:mm'); // 日出时间
     const sunsetTime = dayjs(AppData?.times?.[1], 'HH:mm'); // 日落时间
-
-    if (sunriseTime.isBefore(PresentTime) && sunsetTime.isAfter(PresentTime)) {
-      // 现在是日出后，日落前
-      await invoke('set_system_theme', { isLight: true });
-      console.log('现在是日出后，日落前');
-
-    } else if (sunsetTime.isBefore(PresentTime)) {
-      // 现在是日落后
-      await invoke('set_system_theme', { isLight: false });
-      console.log('现在是日落后');
-    } else if (sunriseTime.isAfter(PresentTime)) {
-      // 现在是日出前
-      console.log('现在是日出前');
-      await invoke('set_system_theme', { isLight: false });
+  
+    let isLight = false;
+    let message = '';
+  
+    if (presentTime.isAfter(sunriseTime) && presentTime.isBefore(sunsetTime)) {
+      isLight = true;
+      message = '现在是日出后，日落前';
+    } else if (presentTime.isBefore(sunriseTime)) {
+      message = '现在是日出前';
+    } else {
+      message = '现在是日落后';
     }
-
+  
+    setSpinning(true);
+    try {
+      await invoke('set_system_theme', { isLight });
+      console.log(message);
+    } finally {
+      setSpinning(false);
+    }
   };
+  
 
   useAsyncEffect(async () => { //定时任务处理
     if (AppData?.open === false) {
@@ -154,6 +163,8 @@ function App() {
           await invoke('set_system_theme', { isLight: false });
           break;
       }
+        //执行完重新获取时间数据
+        CitiInit(AppData?.city?.id)
     };
     if (AppData?.times?.[0] && AppData?.times?.[1]) {
       try {
