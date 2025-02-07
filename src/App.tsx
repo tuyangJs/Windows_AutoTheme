@@ -96,7 +96,7 @@ function App() {
 
 
   //导入设置选项
-  const { openRc, mains, CitiInit } = Mainoption({
+  const { openRc, mains } = Mainoption({
     setData,
     messageApi,
     locale,
