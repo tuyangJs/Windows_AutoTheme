@@ -16,6 +16,7 @@
     "core:window:allow-destroy",
     "core:window:allow-minimize",
     "core:window:allow-set-decorations",
+    "core:window:allow-set-title",
     "autostart:allow-enable",
     "autostart:allow-disable",
     "autostart:allow-is-enabled",

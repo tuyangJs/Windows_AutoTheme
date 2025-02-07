@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { MoonOutlined, SunOutlined } from '@ant-design/icons';
 import { Button, ButtonProps, Divider, Flex, Segmented, Typography } from 'antd';
 import { AliasToken } from 'antd/es/theme/internal';
@@ -10,6 +10,8 @@ import { restoreStateCurrent, saveWindowState, StateFlags } from '@tauri-apps/pl
 import Close from "./assets/closed.svg?react";
 import Mins from './assets/min.svg?react';
 import { listen } from '@tauri-apps/api/event';
+import usePageTitle from './mod/PageTitle'
+import { useAsyncEffect, useRequest } from 'ahooks';
 const { Text } = Typography;
 interface Props {
     config: AliasToken
@@ -62,8 +64,20 @@ const TitleButton: ButtonProps[] = [
         }
     }
 ]
-
+const upWindowTitle = async (PageTitle: string) => {
+    if (typeof PageTitle === "string") {
+        await appWindow.setTitle(PageTitle)
+    }
+}
 const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning }) => {
+    const PageTitle = usePageTitle()
+    const { run } = useRequest(upWindowTitle, {
+        debounceWait: 1000,
+        manual: true,
+    });
+    useAsyncEffect(async () => {
+        run(PageTitle)
+    }, [PageTitle])
     async function changeTheme() {
         try {
             setSpinning(true)
@@ -74,7 +88,8 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
             console.error('Error changing theme:', error);
         }
     }
-
+    //更新窗口标题
+    document.title = locale?.Title
     return (
         <Flex
             style={{
@@ -87,7 +102,7 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
             align='center'
             data-tauri-drag-region>
             <Flex align='center' gap={'small'}>
-                <Logo className='logo'   />
+                <Logo className='logo' />
                 <Text
                     strong
                     style={{

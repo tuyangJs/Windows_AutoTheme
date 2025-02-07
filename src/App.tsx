@@ -102,7 +102,6 @@ function App() {
     }
     if (AppData?.StartShow) {
       appWindow.show() 
-      appWindow.setFocus()
     } else {
      // appWindow.hide()
     }
