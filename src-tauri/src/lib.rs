@@ -11,7 +11,7 @@ use tauri::{
 use tauri::{AppHandle, Emitter, Manager, State};
 use tauri_plugin_autostart::MacosLauncher;
 use tauri_plugin_log::{Target, TargetKind};
-use tokio::time::{sleep, Duration};
+use tokio::time::{sleep, Duration,sleep_until, Instant};
 use winapi::shared::minwindef::{DWORD, HKEY};
 use winapi::shared::winerror::ERROR_SUCCESS;
 use winapi::um::winreg::{RegOpenKeyExW, RegSetValueExW, HKEY_CURRENT_USER};
@@ -19,8 +19,96 @@ use winapi::{
     ctypes::c_void,
     um::winuser::{SendMessageTimeoutW, HWND_BROADCAST, WM_SETTINGCHANGE},
 };
+use chrono::{Local,NaiveDateTime, NaiveTime};
 struct AppState {
     tray: Mutex<Option<TrayIcon>>,
+}
+enum TaskType {
+    TypeA,
+    TypeB,
+    TypeC,
+}
+
+impl std::str::FromStr for TaskType {
+    type Err = ();
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "TypeA" => Ok(TaskType::TypeA),
+            "TypeB" => Ok(TaskType::TypeB),
+            "TypeC" => Ok(TaskType::TypeC),
+            _ => Err(()),
+        }
+    }
+}
+
+struct TaskManager {
+    // 存储任务的句柄
+}
+
+impl TaskManager {
+    fn new() -> Self {
+        TaskManager {
+            // 初始化
+        }
+    }
+
+    // 添加定时任务
+    async fn add_task(&self, time_str: &str, task_type: String) {
+        let target_time = NaiveTime::parse_from_str(time_str, "%H:%M").unwrap();
+        let current_time = Local::now().naive_local().time();
+        let delay_duration = if current_time > target_time {
+            let target_datetime = NaiveDateTime::new(Local::now().naive_local().date(), target_time);
+            target_datetime.signed_duration_since(Local::now().naive_local())
+        } else {
+            NaiveDateTime::new(Local::now().naive_local().date(), target_time)
+                .signed_duration_since(Local::now().naive_local())
+        };
+
+        let delay_ms = delay_duration.num_milliseconds();
+        let target_instant = Instant::now() + tokio::time::Duration::from_millis(delay_ms as u64);
+
+        println!("Task will run at: {} with type {:?}", target_time, task_type);
+
+        sleep_until(target_instant).await;
+        println!("Task executed at: {} with type {:?}", target_time, task_type);
+
+        // 根据 task_type 处理任务类型
+        match task_type.parse::<TaskType>().unwrap_or(TaskType::TypeA) {
+            TaskType::TypeA => {
+                // 执行 TypeA 任务
+                set_system_theme(true).await;
+                println!("Executing TypeA task at: {}", target_time);
+            }
+            TaskType::TypeB => {
+                // 执行 TypeB 任务
+                 set_system_theme(false).await;
+                println!("Executing TypeB task at: {}", target_time);
+            }
+            TaskType::TypeC => {
+                // 执行 TypeC 任务
+                println!("Executing TypeC task at: {}", target_time);
+            }
+        }
+    }
+
+    // 清除任务
+    async fn clear_tasks(&self) {
+        // 清除任务
+        println!("All tasks cleared");
+    }
+}
+
+#[command]
+async fn add_task(time: String, task_type: String) {
+    let task_manager = TaskManager::new();
+    task_manager.add_task(&time, task_type).await;
+}
+
+#[command]
+async fn clear_tasks() {
+    let task_manager = TaskManager::new();
+    task_manager.clear_tasks().await;
 }
 fn show_window(app: &AppHandle) {
     let windows = app.webview_windows();
@@ -111,7 +199,6 @@ async fn set_system_theme(is_light: bool) {
         }
     }
     notify_system_theme_changed().await;
-    sleep(Duration::from_millis(10)).await;
     notify_system_theme_changed().await;
 } //
 fn send_event(app_handle: &AppHandle) {
@@ -268,7 +355,9 @@ pub fn run() {
             })
             .invoke_handler(tauri::generate_handler![
                 set_system_theme,
-                update_tray_menu_item_title
+                update_tray_menu_item_title,
+                add_task,
+                clear_tasks
             ])
             .run(tauri::generate_context!())
             .expect("error while running tauri application");

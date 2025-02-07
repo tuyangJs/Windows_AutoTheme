@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { MoonOutlined, SunOutlined } from '@ant-design/icons';
 import { Button, ButtonProps, Divider, Flex, Segmented, Typography } from 'antd';
 import { AliasToken } from 'antd/es/theme/internal';
@@ -6,10 +6,9 @@ import Logo from "./assets/logo.svg?react";
 import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
 //import { motion } from 'framer-motion'; // 引入 framer-motion
 import { invoke } from "@tauri-apps/api/core";
-import { restoreStateCurrent, saveWindowState, StateFlags } from '@tauri-apps/plugin-window-state';
+import { restoreStateCurrent, StateFlags } from '@tauri-apps/plugin-window-state';
 import Close from "./assets/closed.svg?react";
-import Mins from './assets/min.svg?react';
-import { listen } from '@tauri-apps/api/event';
+import Mins from './assets/min.svg?react'; 
 import usePageTitle from './mod/PageTitle'
 import { useAsyncEffect, useRequest } from 'ahooks';
 const { Text } = Typography;
@@ -23,21 +22,13 @@ interface Props {
 }
 const appWindow = new Window('main');
 let WinS = true
-listen("close-app", async () => {
-    console.log("收到后端关闭指令，正在退出应用...");
-    await appWindow.destroy();
-});
+
 if (WinS) {
     WinS = false
     restoreStateCurrent(StateFlags.ALL);
 }
-const HideWindow = () => {
-    saveWindowState(StateFlags.ALL)
-}
-appWindow.onCloseRequested(e => {
-    e.preventDefault()
-    HideWindow()
-})
+ 
+
 
 const TitleButton: ButtonProps[] = [
     {
@@ -60,7 +51,7 @@ const TitleButton: ButtonProps[] = [
         onClick: e => {
             // @ts-ignore
             e.target?.blur()
-            appWindow.hide()
+            appWindow.close()
         }
     }
 ]
