@@ -53,10 +53,21 @@ const GetHttp = async (url: string) => {
     return false;
 };
 const Apikey = 'bdd98ec1d87747f3a2e8b1741a5af796'
+const Languages: Record<string, string> = {
+    'zh_HK': 'zh-hant'
+}
 const AppCiti: Props = async (name, lang) => {
-    const langs = (lang || '').split('_')[0]
-    const url = `https://geoapi.qweather.com/v2/city/lookup?location=${encodeURI(name)}&key=${Apikey}&lang=${langs}`;
-    const data = await GetHttp(url)
+    lang = lang || 'en_US' as string
+    const langs = Languages[lang] || lang.split('_')[0]
+    let getUrl = ''
+    if (name) {
+        getUrl = `https://geoapi.qweather.com/v2/city/lookup?location=${encodeURI(name)}&lang=${langs}`
+    } else {
+        const range = (lang === 'zh_HK' ? 'CN' : lang.split('_')[1]).toUpperCase().toLowerCase();
+        getUrl = `https://geoapi.qweather.com/v2/city/top?number=10&lang=${langs}&range=${range}`
+    }
+    const url = `${getUrl}&key=${Apikey}`;
+    const data = await GetHttp(url) 
     return data
 }
 const Sunrise: Props = async (id, lang) => {

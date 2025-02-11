@@ -13,6 +13,10 @@ h5 {
   margin: 6px 0 !important;
 }
 
+#root {
+  --shadow: 0 6px 16px 0 #dc7a0314, 0 3px 6px -4px #dc7a031f, 0 9px 28px 8px #dc7a030d;
+}
+
 .drag-region {
   -webkit-app-region: drag;
   /* 设置此区域为可拖动 */
@@ -60,6 +64,24 @@ h5 {
 
 .ant-typography {
   margin-bottom: 1px !important
+}
+button:hover{
+  box-shadow: var(--shadow) !important;
+}
+input:focus {
+  box-shadow: var(--shadow);
+}
+
+.ant-picker.ant-picker-range.ant-picker-focused {
+  box-shadow: var(--shadow);
+}
+
+.ant-radio-button-wrapper.ant-radio-button-wrapper-checked:hover {
+  box-shadow: var(--shadow);
+}
+
+.ant-switch.ant-switch-checked:hover {
+  box-shadow: var(--shadow);
 }
 
 .container {

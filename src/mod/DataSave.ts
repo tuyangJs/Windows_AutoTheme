@@ -18,8 +18,6 @@ const DataSave = () => {
     })
 
     const setData = (e: any) => {
-        console.log('修改值AppData',e);
-        
         setAppData((prevData) => ({
             ...prevData,
             ...e

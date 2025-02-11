@@ -120,6 +120,7 @@ const Mainoption: MainopType = ({
 
     }, [locale,AppData?.times])
     useUpdateEffect(() => { //只要首次运行时才会启动
+        run()
         CitiInit(AppData?.city?.id)
     }, [AppData?.language])
     const AutostartOpen = async (e: boolean) => {
@@ -146,7 +147,7 @@ const Mainoption: MainopType = ({
             <Button type="text"
                 disabled={CitiLoad}
                 color="default"
-                variant="filled"
+                //variant="filled"
                 onClick={() => CitiInit()}
                 icon={CitiLoad ? <LoadingOutlined /> : <EnvironmentOutlined />}
             />

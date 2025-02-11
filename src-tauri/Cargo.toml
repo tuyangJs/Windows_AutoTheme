@@ -1,7 +1,7 @@
 [package]
-name = "WindowsThemeAuto"
-version = "1.3.9"
-description = "A Tauri App"
+name = "AutoThemeMode"
+version = "1.4.0"
+description = "AutoThemeMode"
 authors = ["you"]
 edition = "2021"
 
@@ -27,7 +27,7 @@ tokio = { version = "1", features = ["full"] }
 winapi = { version = "0.3", features = ["winuser", "winbase"] }
 chrono = "0.4"
 tauri-plugin-log = "2"
-tauri-plugin-persisted-scope = "2"
+tauri-plugin-persisted-scope = "2" 
 
 [http]
 proxy = ""

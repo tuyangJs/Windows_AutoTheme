@@ -34,17 +34,7 @@ async function fetchAppVersion() {
 }
 
 const version = await fetchAppVersion();
-document.addEventListener('keydown', function (e) {
-  if ((e.key === 'F5') || (e.ctrlKey && e.key === 'r')) {
-    e.preventDefault(); // 禁止刷新
-  }
-});
-document.addEventListener('contextmenu', function (e) {
-  // @ts-ignore
-  if (e?.target?.tagName?.toLowerCase() !== 'input') {
-    e.preventDefault(); // 禁用右键菜单
-  }
-});
+
 const appWindow = new Window('main');
 const Webview = await getCurrentWebview()
 listen("show-app", async () => {
@@ -184,13 +174,28 @@ function App() {
       return
     }
     if (AppData?.times?.[0] && AppData?.times?.[1]) {
+      const onTaskExecute = async (time: string, data: { msg: string }) => {
+        console.log(`执行任务: ${time}, 数据:`, data);
+        switch (data.msg) {
+          case 'TypeA':
+            console.log(`执行任务: ${time}, 数据:`, data.msg);
+            await invoke('set_system_theme', { isLight: true });
+            break;
+          case 'TypeB':
+            console.log(`执行任务: ${time}, 数据:`, data.msg);
+            await invoke('set_system_theme', { isLight: false });
+            break;
+        }
+        console.log(CrontabManager.listTasks());
+
+      };
       try {
         // 添加定时任务
-        const task1: CrontabTask = { time: AppData?.times[0], data: "TypeA" };
-        const task2: CrontabTask = { time: AppData?.times[1], data: "TypeB" };
+        const task1: CrontabTask = { time: AppData?.times[0], data: { msg: 'TypeA' }, onExecute: onTaskExecute };
+        const task2: CrontabTask = { time: AppData?.times[1], data: { msg: 'TypeB' }, onExecute: onTaskExecute };
         CrontabManager.addTask(task1);
         CrontabManager.addTask(task2);
-        console.log('Tasks added successfully');
+        console.log('Tasks added successfully', CrontabManager.listTasks());
       } catch (error) {
         console.error('Failed to add tasks:', error);
       }
@@ -203,9 +208,7 @@ function App() {
 
 
   async function getCity(search?: string) { //搜索城市
-    if (search) {
-      setOptions(await searchResult(search, AppData))
-    }
+    setOptions(await searchResult(search || '', AppData))
   }
 
   const { Themeconfig, antdToken } = ThemeFun(themeDack)

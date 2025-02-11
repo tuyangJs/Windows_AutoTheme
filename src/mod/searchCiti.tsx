@@ -5,7 +5,8 @@ const searchResult = async (query: string, AppData: AppDataType | undefined) => 
   if (!AppData?.language) return [];
   const data = await AppCiti(query, AppData.language)
   if (data.code !== '200') return [];
-  return data.location
+  const CityList = data?.location || data?.topCityList
+  return CityList
     .map((e: any) => {
       return {
         value: `${e.adm1} - ${e.name}`,

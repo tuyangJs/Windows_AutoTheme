@@ -31,6 +31,7 @@ const Content: React.FC<props> = ({ mains, Radios, setRadios }) => (
                                         value: key.key, // 假设索引为值
                                     }))}
                                     optionType="button"
+                                     buttonStyle="solid" 
                                     onChange={e => {
                                         const newValue = e.target.value;
                                         setRadios(newValue); // 更新选中的选项
