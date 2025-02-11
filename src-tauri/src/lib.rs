@@ -241,13 +241,12 @@ pub fn run() {
                 main_window
                     .set_effects(
                         EffectsBuilder::new()
-                            .effect(Effect::Acrylic)
+                            .effect(Effect::Mica)
                             .state(EffectState::FollowsWindowActiveState)
                             .build(),
                     )
                     .expect("Failed to set window effect");
                 main_window.set_shadow(true).expect("Failed to set shadow");
-
                 create_system_tray(&app_handle)?;
                 Ok(())
             })

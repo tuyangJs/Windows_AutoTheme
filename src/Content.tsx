@@ -1,6 +1,7 @@
-import { Divider, Flex, Radio, Switch, Typography } from "antd";
+import { Divider, Flex, Radio, Segmented, Switch, Typography } from "antd";
 import type { mainsType } from "./mod/Mainoption";
 import React from "react";
+import Icon from "@ant-design/icons";
 
 export interface props {
     mains: mainsType[];
@@ -23,20 +24,19 @@ const Content: React.FC<props> = ({ mains, Radios, setRadios }) => (
                         {
                             // 如果 change 是数组，渲染单选框
                             Array.isArray(item.change) ? (
-                                <Radio.Group
+                                <Segmented
                                     block
                                     defaultValue={item.default}
                                     options={item.change.map((key) => ({
                                         label: key.label,
                                         value: key.key, // 假设索引为值
+                                        icon:key.icon
                                     }))}
-                                    optionType="button"
-                                     buttonStyle="solid" 
+                                    shape="round"
                                     onChange={e => {
-                                        const newValue = e.target.value;
-                                        setRadios(newValue); // 更新选中的选项
+                                        setRadios(e); // 更新选中的选项
                                         if (typeof item.setVal === 'function') {
-                                            item.setVal(newValue);
+                                            item.setVal(e);
                                         }
                                     }}
                                 />

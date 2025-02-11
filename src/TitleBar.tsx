@@ -108,7 +108,7 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
             <Flex align='center' gap={'small'}>
                 <Segmented
                     disabled={spinning}
-                    size='small'
+                     shape="round"
                     block
                     value={themeDack ? 'Moon' : 'Sun'}
                     options={[
@@ -121,7 +121,7 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
                     }
                 />
                 <Flex
-                    className='ant-segmented'
+                    className='ant-segmented ant-segmented-shape-round '
                 >
                     {TitleButton.map((item, index) => (
                         <React.Fragment key={`fragment-${index}`}>

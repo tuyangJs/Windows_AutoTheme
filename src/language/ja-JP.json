@@ -6,14 +6,12 @@
       "citiTitle": "都市",
       "citiError": "都市が選択されていません！",
       "citiPlaceholder": "都市名で検索",
-      "TabsTitle": "テーマモード",
-      "Tabs": [
-        "日の出から日没まで",
-        "カスタム時間"
-      ],
+      "winBgEffect":"背景マテリアル",
+      "winBgEffectOptionA":"マイカ",
+      "winBgEffectOptionB":"アクリル",
       "TabsOptionA": "日の出から日没まで",
       "TabsOptionAError": "日の出/日没データの取得に失敗しました！",
-      "TabsOptionB": "ライトテーマ時間",
+      "TabsOptionB": "昼間",
       "Autostart": "システム起動時に開始",
       "StartShow": "起動時にウィンドウを表示"
     },

@@ -13,7 +13,8 @@ const DataSave = () => {
             Autostart: SystemStart,
             language: '',
             StartShow: true,
-            Skipversion: ''
+            Skipversion: '',
+            winBgEffect: 'Mica'
         }
     })
 

@@ -1,12 +1,12 @@
 import { enable, disable } from "@tauri-apps/plugin-autostart"
-import { Input, AutoComplete, AutoCompleteProps, TimePicker, Button, Flex } from "antd"
+import { Input, AutoComplete, AutoCompleteProps, TimePicker, Button, Flex, Segmented, Tooltip } from "antd"
 import dayjs from "dayjs"
 import { AppCiti, Sunrise } from "./sociti"
 import { AppDataType, TimesProps } from "../Type"
 import type { MessageInstance } from "antd/es/message/interface"
 import { useRequest, useUpdateEffect } from "ahooks"
 import { useEffect, useState } from "react"
-import { EnvironmentOutlined, LoadingOutlined } from "@ant-design/icons"
+import Icon, { EnvironmentOutlined, HistoryOutlined, LoadingOutlined, SunOutlined } from "@ant-design/icons"
 import { invoke } from "@tauri-apps/api/core"
 
 export interface mainsType {
@@ -67,8 +67,8 @@ const Mainoption: MainopType = ({
         debounceWait: 800,
         manual: true,
     });
-    const upTary = (e:string) => { //更新托盘数据
-        invoke('update_tray_menu_item_title', { quit: locale?.quit, show: locale?.show, tooltip:e })
+    const upTary = (e: string) => { //更新托盘数据
+        invoke('update_tray_menu_item_title', { quit: locale?.quit, show: locale?.show, tooltip: e })
     }
     const openRc = async () => { //处理日出日落数据
         setRcOpenLoad(true)
@@ -118,7 +118,7 @@ const Mainoption: MainopType = ({
             upTary(tooltip)
         }
 
-    }, [locale,AppData?.times])
+    }, [locale, AppData?.times])
     useUpdateEffect(() => { //只要首次运行时才会启动
         run()
         CitiInit(AppData?.city?.id)
@@ -138,7 +138,7 @@ const Mainoption: MainopType = ({
         setStartOpenLoad(false)
     }
     const handleTimeChange = (_e: any, dateStrings: [string, string]) => {  //更改时间
-        setData({ times: dateStrings }) 
+        setData({ times: dateStrings })
     }
     const startTime = dayjs(AppData?.times?.[0] || '08:08', 'HH:mm')
     const endTime = dayjs(AppData?.times?.[1] || '18:08', 'HH:mm')
@@ -191,27 +191,34 @@ const Mainoption: MainopType = ({
             change: Citidiv
         },
         {
-            key: 'radios',
-            label: locale?.main?.TabsTitle,
-            default: Radios,
-            setVal: setRadios,
-            change: [{ key: 'rcrl', label: locale?.main?.Tabs?.[0] },
-            { key: 'dark', label: locale?.main?.Tabs?.[1] }] // 如果是数组，渲染单选项
-        },
-
-        {
             key: "rcrl",
             label: locale?.main?.TabsOptionA,
-            hide: true,
             value: AppData?.rcrl,
             loading: rcOpenLoad,
-            change: (e: boolean) => setData({ rcrl: e })
+            change: (e: boolean) => {
+                setRadios(e ? '' : 'dark')
+                setData({ rcrl: e })
+            }
         },
         {
             key: 'dark',
             label: locale?.main?.TabsOptionB,
             hide: true,
             change: <Times disabled={AppData?.rcrl} /> // 渲染时间选择器
+        },
+        {
+            key: "winBgEffect",
+            label: locale?.main?.winBgEffect,
+            change: <Segmented
+                shape="round"
+                value={AppData?.winBgEffect}
+                onChange={e => setData({ winBgEffect: e })
+                }
+                options={[
+                    { value: 'Mica', label: locale?.main?.winBgEffectOptionA },
+                    { value: 'Acrylic', label: locale?.main?.winBgEffectOptionB },
+                ]}
+            />
         },
         {
             key: 'Autostart',

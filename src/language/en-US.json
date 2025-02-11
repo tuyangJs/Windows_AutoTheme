@@ -6,14 +6,12 @@
       "citiTitle": "City",
       "citiError": "No city selected!",
       "citiPlaceholder": "Search city",
-      "TabsTitle": "Theme Mode",
-      "Tabs": [
-        "Sunrise to Sunset",
-        "Custom Time"
-      ],
+      "winBgEffect":"Background Material",
+      "winBgEffectOptionA":"Mica",
+      "winBgEffectOptionB":"Acrylic",
       "TabsOptionA": "Sunrise to Sunset",
       "TabsOptionAError": "Failed to get sunrise/sunset data!",
-      "TabsOptionB": "Light Theme Time",
+      "TabsOptionB": "Day Theme Time",
       "Autostart": "Start with system",
       "StartShow": "Show window on startup"
     },

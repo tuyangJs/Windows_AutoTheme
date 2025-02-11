@@ -6,14 +6,12 @@
         "citiTitle": "城市",
         "citiError":"你还没有选择城市！",
         "citiPlaceholder": "输入城市名搜索",
-        "TabsTitle": "主题模式",
-        "Tabs": [
-            "日出到日落",
-            "自定义时段"
-        ],
-        "TabsOptionA": "日出到日落",
+        "winBgEffect":"窗口背景材料",
+        "winBgEffectOptionA":"云母",
+        "winBgEffectOptionB":"亚克力",
+        "TabsOptionA": "日夜自动切换主题",
         "TabsOptionAError":"获取日出日落信息失败！",
-        "TabsOptionB": "浅色时间",
+        "TabsOptionB": "白天时间",
         "Autostart": "跟随系统启动",
         "StartShow": "启动时显示窗口"
     },

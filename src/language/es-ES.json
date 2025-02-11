@@ -6,14 +6,12 @@
       "citiTitle": "Ciudad",
       "citiError": "¡No se ha seleccionado ninguna ciudad!",
       "citiPlaceholder": "Buscar ciudad",
-      "TabsTitle": "Modo de Tema",
-      "Tabs": [
-        "Amanecer a Atardecer",
-        "Horario Personalizado"
-      ],
+      "winBgEffect":"Material de fondo",
+      "winBgEffectOptionA":"Mica",
+      "winBgEffectOptionB":"Acrílico",
       "TabsOptionA": "Amanecer a Atardecer",
       "TabsOptionAError": "¡Error al obtener datos de amanecer/atardecer!",
-      "TabsOptionB": "Hora de Tema Claro",
+      "TabsOptionB": "Tiempo de día",
       "Autostart": "Iniciar con el sistema",
       "StartShow": "Mostrar ventana al inicio"
     },

@@ -7,7 +7,7 @@ import { useUpdateEffect } from "ahooks";
 import LanguageApp from './language/index'
 import Docs from './doc'
 import { LoadingOutlined } from "@ant-design/icons";
-import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
+import { Window, Effect } from '@tauri-apps/api/window'; // 引入 appWindow
 import { getCurrentWebview } from '@tauri-apps/api/webview';
 import { Updates } from './updates'
 import { ThemeFun } from './mod/ThemeConfig'
@@ -109,8 +109,13 @@ function App() {
       openRc()
     }
   }, [AppData?.city, AppData?.rcrl])
-
-
+  //设置窗口材料
+  useEffect(() => {
+    if (AppData?.winBgEffect) {
+      const types = AppData.winBgEffect === 'Acrylic' ? Effect.Acrylic : Effect.Mica
+      appWindow.setEffects({ effects: [types] })
+    }
+  }, [AppData?.winBgEffect])
   useEffect(() => { //初始化 -主题自适应
     const handleChange = function (this: any) {
       //appWindow.setTheme('')

@@ -20,7 +20,7 @@ const items: MenuProps['items'] = [
   },
   {
     key: 'ja_JP',
-    label: "日本語にほんご",
+    label: "日本語",
   }
 
 ] as MenuProps['items']

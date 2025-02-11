@@ -10,6 +10,7 @@ const ThemeFun = (themeDack: boolean) => {
             },
             Segmented: {
                 trackBg: themeDack ? '#87878745' : '#bfbfbf45',
+                itemSelectedBg:themeDack ? '#00000091' : '#ffffff91',
             }
         },
         token: {

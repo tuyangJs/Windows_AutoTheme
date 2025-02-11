@@ -49,18 +49,12 @@ h5 {
 .ant-segmented-group {
   gap: 2px;
 }
-
-.ant-segmented {
-  border-radius: 15px !important;
+.ant-segmented-item-label,.segmented-xs{
+  min-height: 24px !important;
+  line-height: 24px !important;
+  padding: 0 7px !important;
 }
 
-.ant-segmented-item {
-  border-radius: 50% !important;
-}
-
-.ant-segmented-item-label {
-  padding: 2px 5px !important;
-}
 
 .ant-typography {
   margin-bottom: 1px !important
