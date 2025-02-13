@@ -9,8 +9,9 @@ export interface AppDataType {
   language: string
   StartShow: boolean
   Skipversion: string
-  winBgEffect: 'Mica' | 'Acrylic'
+  winBgEffect: 'Mica' | 'Acrylic' | 'Default'
 }
+
 export interface TimesProps {
   disabled?: boolean;
 }

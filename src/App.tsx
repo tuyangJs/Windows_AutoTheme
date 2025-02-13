@@ -49,7 +49,7 @@ listen("close-app", async () => {
 const { Content } = Layout;
 function App() {
   const { setData, AppData } = DataSave()
-  const [Radios, setRadios] = useState<string>(AppData?.Radios || 'rcrl');
+  const [Radios, setRadios] = useState<string>('dark');
   const matchMedia = window.matchMedia('(prefers-color-scheme: light)');
   const [themeDack, setThemeDack] = useState(!matchMedia.matches);
   const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
@@ -86,7 +86,7 @@ function App() {
 
 
   //导入设置选项
-  const { openRc, mains } = Mainoption({
+  const { openRc, mains, CitiInit } = Mainoption({
     setData,
     messageApi,
     locale,
@@ -112,10 +112,10 @@ function App() {
   //设置窗口材料
   useEffect(() => {
     if (AppData?.winBgEffect) {
-      const types = AppData.winBgEffect === 'Acrylic' ? Effect.Acrylic : Effect.Mica
+      const types = AppData.winBgEffect === 'Acrylic' ? Effect.Acrylic : (themeDack ? Effect.Mica : Effect.Tabbed)
       appWindow.setEffects({ effects: [types] })
     }
-  }, [AppData?.winBgEffect])
+  }, [AppData?.winBgEffect,themeDack])
   useEffect(() => { //初始化 -主题自适应
     const handleChange = function (this: any) {
       //appWindow.setTheme('')
@@ -192,7 +192,7 @@ function App() {
             break;
         }
         console.log(CrontabManager.listTasks());
-
+        CitiInit(AppData?.city?.id)
       };
       try {
         // 添加定时任务
@@ -216,7 +216,7 @@ function App() {
     setOptions(await searchResult(search || '', AppData))
   }
 
-  const { Themeconfig, antdToken } = ThemeFun(themeDack)
+  const { Themeconfig, antdToken } = ThemeFun(themeDack, AppData?.winBgEffect)
   return (
     <ConfigProvider
       theme={Themeconfig}
@@ -229,12 +229,13 @@ function App() {
             locale={locale}
             setSpinning={setSpinning}
             config={antdToken}
+            Themeconfig={Themeconfig}
             themeDack={themeDack}
             setThemeDack={setThemeDack}
           />
           <Layout>
             <Content className="container">
-              <Flex gap={0} vertical>
+              <Flex gap={0} vertical >
                 <OpContent mains={mains} Radios={Radios} setRadios={setRadios} />
                 <Docs locale={locale} version={version} Weather={Weather} />
                 <Updates locale={locale} version={version} setData={setData} AppData={AppData as AppDataType} />

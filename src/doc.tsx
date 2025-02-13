@@ -1,5 +1,6 @@
 import React from 'react';
-import { Divider, Typography } from 'antd';
+import { Button, Divider, Tooltip, Typography } from 'antd';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 const { Paragraph, Link, Text } = Typography;
 
@@ -23,30 +24,28 @@ const App: React.FC<Props> = ({ locale, version, Weather }) => (
             </>
         ) : null}
 
-        <Divider style={{ marginBlock: 6 }}>
-            {locale?.doc?.[1]}
-        </Divider>
-        <Paragraph type="secondary">
-            {locale?.doc?.[2]}
-        </Paragraph>
         <Divider style={{ margin: 0 }}><Text type="secondary"> v{version}</Text> </Divider>
         <Paragraph type="secondary">
-            <Paragraph type="secondary">
-                {locale?.doc?.[3]}
-                <Link
-                    target='_blank'
-                    href='https://github.com/tuyangJs/Windows_AutoTheme'
-                >{' '}
-                    GitHub
-                </Link>
-                <Divider style={{ marginInline: 6 }} type='vertical' />
-                <Link
-                    target='_blank'
-                    href='https://gitee.com/ilinxuan/windows_-auto-theme'
-                >{' '}
-                    Gitee
-                </Link>
-            </Paragraph>
+            <Tooltip title={locale?.doc?.[2]}>
+                <Button
+                    type='text'
+                    icon={<InfoCircleOutlined />}
+                    variant="link" />
+            </Tooltip>
+            {locale?.doc?.[3]}
+            <Link
+                target='_blank'
+                href='https://github.com/tuyangJs/Windows_AutoTheme'
+            >{' '}
+                GitHub
+            </Link>
+            <Divider style={{ marginInline: 6 }} type='vertical' />
+            <Link
+                target='_blank'
+                href='https://gitee.com/ilinxuan/windows_-auto-theme'
+            >{' '}
+                Gitee
+            </Link>
         </Paragraph>
     </Typography>
 );

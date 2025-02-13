@@ -1,6 +1,6 @@
 import React from 'react';
 import { MoonOutlined, SunOutlined } from '@ant-design/icons';
-import { Button, ButtonProps, Divider, Flex, Segmented, Typography } from 'antd';
+import { Button, ButtonProps, Divider, Flex, Segmented, ThemeConfig, Typography } from 'antd';
 import { AliasToken } from 'antd/es/theme/internal';
 import Logo from "./assets/logo.svg?react";
 import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
@@ -8,7 +8,7 @@ import { Window } from '@tauri-apps/api/window'; // 引入 appWindow
 import { invoke } from "@tauri-apps/api/core";
 import { restoreStateCurrent, StateFlags } from '@tauri-apps/plugin-window-state';
 import Close from "./assets/closed.svg?react";
-import Mins from './assets/min.svg?react'; 
+import Mins from './assets/min.svg?react';
 import usePageTitle from './mod/PageTitle'
 import { useAsyncEffect, useRequest } from 'ahooks';
 const { Text } = Typography;
@@ -19,6 +19,7 @@ interface Props {
     locale: any
     setSpinning: React.Dispatch<React.SetStateAction<boolean>>
     spinning: boolean
+    Themeconfig: ThemeConfig
 }
 const appWindow = new Window('main');
 let WinS = true
@@ -27,7 +28,7 @@ if (WinS) {
     WinS = false
     restoreStateCurrent(StateFlags.ALL);
 }
- 
+
 
 
 const TitleButton: ButtonProps[] = [
@@ -60,7 +61,7 @@ const upWindowTitle = async (PageTitle: string) => {
         await appWindow.setTitle(PageTitle)
     }
 }
-const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning }) => {
+const App: React.FC<Props> = ({ config, Themeconfig, themeDack, locale, setSpinning, spinning }) => {
     const PageTitle = usePageTitle()
     const { run } = useRequest(upWindowTitle, {
         debounceWait: 1000,
@@ -81,10 +82,11 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
     }
     //更新窗口标题
     document.title = locale?.Title
+
     return (
         <Flex
             style={{
-                backgroundColor: config.colorBgBase,
+                backgroundColor: Themeconfig.components?.Layout?.headerBg,
                 borderColor: config.colorBorder
             }}
             className="drag-region"
@@ -108,7 +110,7 @@ const App: React.FC<Props> = ({ config, themeDack, locale, setSpinning, spinning
             <Flex align='center' gap={'small'}>
                 <Segmented
                     disabled={spinning}
-                     shape="round"
+                    shape="round"
                     block
                     value={themeDack ? 'Moon' : 'Sun'}
                     options={[

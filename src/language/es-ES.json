@@ -1,44 +1,45 @@
 {
-    "Title": "Modo de tema automático",
-    "main": {
-      "open": "Activar",
-      "language": "Idioma",
-      "citiTitle": "Ciudad",
-      "citiError": "¡No se ha seleccionado ninguna ciudad!",
-      "citiPlaceholder": "Buscar ciudad",
-      "winBgEffect":"Material de fondo",
-      "winBgEffectOptionA":"Mica",
-      "winBgEffectOptionB":"Acrílico",
-      "TabsOptionA": "Amanecer a Atardecer",
-      "TabsOptionAError": "¡Error al obtener datos de amanecer/atardecer!",
-      "TabsOptionB": "Tiempo de día",
-      "Autostart": "Iniciar con el sistema",
-      "StartShow": "Mostrar ventana al inicio"
-    },
-    "upModal": {
-      "textA": [
-        "Comprobando actualizaciones...",
-        "Nueva versión disponible",
-        "Actualizado"
-      ],
-      "textB": [
-        "Actualizando...",
-        "Ver actualización",
-        "Buscar actualizaciones"
-      ],
-      "title": "Nueva versión disponible:",
-      "cancelText": "Cancelar",
-      "okText": "Actualizar",
-      "upData": "Registro de Actualizaciones",
-      "noText": "Omitir esta actualización"
-    },
-    "quit": "Salir",
-    "show": "Mostrar",
-    "Time": "Tiempo",
-    "doc": [
-      "Tiempo",
-      "Acerca de",
-      "Desarrollado por: Tuyang (Código abierto y gratuito)",
-      "Documentación:"
-    ]
-  }
+  "Title": "Modo de tema automático",
+  "main": {
+    "open": "Activar",
+    "language": "Idioma",
+    "citiTitle": "Ciudad",
+    "citiError": "¡No se ha seleccionado ninguna ciudad!",
+    "citiPlaceholder": "Buscar ciudad",
+    "winBgEffect": "Material de fondo",
+    "Mica": "Mica",
+    "Acrylic": "Acrílico",
+    "Default": "Predeterminado",
+    "TabsOptionA": "Amanecer a Atardecer",
+    "TabsOptionAError": "¡Error al obtener datos de amanecer/atardecer!",
+    "TabsOptionB": "Tiempo de día",
+    "Autostart": "Iniciar con el sistema",
+    "StartShow": "Mostrar ventana al inicio"
+  },
+  "upModal": {
+    "textA": [
+      "Comprobando actualizaciones...",
+      "Nueva versión disponible",
+      "Actualizado"
+    ],
+    "textB": [
+      "Actualizando...",
+      "Ver actualización",
+      "Buscar actualizaciones"
+    ],
+    "title": "Nueva versión disponible:",
+    "cancelText": "Cancelar",
+    "okText": "Actualizar",
+    "upData": "Registro de Actualizaciones",
+    "noText": "Omitir esta actualización"
+  },
+  "quit": "Salir",
+  "show": "Mostrar",
+  "Time": "Tiempo",
+  "doc": [
+    "Tiempo",
+    "Acerca de",
+    "Desarrollado por: Tuyang (Código abierto y gratuito)",
+    "Documentación:"
+  ]
+}

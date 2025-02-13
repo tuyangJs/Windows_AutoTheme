@@ -21,9 +21,6 @@ h5 {
   -webkit-app-region: drag;
   /* 设置此区域为可拖动 */
   flex: 1;
-  top: 0;
-  width: -webkit-fill-available;
-  position: absolute;
   padding-inline: 6px;
   padding-block: 4px;
   border-bottom: 1px solid #000000;
@@ -35,6 +32,7 @@ h5 {
 
 .logo {
   width: 26px;
+  
 }
 
 .ant-divider {
@@ -80,7 +78,7 @@ input:focus {
 
 .container {
   margin: 0;
-  margin-block-start: 38px;
+/*   margin-block-start: 38px; */
   margin-inline: 12px;
   display: flex;
   flex-direction: column;

@@ -168,7 +168,13 @@ const Mainoption: MainopType = ({
         </Flex>
     )
     const Times: React.FC<TimesProps> = ({ disabled }) => ( //渲染时间选择器
-        <RangePicker variant="filled" disabled={disabled} defaultValue={[startTime, endTime]} format={format} onChange={handleTimeChange} />
+        <RangePicker
+            variant="filled"
+            disabled={disabled}
+            style={{width:200}}
+            defaultValue={[startTime, endTime]}
+            format={format}
+            onChange={handleTimeChange} />
     );
 
     const mains: mainsType[] = [ //  全部选项数据
@@ -196,7 +202,6 @@ const Mainoption: MainopType = ({
             value: AppData?.rcrl,
             loading: rcOpenLoad,
             change: (e: boolean) => {
-                setRadios(e ? '' : 'dark')
                 setData({ rcrl: e })
             }
         },
@@ -215,8 +220,9 @@ const Mainoption: MainopType = ({
                 onChange={e => setData({ winBgEffect: e })
                 }
                 options={[
-                    { value: 'Mica', label: locale?.main?.winBgEffectOptionA },
-                    { value: 'Acrylic', label: locale?.main?.winBgEffectOptionB },
+                    { value: 'Default', label: locale?.main?.Default },
+                    { value: 'Mica', label: locale?.main?.Mica },
+                    { value: 'Acrylic', label: locale?.main?.Acrylic },
                 ]}
             />
         },

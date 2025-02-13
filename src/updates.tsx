@@ -103,6 +103,7 @@ const Updates: React.FC<Props> = ({ version, locale, setData, AppData }) => {
   return (
     <>
       <Flex justify="center" align="center" gap={8}>
+  
         {
           btnLoad ? <Text >{upModal?.textA[0]}</Text> :
             update ? (
