@@ -1,12 +1,12 @@
 import { enable, disable } from "@tauri-apps/plugin-autostart"
-import { Input, AutoComplete, AutoCompleteProps, TimePicker, Button, Flex, Segmented, Tooltip } from "antd"
+import { Input, AutoComplete, AutoCompleteProps, TimePicker, Button, Flex, Segmented } from "antd"
 import dayjs from "dayjs"
 import { AppCiti, Sunrise } from "./sociti"
 import { AppDataType, TimesProps } from "../Type"
 import type { MessageInstance } from "antd/es/message/interface"
 import { useRequest, useUpdateEffect } from "ahooks"
 import { useEffect, useState } from "react"
-import Icon, { EnvironmentOutlined, HistoryOutlined, LoadingOutlined, SunOutlined } from "@ant-design/icons"
+import { EnvironmentOutlined, LoadingOutlined } from "@ant-design/icons"
 import { invoke } from "@tauri-apps/api/core"
 
 export interface mainsType {
@@ -48,8 +48,6 @@ const Mainoption: MainopType = ({
     locale,
     options,
     getCity,
-    Radios,
-    setRadios,
     Language,
     setWeather
 }) => {

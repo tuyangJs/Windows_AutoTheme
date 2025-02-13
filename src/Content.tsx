@@ -1,7 +1,6 @@
-import { Divider, Flex, Radio, Segmented, Switch, Typography } from "antd";
+import { Divider, Flex, Segmented, Switch, Typography } from "antd";
 import type { mainsType } from "./mod/Mainoption";
 import React from "react";
-import Icon from "@ant-design/icons";
 
 export interface props {
     mains: mainsType[];
