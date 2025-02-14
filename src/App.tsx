@@ -59,16 +59,24 @@ function App() {
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
-    appWindow.onFocusChanged(async e => {
-      if (e.payload && await appWindow.isVisible()) {
+    const visibilitychange = () => {
+      if (document.visibilityState === 'visible') {
+        console.log('页面变得可见');
         setMainShow(true)
         Webview.show()
+        // 页面变得可见时执行的代码
+      } else {
+        console.log('页面变得不可见');
+        setMainShow(false)
       }
-    })
+    }
+    visibilitychange()
+    //监听页面是否可视
+    document.addEventListener('visibilitychange', visibilitychange);
     //隐藏窗口
     appWindow.onCloseRequested(e => {
       e.preventDefault()
-      setMainShow(false)
+
       setTimeout(() => {
         appWindow.hide()
         saveWindowState(StateFlags.ALL)
@@ -76,6 +84,9 @@ function App() {
       }, 22);
 
     })
+    return () => {
+      document.removeEventListener('visibilitychange', visibilitychange);
+    }
   }, [])
   useUpdateEffect(() => { //同步设置
     setData({ Radios })
@@ -115,7 +126,7 @@ function App() {
       const types = AppData.winBgEffect === 'Acrylic' ? Effect.Acrylic : (themeDack ? Effect.Mica : Effect.Tabbed)
       appWindow.setEffects({ effects: [types] })
     }
-  }, [AppData?.winBgEffect,themeDack])
+  }, [AppData?.winBgEffect, themeDack])
   useEffect(() => { //初始化 -主题自适应
     const handleChange = function (this: any) {
       //appWindow.setTheme('')
