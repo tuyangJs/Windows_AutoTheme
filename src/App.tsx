@@ -22,6 +22,7 @@ import { getVersion } from '@tauri-apps/api/app';
 import { isEnabled } from "@tauri-apps/plugin-autostart";
 import { listen } from "@tauri-apps/api/event";
 import { saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
+import { app } from "@tauri-apps/api";
 
 async function fetchAppVersion() {
   try {
@@ -55,7 +56,7 @@ function App() {
   const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
   const [spinning, setSpinning] = useState(true)
   const [Weather, setWeather] = useState('')
-  const [MainShow, setMainShow] = useState(false)
+  const [MainShow, setMainShow] = useState(document.visibilityState === 'visible')
   const [messageApi, contextHolder] = message.useMessage();
 
   useEffect(() => {
@@ -63,26 +64,30 @@ function App() {
       if (document.visibilityState === 'visible') {
         console.log('页面变得可见');
         setMainShow(true)
-        Webview.show()
         // 页面变得可见时执行的代码
       } else {
         console.log('页面变得不可见');
         setMainShow(false)
       }
     }
-    visibilitychange()
+    //监听窗口是否
+    appWindow.onFocusChanged((e) => {
+      if (e.payload) {
+        Webview.show()
+      } else {
+        //visibilitychange()
+      }
+    });
     //监听页面是否可视
     document.addEventListener('visibilitychange', visibilitychange);
     //隐藏窗口
     appWindow.onCloseRequested(e => {
       e.preventDefault()
-
+      saveWindowState(StateFlags.ALL)
       setTimeout(() => {
         appWindow.hide()
-        saveWindowState(StateFlags.ALL)
         Webview.hide()
       }, 22);
-
     })
     return () => {
       document.removeEventListener('visibilitychange', visibilitychange);
