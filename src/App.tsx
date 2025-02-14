@@ -22,8 +22,6 @@ import { getVersion } from '@tauri-apps/api/app';
 import { isEnabled } from "@tauri-apps/plugin-autostart";
 import { listen } from "@tauri-apps/api/event";
 import { saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
-import { app } from "@tauri-apps/api";
-
 async function fetchAppVersion() {
   try {
     const version = await getVersion();
@@ -33,7 +31,6 @@ async function fetchAppVersion() {
     return '0.1.1'
   }
 }
-
 const version = await fetchAppVersion();
 
 const appWindow = new Window('main');
