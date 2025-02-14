@@ -1,5 +1,5 @@
 ---
-name: Bug Report
+name: Bug 反馈
 about: Create a report to help us improve
 title: "[BUG]"
 labels: bug
@@ -23,7 +23,6 @@ assignees: ''
 如果适用，添加屏幕截图以帮助解释您的问题。
 
 **环境信息（请填写以下信息）：**
-- 操作系统: [例如 Windows]
 - 程序版本 [例如 1.4.0]
 - 系统版本 [例如 Windows11 24H2]
 
