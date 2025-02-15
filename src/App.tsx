@@ -7,8 +7,6 @@ import { useUpdateEffect } from "ahooks";
 import LanguageApp from './language/index'
 import Docs from './doc'
 import { LoadingOutlined } from "@ant-design/icons";
-import { Window, Effect } from '@tauri-apps/api/window'; // 引入 appWindow
-import { getCurrentWebview } from '@tauri-apps/api/webview';
 import { Updates } from './updates'
 import { ThemeFun } from './mod/ThemeConfig'
 import Mainoption from "./mod/Mainoption";
@@ -20,8 +18,8 @@ import { invoke } from "@tauri-apps/api/core";
 import { AppDataType } from "./Type";
 import { getVersion } from '@tauri-apps/api/app';
 import { isEnabled } from "@tauri-apps/plugin-autostart";
-import { listen } from "@tauri-apps/api/event";
-import { saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
+
+import { MainWindow, WindowBg } from "./mod/WindowCode";
 async function fetchAppVersion() {
   try {
     const version = await getVersion();
@@ -33,15 +31,6 @@ async function fetchAppVersion() {
 }
 const version = await fetchAppVersion();
 
-const appWindow = new Window('main');
-const Webview = await getCurrentWebview()
-listen("show-app", async () => {
-  Webview.show()
-});
-listen("close-app", async () => {
-  console.log("收到后端关闭指令，正在退出应用...");
-  await appWindow.destroy();
-});
 
 
 const { Content } = Layout;
@@ -56,40 +45,7 @@ function App() {
   const [MainShow, setMainShow] = useState(document.visibilityState === 'visible')
   const [messageApi, contextHolder] = message.useMessage();
 
-  useEffect(() => {
-    const visibilitychange = () => {
-      if (document.visibilityState === 'visible') {
-        console.log('页面变得可见');
-        setMainShow(true)
-        // 页面变得可见时执行的代码
-      } else {
-        console.log('页面变得不可见');
-        setMainShow(false)
-      }
-    }
-    //监听窗口是否
-    appWindow.onFocusChanged((e) => {
-      if (e.payload) {
-        Webview.show()
-      } else {
-        //visibilitychange()
-      }
-    });
-    //监听页面是否可视
-    document.addEventListener('visibilitychange', visibilitychange);
-    //隐藏窗口
-    appWindow.onCloseRequested(e => {
-      e.preventDefault()
-      saveWindowState(StateFlags.ALL)
-      setTimeout(() => {
-        appWindow.hide()
-        Webview.hide()
-      }, 22);
-    })
-    return () => {
-      document.removeEventListener('visibilitychange', visibilitychange);
-    }
-  }, [])
+ 
   useUpdateEffect(() => { //同步设置
     setData({ Radios })
   }, [Radios])
@@ -111,7 +67,7 @@ function App() {
     AppData,
     setWeather
   })
-
+  MainWindow(setMainShow,AppData as AppDataType)
   useUpdateEffect(() => {
     if (AppData?.open) {
       StartRady()
@@ -124,10 +80,7 @@ function App() {
   }, [AppData?.city, AppData?.rcrl])
   //设置窗口材料
   useEffect(() => {
-    if (AppData?.winBgEffect) {
-      const types = AppData.winBgEffect === 'Acrylic' ? Effect.Acrylic : (themeDack ? Effect.Mica : Effect.Tabbed)
-      appWindow.setEffects({ effects: [types] })
-    }
+    WindowBg(AppData as AppDataType, themeDack)
   }, [AppData?.winBgEffect, themeDack])
   useEffect(() => { //初始化 -主题自适应
     const handleChange = function (this: any) {
@@ -138,12 +91,6 @@ function App() {
     matchMedia.addEventListener('change', handleChange);
     if (AppData?.open) {
       StartRady()
-    }
-    if (AppData?.StartShow) {
-      appWindow.show()
-      setMainShow(true)
-    } else {
-      // appWindow.hide()
     }
     const isAutostart = async () => {
       setData({ Autostart: await isEnabled() })

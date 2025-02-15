@@ -115,7 +115,7 @@ export interface UpdateType {
       } else {
         // 正式版逻辑，只检测正式发布（排除 draft 与 prerelease）
         const officialReleases = releases.filter((r: any) => !r.prerelease && !r.draft);
-        console.log("筛选出的正式版本:", officialReleases.map((r: any) => formatVersion(r.tag_name)));
+       // console.log("筛选出的正式版本:", officialReleases.map((r: any) => formatVersion(r.tag_name)));
         if (officialReleases.length === 0) return null;
         officialReleases.sort((a: any, b: any) => compareVersions(formatVersion(a.tag_name), formatVersion(b.tag_name)));
         const latestOfficial = officialReleases[officialReleases.length - 1];
