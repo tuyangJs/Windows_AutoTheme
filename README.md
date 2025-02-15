@@ -31,8 +31,7 @@
 ## 截图
 
 <div align="center">
-  <img src="pshotA.png" alt="Screenshot 1" width="45%" style="margin-right: 5%;">
- 
+  <img src="https://github.com/user-attachments/assets/5f0c5730-a398-482c-8e6c-e49067d2fe24" alt="pshotA.png" width="45%" style="margin-right: 5%;">
 </div>
 
 ---
