@@ -1,6 +1,7 @@
 import { useLocalStorageState } from "ahooks";
 import { AppDataType } from "../Type";
 import { isEnabled } from "@tauri-apps/plugin-autostart";
+import { isWin11 } from "./ThemeConfig";
 const SystemStart = await isEnabled()
 const DataSave = () => {
     const [AppData, setAppData] = useLocalStorageState<AppDataType>('Data', {
@@ -14,7 +15,7 @@ const DataSave = () => {
             language: '',
             StartShow: true,
             Skipversion: '',
-            winBgEffect: 'Mica'
+            winBgEffect: isWin11 ? 'Mica' : 'Default'
         }
     })
 

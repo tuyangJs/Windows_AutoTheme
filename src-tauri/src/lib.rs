@@ -216,6 +216,7 @@ pub fn run() {
     let rt = tokio::runtime::Runtime::new().unwrap();
     rt.block_on(async {
         tauri::Builder::default()
+            .plugin(tauri_plugin_os::init())
             .plugin(
                 tauri_plugin_log::Builder::new()
                     .targets([

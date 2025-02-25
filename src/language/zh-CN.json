@@ -10,7 +10,7 @@
         "Mica":"云母",
         "Acrylic":"亚克力",
         "Default":"默认",
-        "TabsOptionA": "日夜自动切换主题",
+        "TabsOptionA": "日出到日落",
         "TabsOptionAError":"获取日出日落信息失败！",
         "TabsOptionB": "白天时间",
         "Autostart": "跟随系统启动",

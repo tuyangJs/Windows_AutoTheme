@@ -10,7 +10,7 @@
       "Mica":"マイカ",
       "Acrylic":"アクリル",
       "Default":"デフォルト",
-      "TabsOptionA": "日の出から日没まで",
+      "TabsOptionA": "日の出～日の入り",
       "TabsOptionAError": "日の出/日没データの取得に失敗しました！",
       "TabsOptionB": "昼間",
       "Autostart": "システム起動時に開始",

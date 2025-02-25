@@ -8,6 +8,7 @@ import { useRequest, useUpdateEffect } from "ahooks"
 import { useEffect, useState } from "react"
 import { EnvironmentOutlined, LoadingOutlined } from "@ant-design/icons"
 import { invoke } from "@tauri-apps/api/core"
+import { isWin11 } from "./ThemeConfig"
 
 export interface mainsType {
     key: string;
@@ -169,7 +170,7 @@ const Mainoption: MainopType = ({
         <RangePicker
             variant="filled"
             disabled={disabled}
-            style={{width:200}}
+            style={{ width: 200 }}
             defaultValue={[startTime, endTime]}
             format={format}
             onChange={handleTimeChange} />
@@ -219,8 +220,8 @@ const Mainoption: MainopType = ({
                 }
                 options={[
                     { value: 'Default', label: locale?.main?.Default },
-                    { value: 'Mica', label: locale?.main?.Mica },
-                    { value: 'Acrylic', label: locale?.main?.Acrylic },
+                    { value: 'Mica', label: locale?.main?.Mica, disabled: !isWin11 },
+                    { value: 'Acrylic', label: locale?.main?.Acrylic, disabled: !isWin11 },
                 ]}
             />
         },
