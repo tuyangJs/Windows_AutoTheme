@@ -1,6 +1,6 @@
 # Windows AutoTheme
 <div align="center">
- <img src="src\assets\logo.svg" alt="Screenshot 2" width="212px">
+ <img src="https://github.com/user-attachments/assets/c3cdbcf6-6bdc-4e91-a84a-55ef109c60f5" alt="Screenshot 1" width="100%">
 
  #### Language: [中文](/README.md) | [English](/README-English.md)
  </div>
@@ -12,7 +12,7 @@
 **Windows AutoTheme** 是一个轻量级的 Windows 主题自动切换工具，支持系统在日间使用浅色模式，夜间切换为深色模式。<br />
 该项目利用 Rust 构建后端代码来执行系统操作，并采用 TypeScript 与 Ant Design 5 构建前端界面。<br />同时，它通过内置免费 API 获取日出和日落数据，实现智能自动切换主题模式。
 <div align="center">
- <img src="winset.png" alt="Screenshot 2" width="45%">
+  <img src="https://github.com/user-attachments/assets/8ed6411d-cc19-4884-a2b6-8d0d65f64078" alt="Screenshot 2"  width="55%">
  </div>
 
 ---
