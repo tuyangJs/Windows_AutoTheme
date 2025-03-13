@@ -33,6 +33,7 @@ export type MainopType = (e: {
     Radios: string
     Language: JSX.Element
     setWeather: React.Dispatch<React.SetStateAction<string>>
+    themeDack: boolean
 }) => {
     openRc: () => Promise<void>,
     mains: mainsType[],
@@ -50,7 +51,8 @@ const Mainoption: MainopType = ({
     options,
     getCity,
     Language,
-    setWeather
+    setWeather,
+    themeDack
 }) => {
     const [rcOpenLoad, setRcOpenLoad] = useState(false)
     const [startOpenLoad, setStartOpenLoad] = useState(false)
@@ -67,7 +69,12 @@ const Mainoption: MainopType = ({
         manual: true,
     });
     const upTary = (e: string) => { //更新托盘数据
-        invoke('update_tray_menu_item_title', { quit: locale?.quit, show: locale?.show, tooltip: e })
+        invoke('update_tray_menu_item_title', {
+            quit: locale?.quit,
+            show: locale?.show,
+            tooltip: e,
+            switch: `${locale?.switch}${themeDack ? locale.light : locale.dark}`
+        })
     }
     const openRc = async () => { //处理日出日落数据
         setRcOpenLoad(true)
@@ -105,6 +112,8 @@ const Mainoption: MainopType = ({
                 setCitiname(names)
                 setData({ city: { id: err?.id, name: names }, rcrl: true })
                 setWeather(citiID.abstract)
+
+
             }
 
         }
@@ -117,7 +126,7 @@ const Mainoption: MainopType = ({
             upTary(tooltip)
         }
 
-    }, [locale, AppData?.times])
+    }, [locale, AppData?.times, themeDack])
     useUpdateEffect(() => { //只要首次运行时才会启动
         run()
         CitiInit(AppData?.city?.id)

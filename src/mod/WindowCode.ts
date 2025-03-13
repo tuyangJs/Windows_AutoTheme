@@ -20,6 +20,7 @@ listen("show-app", async () => {
   console.log("显示程序");
   Webview.show()
 });
+
 listen("close-app", async () => {
   console.log("收到后端关闭指令，正在退出应用...");
   appWindow.hide()

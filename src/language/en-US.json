@@ -36,6 +36,9 @@
     "quit": "Quit",
     "show": "Show",
     "Time": "Time",
+    "dark":"dark",
+    "light":"light",
+    "switch": "switch to ",
     "doc": [
       "Weather",
       "About",

@@ -15,7 +15,6 @@ const { Text } = Typography;
 interface Props {
     config: AliasToken
     themeDack: boolean
-    setThemeDack: any
     locale: any
     setSpinning: React.Dispatch<React.SetStateAction<boolean>>
     spinning: boolean

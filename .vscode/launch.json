@@ -2,9 +2,9 @@
     "configurations": [
         {
             "type": "node-terminal",
-            "name": "启动调试",
+            "name": "Devbug",
             "request": "launch",
-            "command": "npm run start",
+            "command": "npm start",
             "cwd": "${workspaceFolder}"
         }
     ]

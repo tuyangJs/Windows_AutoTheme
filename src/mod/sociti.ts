@@ -20,15 +20,9 @@ const extractSunMoonData = (text: string) => {
     return { hid, abstract }; // 解析失败时仍返回基本数据
 };
 
-
-
 const GetHttp = async (url: string) => {
     const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Accept': 'application/json, text/html', // 允许 JSON 和 HTML
-            'Accept-Encoding': 'identity',
-        }
+        method: 'GET'
     });
 
     if (response.ok) {

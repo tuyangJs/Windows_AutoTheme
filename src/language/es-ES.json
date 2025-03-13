@@ -36,6 +36,9 @@
   "quit": "Salir",
   "show": "Mostrar",
   "Time": "Tiempo",
+  "dark":"oscuro",
+  "light":"claro",
+  "switch": "cambiar a ",
   "doc": [
     "Tiempo",
     "Acerca de",

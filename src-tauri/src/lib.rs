@@ -5,7 +5,7 @@ use std::sync::Mutex;
 use tauri::command;
 use tauri::window::{Effect, EffectState, EffectsBuilder};
 use tauri::{
-    menu::{Menu, MenuItem},
+    menu::{Menu, MenuItem, PredefinedMenuItem},
     tray::{MouseButton, TrayIcon, TrayIconBuilder, TrayIconEvent},
 };
 use tauri::{AppHandle, Emitter, Manager, State};
@@ -124,8 +124,8 @@ fn send_event(app_handle: &AppHandle) {
     });
 }
 fn create_system_tray(app: &AppHandle) -> tauri::Result<()> {
-    let quit_i = MenuItem::with_id(app, "quit", "退出", true, None::<&str>)?;
-    let show_i = MenuItem::with_id(app, "show", "显示窗口", true, None::<&str>)?;
+    let quit_i = MenuItem::with_id(app, "quit", "quit", true, None::<&str>)?;
+    let show_i = MenuItem::with_id(app, "show", "show", true, None::<&str>)?;
     let menu = Menu::with_items(app, &[&show_i, &quit_i])?;
     let trays = TrayIconBuilder::new()
         .menu(&menu)
@@ -139,6 +139,10 @@ fn create_system_tray(app: &AppHandle) -> tauri::Result<()> {
             }
             "show" => {
                 show_window(&tray.app_handle());
+            }
+            "switch" => {
+                println!("切换系统主题...");
+                tray.app_handle().emit("switch", "switch").unwrap();
             }
             _ => {
                 println!("menu item {:?} not handled", event.id);
@@ -161,7 +165,13 @@ fn create_system_tray(app: &AppHandle) -> tauri::Result<()> {
     Ok(())
 }
 #[tauri::command]
-fn update_tray_menu_item_title(app: tauri::AppHandle, quit: String, show: String, tooltip: String) {
+fn update_tray_menu_item_title(
+    app: tauri::AppHandle,
+    quit: String,
+    show: String,
+    tooltip: String,
+    switch: String,
+) {
     let app_handle = app.app_handle();
     let state: State<AppState> = app.state();
     // 获取托盘
@@ -190,8 +200,23 @@ fn update_tray_menu_item_title(app: tauri::AppHandle, quit: String, show: String
             return;
         }
     };
+    // 创建菜单项
+    let switch = match MenuItem::with_id(app_handle, "switch", switch, true, None::<&str>) {
+        Ok(item) => item,
+        Err(e) => {
+            eprintln!("Failed to create menu item: {}", e);
+            return;
+        }
+    };
+    let separator = match PredefinedMenuItem::separator(app_handle) {
+        Ok(item) => item,
+        Err(e) => {
+            eprintln!("Failed to create menu item: {}", e);
+            return;
+        }
+    };
     // 创建菜单
-    let menu = match Menu::with_items(app_handle, &[&show_i, &quit_i]) {
+    let menu = match Menu::with_items(app_handle, &[&show_i, &switch, &separator, &quit_i]) {
         Ok(menu) => menu,
         Err(e) => {
             eprintln!("Failed to create menu: {}", e);

@@ -20,6 +20,7 @@ import { getVersion } from '@tauri-apps/api/app';
 import { isEnabled } from "@tauri-apps/plugin-autostart";
 
 import { MainWindow, WindowBg } from "./mod/WindowCode";
+import { listen } from "@tauri-apps/api/event";
 async function fetchAppVersion() {
   try {
     const version = await getVersion();
@@ -34,6 +35,7 @@ const version = await fetchAppVersion();
 
 
 const { Content } = Layout;
+
 function App() {
   const { setData, AppData } = DataSave()
   const [Radios, setRadios] = useState<string>('dark');
@@ -45,7 +47,7 @@ function App() {
   const [MainShow, setMainShow] = useState(document.visibilityState === 'visible')
   const [messageApi, contextHolder] = message.useMessage();
 
- 
+
   useUpdateEffect(() => { //同步设置
     setData({ Radios })
   }, [Radios])
@@ -65,9 +67,40 @@ function App() {
     Radios,
     Language,
     AppData,
-    setWeather
+    setWeather,
+    themeDack
   })
-  MainWindow(setMainShow,AppData as AppDataType)
+  MainWindow(setMainShow, AppData as AppDataType)
+  useEffect(() => {
+    let isMounted = true;
+
+    const setupListener = async () => {
+      const unlisten = await listen("switch", () => {
+        if (!isMounted) return;
+
+        console.log("switch dark", !themeDack);
+        if (spinning) return;
+        setSpinning(true);
+        setTimeout(async () => {
+          await invoke('set_system_theme', { isLight: themeDack });
+        }, 10);
+      });
+
+      // 返回清理函数以移除事件监听器
+      return () => {
+        isMounted = false;
+        unlisten();
+      };
+    };
+
+    const cleanupPromise = setupListener();
+
+    // 返回一个清理函数来处理异步操作的清理
+    return () => {
+      cleanupPromise.then(cleanup => cleanup());
+    };
+  }, [themeDack, spinning]);
+
   useUpdateEffect(() => {
     if (AppData?.open) {
       StartRady()
@@ -191,7 +224,6 @@ function App() {
             config={antdToken}
             Themeconfig={Themeconfig}
             themeDack={themeDack}
-            setThemeDack={setThemeDack}
           />
           <Layout>
             <Content className="container">
