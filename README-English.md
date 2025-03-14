@@ -24,6 +24,7 @@
 <div align="center">
   <img src="https://github.com/user-attachments/assets/8ed6411d-cc19-4884-a2b6-8d0d65f64078" alt="Screenshot 2"  width="55%">
  </div>
+
 ---
 
 ## Installation and Usage
