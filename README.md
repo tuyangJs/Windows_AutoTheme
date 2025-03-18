@@ -36,6 +36,12 @@
 
 ---
 
+## 打赏
+
+<img src="https://github.com/user-attachments/assets/1be236a6-504a-4beb-b76c-ba6192730ef3" alt="支付宝.png" width="45%" style="margin-right: 5%;">
+<img src="https://github.com/user-attachments/assets/5e6f50f5-6712-429a-8c7f-d6ceb87a6cd6" alt="微信.png" width="45%" style="margin-right: 5%;">
+
+
 ## 安装与使用
 
 ### 使用前提
