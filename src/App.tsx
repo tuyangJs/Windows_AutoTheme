@@ -39,7 +39,6 @@ const { Content } = Layout;
 
 function App() {
   const { setData, AppData } = DataSave()
-  const [Radios, setRadios] = useState<string>('dark');
   const matchMedia = window.matchMedia('(prefers-color-scheme: light)');
   const [themeDack, setThemeDack] = useState(!matchMedia.matches);
   const [options, setOptions] = useState<AutoCompleteProps['options']>([]);
@@ -48,10 +47,6 @@ function App() {
   const [MainShow, setMainShow] = useState(document.visibilityState === 'visible')
   const [messageApi, contextHolder] = message.useMessage();
 
-
-  useUpdateEffect(() => { //同步设置
-    setData({ Radios })
-  }, [Radios])
 
   const { Language, locale } = LanguageApp({ AppData, setData })
   //----EDN ---- Language
@@ -64,8 +59,6 @@ function App() {
     locale,
     options,
     getCity,
-    setRadios,
-    Radios,
     Language,
     AppData,
     setWeather,
@@ -236,7 +229,7 @@ function App() {
           <Layout>
             <Content className="container">
               <Flex gap={0} vertical >
-                <OpContent mains={mains} Radios={Radios} setRadios={setRadios} />
+                <OpContent mains={mains}  />
                 <Docs locale={locale} version={version} Weather={Weather} />
                 <Updates locale={locale} version={version} setData={setData} AppData={AppData as AppDataType} />
               </Flex>

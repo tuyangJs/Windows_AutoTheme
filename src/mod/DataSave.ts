@@ -6,7 +6,6 @@ const SystemStart = await isEnabled()
 const DataSave = () => {
     const [AppData, setAppData] = useLocalStorageState<AppDataType>('Data', {
         defaultValue: {
-            Radios: "rcrl",
             open: false,
             rcrl: false,
             city: { id: "", name: '' },

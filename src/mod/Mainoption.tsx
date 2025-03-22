@@ -29,8 +29,6 @@ export type MainopType = (e: {
     locale: any;
     options: AutoCompleteProps['options']
     getCity: (search?: string) => Promise<void>
-    setRadios: React.Dispatch<React.SetStateAction<string>>
-    Radios: string
     Language: JSX.Element
     setWeather: React.Dispatch<React.SetStateAction<string>>
     themeDack: boolean
