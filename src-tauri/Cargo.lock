@@ -4,7 +4,7 @@ version = 4
 
 [[package]]
 name = "AutoThemeMode"
-version = "1.4.5"
+version = "1.5.0"
 dependencies = [
  "chrono",
  "serde",

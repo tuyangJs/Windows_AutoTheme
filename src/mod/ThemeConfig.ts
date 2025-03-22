@@ -57,6 +57,8 @@ const ThemeFun = (themeDack: boolean, winBgEffect: AppDataType['winBgEffect'] | 
             }
         },
         token: {
+            borderRadius:14,
+            borderRadiusOuter:16,
             colorPrimary: '#ff8c00',
             colorBgLayout: BgLayout,
             colorBgBase: themeDack ? '#00000096' : '#ffffff96',

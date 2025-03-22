@@ -15,7 +15,9 @@ const DataSave = () => {
             language: '',
             StartShow: true,
             Skipversion: '',
-            winBgEffect: isWin11 ? 'Mica' : 'Default'
+            winBgEffect: isWin11 ? 'Mica' : 'Default',
+            deviation: 15,
+            rawTime:[""]
         }
     })
 

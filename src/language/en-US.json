@@ -14,7 +14,9 @@
       "TabsOptionAError": "Failed to get sunrise/sunset data!",
       "TabsOptionB": "Day Theme Time",
       "Autostart": "Start with system",
-      "StartShow": "Show window on startup"
+      "StartShow": "Show window on startup",
+      "deviationTitle": "Time Deviation",
+      "deviationPrompt": "Adjust daylight time by numerical value (unit: minutes). Delays sunrise, advances sunset."
     },
     "upModal": {
       "textA": [
@@ -38,7 +40,7 @@
     "Time": "Time",
     "dark":"dark",
     "light":"light",
-    "switch": "switch to ",
+    "switch": "Switch to ",
     "doc": [
       "Weather",
       "About",

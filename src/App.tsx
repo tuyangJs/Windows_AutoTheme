@@ -21,6 +21,7 @@ import { isEnabled } from "@tauri-apps/plugin-autostart";
 
 import { MainWindow, WindowBg } from "./mod/WindowCode";
 import { listen } from "@tauri-apps/api/event";
+import { adjustTime } from "./mod/adjustTime";
 async function fetchAppVersion() {
   try {
     const version = await getVersion();
@@ -106,6 +107,13 @@ function App() {
       StartRady()
     }
   }, [AppData?.times, AppData?.open])
+  useEffect(() => {
+    if (AppData?.rawTime?.length === 2) {
+      const rise = adjustTime(AppData?.rawTime[0], AppData?.deviation)
+      const sun = adjustTime(AppData?.rawTime[1], -AppData?.deviation)
+      setData({ times: [rise, sun] })
+    }
+  }, [AppData?.rawTime,AppData?.deviation])
   useEffect(() => { //自动化获取日出日落数据
     if (AppData?.rcrl) {
       openRc()

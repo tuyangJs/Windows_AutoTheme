@@ -12,13 +12,13 @@ const Content: React.FC<props> = ({ mains, Radios, setRadios }) => (
     <>
         {mains.map((item, i) => {
             // 只有当 item.hide 为 false 或者 当前选中的选项匹配时才渲染
-            if (item.hide && item.key !== Radios) {
+            if (item.hide ) {
                 return null;
             }
             return (
                 <React.Fragment key={`s-${i}`}>
                     {i > 0 ? <Divider key={i} /> : null}
-                    <Flex key={'a' + item.key || i} justify='space-between' align="center">
+                    <Flex key={'a' + item.key || i} justify='space-between' align="center" gap={8}>
                         <Text>{item.label}</Text>
                         {
                             // 如果 change 是数组，渲染单选框

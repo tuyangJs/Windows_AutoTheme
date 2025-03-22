@@ -32,7 +32,7 @@ h5 {
 
 .logo {
   width: 26px;
-  
+
 }
 
 .ant-divider {
@@ -44,22 +44,38 @@ h5 {
   padding: 8px;
 }
 
+button.titlebar {
+  height: auto;
+  padding-inline: 10px !important;
+}
+
+.ant-btn {
+  border: 0px solid transparent;
+}
+
+.ant-btn .ant-btn-icon{
+  line-height: 19px;
+}
 .ant-segmented-group {
   gap: 2px;
 }
-.ant-segmented-item-label,.segmented-xs{
-  min-height: 24px !important;
+
+.ant-segmented-item-label,
+.segmented-xs {
+  /*  min-height: 24px !important;
   line-height: 24px !important;
-  padding: 0 7px !important;
+  padding: 0 7px !important; */
 }
 
 
 .ant-typography {
   margin-bottom: 1px !important
 }
-button:hover{
+
+button:hover {
   box-shadow: var(--shadow) !important;
 }
+
 input:focus {
   box-shadow: var(--shadow);
 }
@@ -78,7 +94,7 @@ input:focus {
 
 .container {
   margin: 0;
-/*   margin-block-start: 38px; */
+  /*   margin-block-start: 38px; */
   margin-inline: 12px;
   display: flex;
   flex-direction: column;

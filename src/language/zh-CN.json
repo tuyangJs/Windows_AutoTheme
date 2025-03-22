@@ -14,7 +14,9 @@
         "TabsOptionAError":"获取日出日落信息失败！",
         "TabsOptionB": "白天时间",
         "Autostart": "跟随系统启动",
-        "StartShow": "启动时显示窗口"
+        "StartShow": "启动时显示窗口",
+        "deviationTitle":"时间偏差",
+        "deviationPrompt":"根据数值偏移白天时间（单位：分钟）日出时间增加、日落时间提早。"
     },
     "upModal": {
         "textA": [

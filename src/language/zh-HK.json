@@ -14,7 +14,9 @@
         "TabsOptionAError": "日出日落獲取失敗！",
         "TabsOptionB": "白天時間",
         "Autostart": "跟隨系統啟動",
-        "StartShow": "啟動時顯示視窗"
+        "StartShow": "啟動時顯示視窗",
+        "deviationTitle": "時間偏差",
+        "deviationPrompt": "根據數值調整白天時間（單位：分鐘）。日出時間延後，日落時間提前。"
     },
     "upModal": {
         "textA": [

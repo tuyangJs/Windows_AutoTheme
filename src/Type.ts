@@ -10,6 +10,8 @@ export interface AppDataType {
   StartShow: boolean
   Skipversion: string
   winBgEffect: 'Mica' | 'Acrylic' | 'Default'
+  deviation:number
+  rawTime: string[]
 }
 
 export interface TimesProps {

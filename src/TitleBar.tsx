@@ -33,7 +33,6 @@ if (WinS) {
 const TitleButton: ButtonProps[] = [
     {
         icon: <Mins />,
-        size: 'small',
         shape: "round",
         type: "text",
         onClick: e => {
@@ -43,10 +42,8 @@ const TitleButton: ButtonProps[] = [
         }
     },
     {
-        size: 'small',
         color: "danger",
         shape: "round",
-        variant: "text",
         icon: <Close />,
         onClick: e => {
             // @ts-ignore
@@ -110,6 +107,7 @@ const App: React.FC<Props> = ({ config, Themeconfig, themeDack, locale, setSpinn
                 <Segmented
                     disabled={spinning}
                     shape="round"
+                    size='small'
                     block
                     value={themeDack ? 'Moon' : 'Sun'}
                     options={[
@@ -122,7 +120,11 @@ const App: React.FC<Props> = ({ config, Themeconfig, themeDack, locale, setSpinn
                     }
                 />
                 <Flex
-                    className='ant-segmented ant-segmented-shape-round '
+                    className='ant-segmented ant-segmented-shape-round ant-segmented-sm'
+                    align='center'
+                    style={{
+                        display: 'flex',
+                    }}
                 >
                     {TitleButton.map((item, index) => (
                         <React.Fragment key={`fragment-${index}`}>
@@ -132,6 +134,9 @@ const App: React.FC<Props> = ({ config, Themeconfig, themeDack, locale, setSpinn
                                     type='vertical' />
                                 : null}
                             <Button
+                                size='small'
+                                className='titlebar ant-segmented-item-label'
+                                variant="text"
                                 {...item}
                             />
                         </React.Fragment>

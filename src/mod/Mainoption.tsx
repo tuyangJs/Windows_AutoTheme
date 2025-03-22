@@ -1,5 +1,5 @@
 import { enable, disable } from "@tauri-apps/plugin-autostart"
-import { Input, AutoComplete, AutoCompleteProps, TimePicker, Button, Flex, Segmented } from "antd"
+import { Input, AutoComplete, AutoCompleteProps, TimePicker, Button, Flex, Segmented, Typography } from "antd"
 import dayjs from "dayjs"
 import { AppCiti, Sunrise } from "./sociti"
 import { AppDataType, TimesProps } from "../Type"
@@ -9,7 +9,7 @@ import { useEffect, useState } from "react"
 import { EnvironmentOutlined, LoadingOutlined } from "@ant-design/icons"
 import { invoke } from "@tauri-apps/api/core"
 import { isWin11 } from "./ThemeConfig"
-
+import Deviation from "./Deviation"
 export interface mainsType {
     key: string;
     label: any;
@@ -41,6 +41,7 @@ export type MainopType = (e: {
 }
 
 
+const { Paragraph } = Typography;
 const format = 'HH:mm';
 const { RangePicker } = TimePicker;
 const Mainoption: MainopType = ({
@@ -81,7 +82,9 @@ const Mainoption: MainopType = ({
         if (AppData?.city?.id) {
             const data = await Sunrise(AppData?.city?.id, AppData?.language)
             if (data?.rise && data?.set) {
-                setData({ times: [data.rise, data.set], rcrl: true })
+                const rise = data.rise
+                const sun = data.set
+                setData({ rawTime: [rise, sun], rcrl: true })
                 setRcOpenLoad(false)
                 setWeather(data.abstract)
 
@@ -105,15 +108,15 @@ const Mainoption: MainopType = ({
         setCitiLoad(true)
         if (AppData?.language) { //必须初始语言才会开始自动获取定位
             const citiID = citiids ? { hid: citiids } : await Sunrise('', AppData?.language)
+
             if (citiID?.hid) {
                 const Citiop = await AppCiti(citiID?.hid, AppData?.language)
+
                 const err = Citiop.location?.[0]
                 const names = `${err.adm1} - ${err.name}`
                 setCitiname(names)
                 setData({ city: { id: err?.id, name: names }, rcrl: true })
                 setWeather(citiID.abstract)
-
-
             }
 
         }
@@ -153,7 +156,7 @@ const Mainoption: MainopType = ({
     const Citidiv = ( //城市选择器
         <Flex gap={4}>
             <Button type="text"
-                disabled={CitiLoad}
+                disabled={!AppData?.rcrl || CitiLoad}
                 color="default"
                 //variant="filled"
                 onClick={() => CitiInit()}
@@ -165,7 +168,7 @@ const Mainoption: MainopType = ({
                 value={Citiname}
                 onSelect={confirmCiti}
                 onChange={run}
-                disabled={CitiLoad}
+                disabled={!AppData?.rcrl || CitiLoad}
             >
                 <Input
                     disabled={CitiLoad}
@@ -199,11 +202,7 @@ const Mainoption: MainopType = ({
             label: locale?.main?.language,
             change: Language
         },
-        {
-            key: 'city',
-            label: locale?.main?.citiTitle,
-            change: Citidiv
-        },
+
         {
             key: "rcrl",
             label: locale?.main?.TabsOptionA,
@@ -214,9 +213,42 @@ const Mainoption: MainopType = ({
             }
         },
         {
+            key: 'city',
+            label: locale?.main?.citiTitle,
+            hide: !AppData?.rcrl,
+            change: Citidiv
+        },
+        {
+            key: 'deviation',
+            label: locale?.main?.deviationTitle,
+            hide: !AppData?.rcrl,
+            change: <Deviation
+                value={AppData?.deviation || 20}
+                setVal={(e) => {
+                    setData({ deviation: e });
+                }}
+                prompt={
+                    <Paragraph>
+                        {locale?.main?.deviationPrompt}
+                        <br />
+                        {
+                            `${locale?.main?.TabsOptionB}: 
+                           ${AppData?.rawTime[0]} - ${AppData?.rawTime[1]}
+                           `
+                        }
+                        <br />
+                        {
+                            ` ${locale?.main?.deviationTitle}: 
+                                ${AppData?.times?.[0]} - ${AppData?.times?.[1]} `
+                        }
+                    </Paragraph>
+                }
+            />
+        },
+        {
             key: 'dark',
             label: locale?.main?.TabsOptionB,
-            hide: true,
+            hide: AppData?.rcrl,
             change: <Times disabled={AppData?.rcrl} /> // 渲染时间选择器
         },
         {

@@ -14,7 +14,9 @@
     "TabsOptionAError": "¡Error al obtener datos de amanecer/atardecer!",
     "TabsOptionB": "Tiempo de día",
     "Autostart": "Iniciar con el sistema",
-    "StartShow": "Mostrar ventana al inicio"
+    "StartShow": "Mostrar ventana al inicio",
+    "deviationTitle": "Desviación de tiempo",
+    "deviationPrompt": "Ajuste el tiempo diurno por valor numérico (unidad: minutos). Retrasa el amanecer, adelanta el atardecer. "
   },
   "upModal": {
     "textA": [
@@ -36,9 +38,9 @@
   "quit": "Salir",
   "show": "Mostrar",
   "Time": "Tiempo",
-  "dark":"oscuro",
-  "light":"claro",
-  "switch": "cambiar a ",
+  "dark":"Oscuro",
+  "light":"Claro",
+  "switch": "Cambiar a ",
   "doc": [
     "Tiempo",
     "Acerca de",
