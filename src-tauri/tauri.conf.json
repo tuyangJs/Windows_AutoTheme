@@ -49,8 +49,9 @@
   },
   "bundle": {
     "active": true,
-    "targets": "nsis",
+    "targets": ["nsis","msi"],
     "copyright": "Copyright © 2025 Tuyang All",
+    "homepage": "https://github.com/tuyangJs/Windows_AutoTheme",
     "windows": {
       "nsis": {
         "languages": [

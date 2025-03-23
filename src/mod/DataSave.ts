@@ -31,7 +31,7 @@ const deepMerge = (defaults: any, stored: any): any => {
   }
   return merged;
 };
-
+const navigatorlLanguage = navigator.language.replace('-', '_')
 // 默认应用数据配置
 const defaultAppData: AppDataType = {
   open: false,
@@ -39,7 +39,7 @@ const defaultAppData: AppDataType = {
   city: { id: "", name: '' },
   times: ["6:00", "18:00"],
   Autostart: SystemStart,
-  language: '',
+  language: navigatorlLanguage,
   StartShow: true,
   Skipversion: '',
   winBgEffect: isWin11 ? 'Mica' : 'Default',

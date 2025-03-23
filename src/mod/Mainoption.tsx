@@ -94,11 +94,7 @@ const Mainoption: MainopType = ({
                     })
             }
         } else {
-            messageApi.error(locale.main.citiError)
-                .then(() => {
-                    setData({ rcrl: false })
-                    setRcOpenLoad(false)
-                })
+            CitiInit()
         }
 
     }
