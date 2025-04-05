@@ -32,11 +32,7 @@ async function fetchAppVersion() {
   }
 }
 const version = await fetchAppVersion();
-
-
-
 const { Content } = Layout;
-
 function App() {
   const { setData, AppData } = DataSave()
   const matchMedia = window.matchMedia('(prefers-color-scheme: light)');

@@ -54,7 +54,7 @@ const Updates: React.FC<Props> = ({ version, locale, setData, AppData }) => {
   return (
     <>
       <Flex justify="center" align="center" gap={8}>
-  
+
         {
           btnLoad ? <Text >{upModal?.textA[0]}</Text> :
             update ? (
@@ -76,6 +76,10 @@ const Updates: React.FC<Props> = ({ version, locale, setData, AppData }) => {
         title={`${upModal?.title}${update?.latestVersion}`}
         open={isModalOpen}
         style={{ userSelect: 'text' }}
+        styles={{body:{
+          maxHeight: '62vh',
+          overflowY: 'auto'
+        }}}
         centered
         footer={[
           <Button
