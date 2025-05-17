@@ -23,3 +23,4 @@ dist-ssr
 *.sw?
 Cargo.lock
 package-lock.json
+src-tauri/Cargo.lock

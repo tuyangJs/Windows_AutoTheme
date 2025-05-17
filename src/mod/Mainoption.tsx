@@ -1,5 +1,5 @@
 import { enable, disable } from "@tauri-apps/plugin-autostart"
-import { Input, AutoComplete, AutoCompleteProps, TimePicker, Button, Flex, Segmented, Typography } from "antd"
+import { Input, AutoComplete, AutoCompleteProps, TimePicker, Button, Flex, Segmented } from "antd"
 import dayjs from "dayjs"
 import { AppCiti, Sunrise } from "./sociti"
 import { AppDataType, TimesProps } from "../Type"
@@ -39,7 +39,6 @@ export type MainopType = (e: {
 }
 
 
-const { Paragraph } = Typography;
 const format = 'HH:mm';
 const { RangePicker } = TimePicker;
 const Mainoption: MainopType = ({
@@ -222,7 +221,7 @@ const Mainoption: MainopType = ({
                     setData({ deviation: e });
                 }}
                 prompt={
-                    <Paragraph>
+                    <>
                         {locale?.main?.deviationPrompt}
                         <br />
                         {
@@ -235,7 +234,7 @@ const Mainoption: MainopType = ({
                             ` ${locale?.main?.deviationTitle}: 
                                 ${AppData?.times?.[0]} - ${AppData?.times?.[1]} `
                         }
-                    </Paragraph>
+                    </>
                 }
             />
         },

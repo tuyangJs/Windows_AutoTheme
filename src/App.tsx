@@ -22,6 +22,7 @@ import { isEnabled } from "@tauri-apps/plugin-autostart";
 import { MainWindow, WindowBg } from "./mod/WindowCode";
 import { listen } from "@tauri-apps/api/event";
 import { adjustTime } from "./mod/adjustTime";
+import { AnimatePresence, motion } from "framer-motion";
 async function fetchAppVersion() {
   try {
     const version = await getVersion();
@@ -102,7 +103,7 @@ function App() {
       const sun = adjustTime(AppData?.rawTime[1], -AppData?.deviation)
       setData({ times: [rise, sun] })
     }
-  }, [AppData?.rawTime,AppData?.deviation])
+  }, [AppData?.rawTime, AppData?.deviation])
   useEffect(() => { //自动化获取日出日落数据
     if (AppData?.rcrl) {
       openRc()
@@ -224,11 +225,35 @@ function App() {
           />
           <Layout>
             <Content className="container">
-              <Flex gap={0} vertical >
-                <OpContent mains={mains}  />
-                <Docs locale={locale} version={version} Weather={Weather} />
-                <Updates locale={locale} version={version} setData={setData} AppData={AppData as AppDataType} />
-              </Flex>
+              <AnimatePresence>
+                <Flex gap={0} vertical >
+                  <OpContent mains={mains} />
+                  <motion.div
+                    initial={{ opacity: 0, scale: 3, filter: "blur(5px)" }}
+                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, scale: 0.1, filter: "blur(5px)" }}
+                    transition={{
+                      duration: 0.26,
+                      delay: 0.5,
+                    }}
+                    layout
+                  >
+                    <Docs locale={locale} version={version} Weather={Weather} />
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 3, filter: "blur(5px)" }}
+                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, scale: 0.1, filter: "blur(5px)" }}
+                    transition={{
+                      duration: 0.26,
+                      delay: 0.6,
+                    }}
+                    layout
+                  >
+                    <Updates locale={locale} version={version} setData={setData} AppData={AppData as AppDataType} />
+                  </motion.div>
+                </Flex>
+              </AnimatePresence>
             </Content>
           </Layout>
         </Spin>
