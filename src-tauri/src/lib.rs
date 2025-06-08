@@ -1,5 +1,6 @@
 use std::ffi::OsStr;
 use std::os::windows::ffi::OsStrExt;
+use std::process::Command;
 use std::ptr;
 use std::sync::Mutex;
 use tauri::command;
@@ -34,25 +35,6 @@ fn show_window(app: &AppHandle) {
         if let Err(e) = window.set_focus() {
             eprintln!("无法设置窗口焦点: {}", e);
         }
-    }
-}
-
-async fn notify_system_theme_changed() {
-    unsafe {
-        let wparam = 0;
-        let flags = 0x0002;
-        let wide_str: Vec<u16> = "ImmersiveColorSet\0".encode_utf16().collect();
-        let lparam_wide = wide_str.as_ptr() as *const c_void;
-
-        SendMessageTimeoutW(
-            HWND_BROADCAST,
-            WM_SETTINGCHANGE,
-            wparam as usize,
-            lparam_wide as isize,
-            flags,
-            1000,
-            ptr::null_mut(),
-        );
     }
 }
 
@@ -99,7 +81,24 @@ fn set_registry_value(reg_path: &str, value_name: &str, value: u32) -> Result<()
         Ok(())
     }
 }
+async fn notify_system_theme_changed() {
+    unsafe {
+        let wparam = 0;
+        let flags = 0x0002;
+        let wide_str: Vec<u16> = "ImmersiveColorSet\0".encode_utf16().collect();
+        let lparam_wide = wide_str.as_ptr() as *const c_void;
 
+        SendMessageTimeoutW(
+            HWND_BROADCAST,
+            WM_SETTINGCHANGE,
+            wparam as usize,
+            lparam_wide as isize,
+            flags,
+            1000,
+            ptr::null_mut(),
+        );
+    }
+}
 #[command]
 async fn set_system_theme(is_light: bool) {
     let theme_value = if is_light { 1 } else { 0 };
@@ -111,8 +110,10 @@ async fn set_system_theme(is_light: bool) {
         }
     }
     notify_system_theme_changed().await;
+    let _ = Command::new("DisplaySwitch.exe").arg("/extend").status();
+    let _ = sleep(Duration::from_millis(50));
     notify_system_theme_changed().await;
-} //
+}
 fn send_event(app_handle: &AppHandle) {
     app_handle.emit("close-app", "quit").unwrap();
     let app_handle_clone = app_handle.clone();
