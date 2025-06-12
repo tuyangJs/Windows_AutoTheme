@@ -7,7 +7,6 @@ import { useUpdateEffect } from "ahooks";
 import LanguageApp from './language/index'
 import Docs from './doc'
 import { LoadingOutlined } from "@ant-design/icons";
-import { Updates } from './updates'
 import { ThemeFun } from './mod/ThemeConfig'
 import Mainoption from "./mod/Mainoption";
 import DataSave from './mod/DataSave'
@@ -23,6 +22,8 @@ import { MainWindow, WindowBg } from "./mod/WindowCode";
 import { listen } from "@tauri-apps/api/event";
 import { adjustTime } from "./mod/adjustTime";
 import { AnimatePresence, motion } from "framer-motion";
+import { GetHttp } from "./mod/sociti";
+GetHttp("https://dev.qweather.com/")
 async function fetchAppVersion() {
   try {
     const version = await getVersion();
@@ -250,7 +251,8 @@ function App() {
                     }}
                     layout
                   >
-                    <Updates locale={locale} version={version} setData={setData} AppData={AppData as AppDataType} />
+                    <a href="ms-windows-store://pdp/?productid=9N7ND584TDV1" target="_blank" rel="noreferrer">检查更新</a>
+                   {/*  <Updates locale={locale} version={version} setData={setData} AppData={AppData as AppDataType} /> */}
                   </motion.div>
                 </Flex>
               </AnimatePresence>

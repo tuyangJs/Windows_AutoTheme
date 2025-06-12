@@ -1,4 +1,4 @@
-import { fetch } from '@tauri-apps/plugin-http';
+import { fetch as fetchHttp } from '@tauri-apps/plugin-http';
 import * as pako from 'pako';
 type Props = (key: string, lang?: string) => any;
 
@@ -20,9 +20,10 @@ const extractSunMoonData = (text: string) => {
     return { hid, abstract }; // 解析失败时仍返回基本数据
 };
 
-const GetHttp = async (url: string) => {
-    const response = await fetch(url, {
-        method: 'GET'
+export const GetHttp = async (url: string) => {
+    const response = await fetchHttp(url, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
     });
 
     if (response.ok) {
@@ -32,7 +33,10 @@ const GetHttp = async (url: string) => {
         let data;
         if (contentType.includes('text/html')) {
             // 如果是 HTML，则直接返回文本内容
+          
             data = await response.text();
+            
+            
         } else if (contentEncoding && contentEncoding.includes('gzip')) {
             // 响应体是 Gzip 压缩的，需要解压
             const arrayBuffer = await response.arrayBuffer();
@@ -61,7 +65,7 @@ const AppCiti: Props = async (name, lang) => {
         getUrl = `https://geoapi.qweather.com/v2/city/top?number=10&lang=${langs}&range=${range}`
     }
     const url = `${getUrl}&key=${Apikey}`;
-    const data = await GetHttp(url) 
+    const data = await GetHttp(url)
     return data
 }
 const Sunrise: Props = async (id, lang) => {

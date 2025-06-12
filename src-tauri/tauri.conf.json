@@ -16,15 +16,13 @@
         "label": "main",
         "windowEffects": {
           "color": "#00000000",
-          "effects": [
-        
-          ]
+          "effects": []
         },
-        "shadow":false,
+        "shadow": false,
         "decorations": false,
-        "visible": false, 
+        "visible": false,
         "visibleOnAllWorkspaces": false,
-        "focus":false,
+        "focus": false,
         "alwaysOnTop": true,
         "transparent": true,
         "center": true,
@@ -49,7 +47,9 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis","msi"],
+    "targets": [
+      "nsis"
+    ],
     "copyright": "Copyright © 2025 Tuyang All",
     "homepage": "https://github.com/tuyangJs/Windows_AutoTheme",
     "windows": {
@@ -61,18 +61,19 @@
           "Spanish",
           "Japanese"
         ],
-        "headerImage":"img/header.bmp",
-        "installerIcon":"icons/installer.ico",
-        "sidebarImage":"img/sidebar.bmp",
-        "installMode":"both",
+        "headerImage": "img/header.bmp",
+        "installerIcon": "icons/installer.ico",
+        "sidebarImage": "img/sidebar.bmp",
+        "installMode": "both",
         "displayLanguageSelector": true
+      },
+      "webviewInstallMode": {
+        "type": "offlineInstaller"
       }
     },
     "icon": [
       "icons/icon.png"
     ],
-    "resources": [
-      
-    ]
+    "resources": []
   }
 }
