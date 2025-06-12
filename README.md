@@ -23,7 +23,7 @@
 
 ## 🛠️ 安装方式
 ### 推荐安装（Microsoft Store）：
-[![获取应用](https://get.microsoft.com/images/zh-cn%20light.svg)](https://apps.microsoft.com/detail/your-app-id)
+[![获取应用](https://get.microsoft.com/images/zh-cn%20light.svg)](https://apps.microsoft.com/detail/9n7nd584tdv1)
 
 
 ### 传统安装：

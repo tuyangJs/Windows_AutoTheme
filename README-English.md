@@ -5,7 +5,7 @@
 #### Language: [中文](/README.md) | [English](/README-English.md)
 
  </div>
- 
+
 ## Overview
 
 **Windows AutoTheme** is a lightweight utility that automatically switches your Windows theme based on the time of day. In accordance with Windows’ official guidelines, “light mode” features a predominantly light (often white) background with dark text for optimal clarity, while “dark mode” uses a dark background paired with light text to reduce eye strain in low-light conditions. With Windows AutoTheme, your system uses light mode during the day and seamlessly transitions to dark mode at night. The backend is built in Rust for efficient system operations, and the frontend is developed using TypeScript and Ant Design 5 to deliver a modern, visually appealing interface. Additionally, the tool utilizes a built-in free API to fetch sunrise and sunset data, enabling intelligent and automated theme switching.
@@ -14,7 +14,7 @@
 
 ## 🛠️ Installation Methods
 ### Recommended Installation (Microsoft Store):
-[![Get the app](https://get.microsoft.com/images/en-us%20light.svg)](https://apps.microsoft.com/detail/your-app-id)
+[![Get the app](https://get.microsoft.com/images/en-us%20light.svg)](https://apps.microsoft.com/detail/9n7nd584tdv1)
 
 ### Traditional Installation:
 >Open our [releases page](https://github.com/tuyangJs/Windows_AutoTheme/releases) and download the latest version of the installer package.
