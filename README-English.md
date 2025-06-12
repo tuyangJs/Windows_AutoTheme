@@ -5,12 +5,19 @@
 #### Language: [中文](/README.md) | [English](/README-English.md)
 
  </div>
+ 
 ## Overview
 
 **Windows AutoTheme** is a lightweight utility that automatically switches your Windows theme based on the time of day. In accordance with Windows’ official guidelines, “light mode” features a predominantly light (often white) background with dark text for optimal clarity, while “dark mode” uses a dark background paired with light text to reduce eye strain in low-light conditions. With Windows AutoTheme, your system uses light mode during the day and seamlessly transitions to dark mode at night. The backend is built in Rust for efficient system operations, and the frontend is developed using TypeScript and Ant Design 5 to deliver a modern, visually appealing interface. Additionally, the tool utilizes a built-in free API to fetch sunrise and sunset data, enabling intelligent and automated theme switching.
 
 ---
 
+## 🛠️ Installation Methods
+### Recommended Installation (Microsoft Store):
+[![Get the app](https://get.microsoft.com/images/en-us%20light.svg)](https://apps.microsoft.com/detail/your-app-id)
+
+### Traditional Installation:
+>Open our [releases page](https://github.com/tuyangJs/Windows_AutoTheme/releases) and download the latest version of the installer package.
 ## Key Features
 
 - **Automatic Theme Switching:** Dynamically toggles between light and dark modes—light mode for daytime and dark mode for nighttime—based on official Windows theme definitions.
@@ -25,20 +32,6 @@
 <div align="center">
   <img src="https://github.com/user-attachments/assets/8ed6411d-cc19-4884-a2b6-8d0d65f64078" alt="Screenshot 2"  width="55%">
  </div>
-
----
-
-## Installation and Usage
-
-### Prerequisites
-
-- Windows 10 version 21H2 or later
-- [Microsoft Edge WebView2](https://tauri.studio/) (required runtime environment)  
-    _Note: Early builds of Windows 10 version 20H2 require manual installation of the WebView2 Runtime._
-
-### Installation
-
-Visit our [releases page](https://github.com/tuyangJs/Windows_AutoTheme/releases) and download the latest installer package.
 
 ---
 
