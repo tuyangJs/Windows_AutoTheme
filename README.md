@@ -5,6 +5,7 @@
  #### Language: [中文](/README.md) | [English](/README-English.md)
  </div>
 
+> 现已登陆 **Microsoft Store**！获取更安全的安装体验和自动更新
 
 
 ## 概述
@@ -17,6 +18,16 @@
 
 ---
 
+
+
+
+## 🛠️ 安装方式
+### 推荐安装（Microsoft Store）：
+[![获取应用](https://get.microsoft.com/images/zh-cn%20light.svg)](https://apps.microsoft.com/detail/your-app-id)
+
+
+### 传统安装：
+>打开我们的[发行页面](https://github.com/tuyangJs/Windows_AutoTheme/releases)，下载最新版本的安装包。
 
 
 ## 功能特点
@@ -41,18 +52,6 @@
 <img src="https://github.com/user-attachments/assets/1be236a6-504a-4beb-b76c-ba6192730ef3" alt="支付宝.png" width="45%" style="margin-right: 5%;">
 <img src="https://github.com/user-attachments/assets/5e6f50f5-6712-429a-8c7f-d6ceb87a6cd6" alt="微信.png" width="45%" style="margin-right: 5%;">
 
-
-## 安装与使用
-
-### 使用前提
-
-- Windows10 versions 21H2 及更高版本
-- [Microsoft Edge WebView2](https://tauri.studio/)（必要的允许环境）
-  - Windows10.20H2早期版本版本需要手动安装WebView2 Runtime
-
-### 安装
-
-打开我们的[发行页面](https://github.com/tuyangJs/Windows_AutoTheme/releases)，下载最新版本的安装包。
 
 
 ## 开发调试
