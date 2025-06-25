@@ -1,6 +1,6 @@
 [package]
 name = "AutoThemeMode"
-version = "1.5.5"
+version = "1.5.8"
 description = "AutoThemeMode"
 authors = ["you"]
 edition = "2021"
@@ -16,6 +16,7 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
 tauri-build = { version = "2", features = [] }
+windows-bindgen = "0.52.0"
 
 [dependencies]
 tauri-plugin-opener = "2"
@@ -23,13 +24,14 @@ serde = { version = "1", features = ["derive"] }
 tauri = { version = "2", features = [ "tray-icon", "image-png" ] }
 serde_json = "1"
 tauri-plugin-http = "2"
-tokio = { version = "1", features = ["full"] }
+tokio = { version = "1", features = ["full", "rt-multi-thread", "macros"] }
 winapi = { version = "0.3", features = ["winuser", "winbase"] }
 chrono = "0.4"
 tauri-plugin-log = "2"
 tauri-plugin-persisted-scope = "2" 
-tauri-plugin-os = "2"
-
+tauri-plugin-os = "2.2.1"
+windows-applicationmodel = "0.23.0"
+windows = { version = "0.61.3", features = [] }
 [http]
 proxy = ""
 
@@ -45,5 +47,6 @@ strip = true # 确保移除调试符号。
 tauri-plugin-autostart = "2"
 tauri-plugin-single-instance = "2"
 tauri-plugin-window-state = "2"
+
 
 

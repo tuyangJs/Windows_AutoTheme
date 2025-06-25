@@ -1,5 +1,5 @@
 import { enable, disable } from "@tauri-apps/plugin-autostart"
-import { Input, AutoComplete, AutoCompleteProps, TimePicker, Button, Flex, Segmented } from "antd"
+import { Input, AutoComplete, AutoCompleteProps, TimePicker, Button, Flex, Segmented, Tooltip } from "antd"
 import dayjs from "dayjs"
 import { AppCiti, Sunrise } from "./sociti"
 import { AppDataType, TimesProps } from "../Type"
@@ -10,6 +10,7 @@ import { EnvironmentOutlined, LoadingOutlined } from "@ant-design/icons"
 import { invoke } from "@tauri-apps/api/core"
 import { isWin11 } from "./ThemeConfig"
 import Deviation from "./Deviation"
+import { openUrl } from "@tauri-apps/plugin-opener"
 export interface mainsType {
     key: string;
     label: any;
@@ -41,6 +42,7 @@ export type MainopType = (e: {
 
 const format = 'HH:mm';
 const { RangePicker } = TimePicker;
+const isWin64App = await invoke<boolean>('is_running_in_msix');
 const Mainoption: MainopType = ({
     AppData,
     setData,
@@ -264,7 +266,12 @@ const Mainoption: MainopType = ({
             label: locale?.main?.Autostart,
             value: AppData?.Autostart,
             loading: startOpenLoad,
-            change: AutostartOpen,
+            change: isWin64App ?
+                (
+                    <Tooltip  title={locale?.main?.AutostartTip}>
+                        <Button onClick={()=>openUrl("ms-settings:startupapps")}>{locale?.main?.AutostartBtn}</Button>
+                    </Tooltip>
+                ) : AutostartOpen,
         },
         {
             key: "StartShow",

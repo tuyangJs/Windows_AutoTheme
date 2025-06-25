@@ -1,50 +1,59 @@
 {
     "Title": "Auto Theme Mode",
     "main": {
-      "open": "Enable",
-      "language": "Language",
-      "citiTitle": "City",
-      "citiError": "No city selected!",
-      "citiPlaceholder": "Search city",
-      "winBgEffect":"Background Material",
-      "Mica":"Mica",
-      "Acrylic":"Acrylic",
-      "Default":"Default",
-      "TabsOptionA": "Sunrise to Sunset",
-      "TabsOptionAError": "Failed to get sunrise/sunset data!",
-      "TabsOptionB": "Day Theme Time",
-      "Autostart": "Start with system",
-      "StartShow": "Show window on startup",
-      "deviationTitle": "Time Deviation",
-      "deviationPrompt": "Adjust daylight time by numerical value (unit: minutes). Delays sunrise, advances sunset."
+        "open": "Enable",
+        "language": "Language",
+        "citiTitle": "City",
+        "citiError": "No city selected!",
+        "citiPlaceholder": "Search city...",
+        "winBgEffect": "Window Material",
+        "Mica": "Mica",
+        "Acrylic": "Acrylic",
+        "Default": "Default",
+        "TabsOptionA": "Sunrise to Sunset",
+        "TabsOptionAError": "Failed to get sunrise/sunset info.",
+        "TabsOptionB": "Custom Daytime",
+        "Autostart": "Launch on Startup",
+        "AutostartTip": "To change this, manually find 'Auto Theme Mode' and click 'Open Settings'.",
+        "AutostartBtn": "Open Settings",
+        "StartShow": "Show Window on Launch",
+        "deviationTitle": "Time Offset",
+        "deviationPrompt": "Adjust daytime by minutes. Positive value delays sunrise, advances sunset."
     },
     "upModal": {
-      "textA": [
-        "Checking for updates...",
-        "New version available",
-        "Up to date"
-      ],
-      "textB": [
-        "Updating...",
-        "View update",
-        "Check for updates"
-      ],
-      "title": "New version available:",
-      "cancelText": "Cancel",
-      "okText": "Update",
-      "upData": "Update Log",
-      "noText": "Skip this update"
+        "textA": [
+            "Checking for updates...",
+            "New version available",
+            "You're up to date!"
+        ],
+        "textB": [
+            "Updating...",
+            "View Details",
+            "Check for Updates"
+        ],
+        "title": "New Version Available:",
+        "cancelText": "Cancel",
+        "okText": "Update Now",
+        "upData": "Release Notes",
+        "noText": "Ignore"
     },
-    "quit": "Quit",
-    "show": "Show",
+    "reviewModal": {
+        "title": "Enjoying the app?",
+        "text": "Your feedback is important! Please rate us on the Microsoft Store.",
+        "laterText": "Later",
+        "cancelText": "Don't Remind",
+        "okText": "Rate Now"
+    },
+    "quit": "Exit",
+    "show": "Show Window",
     "Time": "Time",
-    "dark":"dark",
-    "light":"light",
-    "switch": "Switch to ",
+    "dark": "Dark",
+    "light": "Light",
+    "switch": "Switch to",
     "doc": [
-      "Weather",
-      "About",
-      "Developed by: Tuyang (Open source and free)",
-      "Documentation:"
+        "Weather",
+        "About",
+        "Developed by Tuyang. Open-source and free.",
+        "Help Docs:"
     ]
-  }
+}

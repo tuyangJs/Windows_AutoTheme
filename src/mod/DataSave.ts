@@ -1,5 +1,6 @@
+// src/hooks/useAppData.ts
 import { useLocalStorageState } from "ahooks";
-import { AppDataType } from "../Type";
+import { AppDataType, RatingPromptType } from "../Type";
 import { isEnabled } from "@tauri-apps/plugin-autostart";
 import { isWin11 } from "./ThemeConfig";
 
@@ -31,7 +32,16 @@ const deepMerge = (defaults: any, stored: any): any => {
   }
   return merged;
 };
-const navigatorlLanguage = navigator.language.replace('-', '_')
+
+const navigatorLanguage = navigator.language.replace('-', '_');
+
+// 默认评分提示状态
+const defaultRatingPrompt: RatingPromptType = {
+  lastPromptTime: 0,
+  promptCount: 0,
+  neverShowAgain: false,
+};
+
 // 默认应用数据配置
 const defaultAppData: AppDataType = {
   open: false,
@@ -39,38 +49,83 @@ const defaultAppData: AppDataType = {
   city: { id: "", name: '' },
   times: ["6:00", "18:00"],
   Autostart: SystemStart,
-  language: navigatorlLanguage,
+  language: navigatorLanguage,
   StartShow: true,
   Skipversion: '',
   winBgEffect: isWin11 ? 'Mica' : 'Default',
   deviation: 15,
   rawTime: ["6:00", "18:00"],
+  ratingPrompt: defaultRatingPrompt,
 };
 
-const DataSave = () => {
-  const [AppData, setAppData] = useLocalStorageState<AppDataType>('Data', {
+const useAppData = () => {
+  const [AppData, setAppData] = useLocalStorageState<AppDataType>('AppData', {
     defaultValue: defaultAppData,
     deserializer: (value) => {
       try {
         const storedData = JSON.parse(value);
-        return deepMerge(defaultAppData, storedData);
+        const merged = deepMerge(defaultAppData, storedData);
+        
+        // 确保ratingPrompt结构正确
+        if (!merged.ratingPrompt) {
+          merged.ratingPrompt = { ...defaultRatingPrompt };
+        } else {
+          merged.ratingPrompt = {
+            ...defaultRatingPrompt,
+            ...merged.ratingPrompt
+          };
+        }
+        
+        return merged;
       } catch (e) {
         return defaultAppData;
       }
     },
   });
 
-  const setData = (e: Partial<AppDataType>) => {
-    setAppData((prevData) => {
-      // 执行安全的类型合并
-      return {
-        ...prevData,         // 已存储的数据
-        ...e,                // 新传入的更新
-      } as AppDataType;      // 类型断言确保类型安全
+  const setData = (update: Partial<AppDataType>) => {
+    setAppData((prev) => {
+      // 确保prev不是undefined
+      const prevData = prev || defaultAppData;
+      
+      // 创建更新后的对象
+      const updatedData = {
+        ...prevData,
+        ...update,
+      };
+      
+      // 确保ratingPrompt字段存在且结构正确
+      if (!updatedData.ratingPrompt) {
+        updatedData.ratingPrompt = { ...defaultRatingPrompt };
+      }
+      
+      return updatedData as AppDataType; // 类型断言确保类型安全
     });
   };
 
-  return { AppData, setData };
+  const updateRatingPrompt = (update: Partial<RatingPromptType>) => {
+    setAppData((prev) => {
+      // 确保prev不是undefined
+      const prevData = prev || defaultAppData;
+      
+      // 创建更新后的对象
+      const updatedData = {
+        ...prevData,
+        ratingPrompt: {
+          ...(prevData.ratingPrompt || defaultRatingPrompt),
+          ...update
+        }
+      };
+      
+      return updatedData as AppDataType; // 类型断言确保类型安全
+    });
+  };
+
+  return { 
+    AppData, 
+    setData,
+    updateRatingPrompt
+  };
 };
 
-export default DataSave;
+export default useAppData;

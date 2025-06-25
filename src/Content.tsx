@@ -16,17 +16,17 @@ const Content: React.FC<props> = ({ mains }) => (
             }
             return (
                 <React.Fragment key={`s-${i}`}>
-                    {i > 0 ? <Divider key={i} /> : null}
                     <motion.div
                         initial={{ opacity: 0, scale: 3, filter: "blur(5px)" }}
                         animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, scale: 0.1, filter: "blur(5px)" }}
+                        exit={{ opacity: 0, scale: 1, filter: "blur(5px)" }}
                         transition={{
                             duration: 0.26,
                             delay: 0.1 * i,
                         }}
                         layout
                     >
+                        {i > 0 ? <Divider key={i} /> : null}
                         <Flex key={'a' + item.key || i} justify='space-between' align="center" gap={8}>
                             <Text>{item.label}</Text>
                             {

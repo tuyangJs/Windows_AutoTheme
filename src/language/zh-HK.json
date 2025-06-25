@@ -1,31 +1,33 @@
 {
-    "Title": "系統主題自適應",
+    "Title": "系統主題自動切換",
     "main": {
-        "open": "開啟",
+        "open": "啟用",
         "language": "多語言",
-        "citiTitle": "城市",
-        "citiError": "尚未選擇城市！",
-        "citiPlaceholder": "輸入城市名搜尋",
-        "winBgEffect":"視窗背景材質",
-        "Mica":"雲母",
-        "Acrylic":"亞克力",
-        "Default":"預設",
-        "TabsOptionA": "日出到日落",
-        "TabsOptionAError": "日出日落獲取失敗！",
-        "TabsOptionB": "白天時間",
-        "Autostart": "跟隨系統啟動",
+        "citiTitle": "城市設定",
+        "citiError": "尚未選擇城市",
+        "citiPlaceholder": "輸入城市名稱搜尋",
+        "winBgEffect": "視窗材質效果",
+        "Mica": "雲母",
+        "Acrylic": "壓克力",
+        "Default": "預設",
+        "TabsOptionA": "日出至日落",
+        "TabsOptionAError": "取得日出日落資訊失敗",
+        "TabsOptionB": "日間模式",
+        "Autostart": "隨系統啟動",
+        "AutostartTip": "需手動至「Auto Theme Mode」啟用",
+        "AutostartBtn": "前往設定",
         "StartShow": "啟動時顯示視窗",
-        "deviationTitle": "時間偏差",
-        "deviationPrompt": "根據數值調整白天時間（單位：分鐘）。日出時間延後，日落時間提前。"
+        "deviationTitle": "時間偏移",
+        "deviationPrompt": "調整日間時間（單位：分鐘）※ 正值延後日出/提早日落"
     },
     "upModal": {
         "textA": [
-            "正在檢查：",
+            "檢查中...",
             "發現新版本",
-            "已是最新版"
+            "已是最新版本"
         ],
         "textB": [
-            "更新......",
+            "更新中...",
             "檢視更新",
             "檢查更新"
         ],
@@ -33,18 +35,25 @@
         "cancelText": "取消",
         "okText": "前往更新",
         "upData": "更新日誌",
-        "noText":"忽略本次更新"
+        "noText": "略過本次"
     },
-    "quit": "退出",
-    "show": "顯示窗體",
+    "reviewModal": {
+        "title": "喜歡這個應用程式嗎？",
+        "text": "請在 Microsoft Store 為我們評分",
+        "laterText": "稍後再說",
+        "cancelText": "不再提醒",
+        "okText": "前往評分"
+    },
+    "quit": "結束程式",
+    "show": "顯示視窗",
     "Time": "時間",
-    "dark":"暗黑",
-    "light":"淺色",
-    "switch": "切換到",
+    "dark": "深色模式",
+    "light": "淺色模式",
+    "switch": "切換至",
     "doc": [
         "天氣",
         "說明",
-        " 本程式由：荼泱Tuyang 個人開發完全開源免費。",
-        "幫助文檔："
+        "本程式由：荼泱Tuyang 獨立開發，完全開源免費",
+        "說明文件："
     ]
 }

@@ -66,9 +66,6 @@
         "sidebarImage": "img/sidebar.bmp",
         "installMode": "both",
         "displayLanguageSelector": true
-      },
-      "webviewInstallMode": {
-        "type": "offlineInstaller"
       }
     },
     "icon": [

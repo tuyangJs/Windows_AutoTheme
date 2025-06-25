@@ -4,19 +4,21 @@
         "open": "开启",
         "language": "多语言",
         "citiTitle": "城市",
-        "citiError":"你还没有选择城市！",
+        "citiError": "你还没有选择城市！",
         "citiPlaceholder": "输入城市名搜索",
-        "winBgEffect":"窗口背景材料",
-        "Mica":"云母",
-        "Acrylic":"亚克力",
-        "Default":"默认",
+        "winBgEffect": "窗口背景材料",
+        "Mica": "云母",
+        "Acrylic": "亚克力",
+        "Default": "默认",
         "TabsOptionA": "日出到日落",
-        "TabsOptionAError":"获取日出日落信息失败！",
+        "TabsOptionAError": "获取日出日落信息失败！",
         "TabsOptionB": "白天时间",
         "Autostart": "跟随系统启动",
+        "AutostartTip": "修改本选项需手动找到 Auto Theme Mode，点击按钮前往设置",
+        "AutostartBtn": "前往设置",
         "StartShow": "启动时显示窗口",
-        "deviationTitle":"时间偏差",
-        "deviationPrompt":"根据数值偏移白天时间（单位：分钟）日出时间增加、日落时间提早。"
+        "deviationTitle": "时间偏差",
+        "deviationPrompt": "根据数值偏移白天时间（单位：分钟）日出时间增加、日落时间提早。"
     },
     "upModal": {
         "textA": [
@@ -33,13 +35,20 @@
         "cancelText": "取消",
         "okText": "前往更新",
         "upData": "更新日志",
-        "noText":"忽略本次更新"
+        "noText": "忽略本次更新"
     },
-    "quit":"退出程序",
-    "show":"显示窗口",
+    "reviewModal": {
+        "title": "喜欢这个应用吗？",
+        "text": "您的评分对我们非常重要！是否愿意花一点时间在 Microsoft Store 上给我们评分？",
+        "laterText": "稍后再说",
+        "cancelText": "不再提醒",
+        "okText": "去评分"
+    },
+    "quit": "退出程序",
+    "show": "显示窗口",
     "Time": "时间",
-    "dark":"暗黑",
-    "light":"浅色",
+    "dark": "暗黑",
+    "light": "浅色",
     "switch": "切换到",
     "doc": [
         "天气",

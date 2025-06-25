@@ -26,6 +26,20 @@
     "window-state:allow-save-window-state",
     "log:default",
     {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "ms-windows-store://*"
+        },
+        {
+          "url": "ms-settings:*"
+        },
+        {
+          "url": "https://apps.microsoft.com/*"
+        }
+      ]
+    },
+    {
       "identifier": "http:default",
       "allow": [
         {

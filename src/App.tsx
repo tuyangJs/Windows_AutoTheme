@@ -3,7 +3,7 @@ import TitleBar from "./TitleBar";
 import dayjs from 'dayjs';
 import "./App.css";
 import { AutoCompleteProps, ConfigProvider, Flex, Layout, message, Spin } from "antd";
-import { useUpdateEffect } from "ahooks";
+import { useUpdateEffect, useAsyncEffect } from "ahooks";
 import LanguageApp from './language/index'
 import Docs from './doc'
 import { LoadingOutlined } from "@ant-design/icons";
@@ -23,6 +23,9 @@ import { listen } from "@tauri-apps/api/event";
 import { adjustTime } from "./mod/adjustTime";
 import { AnimatePresence, motion } from "framer-motion";
 import { GetHttp } from "./mod/sociti";
+import RatingPrompt from "./mod/RatingPrompt";
+import { openStoreRating } from "./mod/openStoreRating";
+import { Updates } from "./updates";
 GetHttp("https://dev.qweather.com/")
 async function fetchAppVersion() {
   try {
@@ -34,6 +37,7 @@ async function fetchAppVersion() {
   }
 }
 const version = await fetchAppVersion();
+
 const { Content } = Layout;
 function App() {
   const { setData, AppData } = DataSave()
@@ -43,12 +47,16 @@ function App() {
   const [spinning, setSpinning] = useState(true)
   const [Weather, setWeather] = useState('')
   const [MainShow, setMainShow] = useState(document.visibilityState === 'visible')
+  const [isWin64App, setIsWin64App] = useState(false)
   const [messageApi, contextHolder] = message.useMessage();
 
 
   const { Language, locale } = LanguageApp({ AppData, setData })
   //----EDN ---- Language
-
+  useAsyncEffect(async () => {
+    const inMsix = await invoke<boolean>('is_running_in_msix');
+    setIsWin64App(inMsix)
+  }, [])
 
   //导入设置选项
   const { openRc, mains, CitiInit } = Mainoption({
@@ -65,7 +73,6 @@ function App() {
   MainWindow(setMainShow, AppData as AppDataType)
   useEffect(() => {
     let isMounted = true;
-
     const setupListener = async () => {
       const unlisten = await listen("switch", () => {
         if (!isMounted) return;
@@ -251,11 +258,19 @@ function App() {
                     }}
                     layout
                   >
-                    <a href="ms-windows-store://pdp/?productid=9N7ND584TDV1" target="_blank" rel="noreferrer">检查更新</a>
-                   {/*  <Updates locale={locale} version={version} setData={setData} AppData={AppData as AppDataType} /> */}
+                    {isWin64App ? <a
+                      onClick={() => openStoreRating()}
+                      rel="noreferrer">{
+                        locale?.upModal?.textB?.[2]
+                      }</a> :
+                      <Updates version={version} locale={locale} setData={setData} AppData={AppData} />
+                    }
+
                   </motion.div>
                 </Flex>
               </AnimatePresence>
+              { /* 评分组件 */}
+              {isWin64App && <RatingPrompt locale={locale} />}
             </Content>
           </Layout>
         </Spin>

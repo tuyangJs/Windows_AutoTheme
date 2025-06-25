@@ -19,6 +19,7 @@ use winapi::{
     ctypes::c_void,
     um::winuser::{SendMessageTimeoutW, HWND_BROADCAST, WM_SETTINGCHANGE},
 };
+use std::path::Path;
 struct AppState {
     tray: Mutex<Option<TrayIcon>>,
 }
@@ -238,6 +239,17 @@ fn update_tray_menu_item_title(
         println!("托盘标题已更新");
     }
 }
+#[tauri::command]
+fn is_running_in_msix() -> bool {
+  if let Ok(exe_path) = std::env::current_exe() {
+    if let Some(dir) = exe_path.parent() {
+      let dir_str = dir.to_string_lossy().to_lowercase();
+      return dir_str.starts_with(r"c:\program files\windowsapps");
+    }
+  }
+  false
+}
+
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -296,6 +308,7 @@ pub fn run() {
             .invoke_handler(tauri::generate_handler![
                 set_system_theme,
                 update_tray_menu_item_title,
+                is_running_in_msix
             ])
             .run(tauri::generate_context!())
             .expect("error while running tauri application");

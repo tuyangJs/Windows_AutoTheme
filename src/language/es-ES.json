@@ -1,50 +1,59 @@
 {
-  "Title": "Modo de tema automático",
-  "main": {
-    "open": "Activar",
-    "language": "Idioma",
-    "citiTitle": "Ciudad",
-    "citiError": "¡No se ha seleccionado ninguna ciudad!",
-    "citiPlaceholder": "Buscar ciudad",
-    "winBgEffect": "Material de fondo",
-    "Mica": "Mica",
-    "Acrylic": "Acrílico",
-    "Default": "Predeterminado",
-    "TabsOptionA": "Amanecer-Atardecer",
-    "TabsOptionAError": "¡Error al obtener datos de amanecer/atardecer!",
-    "TabsOptionB": "Tiempo de día",
-    "Autostart": "Iniciar con el sistema",
-    "StartShow": "Mostrar ventana al inicio",
-    "deviationTitle": "Desviación de tiempo",
-    "deviationPrompt": "Ajuste el tiempo diurno por valor numérico (unidad: minutos). Retrasa el amanecer, adelanta el atardecer. "
-  },
-  "upModal": {
-    "textA": [
-      "Comprobando actualizaciones...",
-      "Nueva versión disponible",
-      "Actualizado"
-    ],
-    "textB": [
-      "Actualizando...",
-      "Ver actualización",
-      "Buscar actualizaciones"
-    ],
-    "title": "Nueva versión disponible:",
-    "cancelText": "Cancelar",
-    "okText": "Actualizar",
-    "upData": "Registro de Actualizaciones",
-    "noText": "Omitir esta actualización"
-  },
-  "quit": "Salir",
-  "show": "Mostrar",
-  "Time": "Tiempo",
-  "dark":"Oscuro",
-  "light":"Claro",
-  "switch": "Cambiar a ",
-  "doc": [
-    "Tiempo",
-    "Acerca de",
-    "Desarrollado por: Tuyang (Código abierto y gratuito)",
-    "Documentación:"
-  ]
+    "Title": "Modo de Tema Automático",
+    "main": {
+        "open": "Activar",
+        "language": "Idioma",
+        "citiTitle": "Ciudad",
+        "citiError": "¡No has seleccionado una ciudad!",
+        "citiPlaceholder": "Buscar ciudad...",
+        "winBgEffect": "Material de la Ventana",
+        "Mica": "Mica",
+        "Acrylic": "Acrílico",
+        "Default": "Por Defecto",
+        "TabsOptionA": "Amanecer a Atardecer",
+        "TabsOptionAError": "Error al obtener información de amanecer/atardecer.",
+        "TabsOptionB": "Hora del Día Personalizada",
+        "Autostart": "Iniciar con el Sistema",
+        "AutostartTip": "Para cambiar esto, busca manualmente 'Modo de Tema Automático' y haz clic en 'Abrir Configuración'.",
+        "AutostartBtn": "Abrir Configuración",
+        "StartShow": "Mostrar Ventana al Iniciar",
+        "deviationTitle": "Desviación de Tiempo",
+        "deviationPrompt": "Ajusta la hora del día en minutos. Un valor positivo retrasa el amanecer y adelanta el atardecer."
+    },
+    "upModal": {
+        "textA": [
+            "Buscando actualizaciones...",
+            "Nueva versión disponible",
+            "¡Ya tienes la última versión!"
+        ],
+        "textB": [
+            "Actualizando...",
+            "Ver Detalles",
+            "Buscar Actualizaciones"
+        ],
+        "title": "Nueva Versión del Programa:",
+        "cancelText": "Cancelar",
+        "okText": "Actualizar Ahora",
+        "upData": "Notas de la Versión",
+        "noText": "Ignorar"
+    },
+    "reviewModal": {
+        "title": "¿Te gusta esta aplicación?",
+        "text": "¡Tu calificación es muy importante para nosotros! ¿Te gustaría tomarte un momento para calificarnos en la Microsoft Store?",
+        "laterText": "Más Tarde",
+        "cancelText": "No Recordar Más",
+        "okText": "Calificar Ahora"
+    },
+    "quit": "Salir",
+    "show": "Mostrar Ventana",
+    "Time": "Hora",
+    "dark": "Oscuro",
+    "light": "Claro",
+    "switch": "Cambiar a",
+    "doc": [
+        "Clima",
+        "Acerca de",
+        "Desarrollado por: Tuyang. Completamente de código abierto y gratuito.",
+        "Documentos de Ayuda:"
+    ]
 }
