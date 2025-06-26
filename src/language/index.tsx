@@ -1,83 +1,70 @@
-import { Button, Dropdown, MenuProps } from "antd"
-import type { AppDataType } from '../Type'
+import { Button, Dropdown } from "antd";
+import type { AppDataType } from '../Type';
 import { useEffect, useState } from "react";
-const items: MenuProps['items'] = [
-  {
-    key: 'zh_CN',
-    label: "简体中文",
-  },
-  {
-    key: 'zh_HK',
-    label: "繁体中文",
-  },
-  {
-    key: 'en_US',
-    label: "English",
-  },
-  {
-    key: 'es_ES',
-    label: "Español",
-  },
-  {
-    key: 'ja_JP',
-    label: "日本語",
-  }
+interface LanguageItem {
+  key: string;
+  label: string;
+}
+// 语言菜单项
+export const languageItems: LanguageItem[] = [
+  { key: 'zh_CN', label: "简体中文" },
+  { key: 'zh_HK', label: "繁体中文" },
+  { key: 'en_US', label: "English" },
+  { key: 'es_ES', label: "Español" },
+  { key: 'ja_JP', label: "日本語" }
+];
 
-] as MenuProps['items']
-const locales: Record<string, any> = {
+// 语言包加载器
+const localeLoaders: Record<string, () => Promise<{ default: any }>> = {
   'zh_CN': () => import('./zh-CN.json'),
   'zh_HK': () => import('./zh-HK.json'),
   'en_US': () => import('./en-US.json'),
   'es_ES': () => import('./es-ES.json'),
   'ja_JP': () => import('./ja-JP.json'),
 };
-interface Prop {
-  AppData?: AppDataType
-  setData: (e: any) => void
-}
-// 根据 key 匹配标题
-function getLabelByKey(key: string): string | undefined {
-  const validItems = items ?? []; // 如果 items 是 undefined，则使用空数组
-  const item = validItems.find(item => item?.key === key);
-  // @ts-ignore
-  return item?.label
+
+interface Props {
+  AppData?: AppDataType;
+  setData: (update: Partial<AppDataType>) => void;
 }
 
+const Language = ({ AppData, setData }: Props) => {
+  const defaultLang = 'en_US';
+  const currentLang = AppData?.language || defaultLang;
+  const [locale, setLocale] = useState<any>(null);
 
-const Language = ({ AppData, setData }: Prop) => {
-  const navigatorlLanguage = AppData?.language || 'en_US'
-  const Userlanguage = locales?.[navigatorlLanguage] || locales['en_US']//如果没有默认设置则取用户语言设置
-  const [locale, setLocale] = useState<any>(Userlanguage);//Antd语言包
+  // 异步加载语言包
   useEffect(() => {
-    const loadLocale = locales[AppData?.language || 'en_US'] || locales.en_US//如果找不到语言包则默认英文
-    console.log('loadLocale', loadLocale,AppData?.language);
-    
-   // setData({ language: Userlanguage })
-    if (loadLocale) {
-      loadLocale()
-        .then((mod: { default: any; }) => setLocale(mod.default))
-        .catch((err: any) =>
-          console.error(`Failed to load locale for ${AppData?.language}:`, err)
-        );
-    } else {
-      console.warn(`Locale ${AppData?.language} is not supported.`);
-    }
-  }, [AppData?.language]);
+    const loader = localeLoaders[currentLang] || localeLoaders[defaultLang];
+
+    loader()
+      .then(mod => setLocale(mod.default))
+      .catch(() =>
+        localeLoaders[defaultLang]()
+          .then(mod => setLocale(mod.default))
+      );
+  }, [currentLang]);
+
+  // 获取当前语言标签
+  const currentLabel = languageItems.find(item => item?.key === currentLang)?.label || 'English';
+
   return {
     Language: (
       <Dropdown
         menu={{
-          items,
+          items: languageItems,
           onClick: ({ key }) => setData({ language: key })
-        }} placement="bottom" arrow>
-        <Button
-          color="default"
-          variant="filled"
-        >
-          {getLabelByKey(navigatorlLanguage)}</Button>
+        }}
+        placement="bottom"
+        arrow
+      >
+        <Button color="default" variant="filled">
+          {currentLabel}
+        </Button>
       </Dropdown>
     ),
     locale
-  }
-}
-export default Language
+  };
+};
+
+export default Language;

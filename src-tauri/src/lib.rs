@@ -19,7 +19,6 @@ use winapi::{
     ctypes::c_void,
     um::winuser::{SendMessageTimeoutW, HWND_BROADCAST, WM_SETTINGCHANGE},
 };
-use std::path::Path;
 struct AppState {
     tray: Mutex<Option<TrayIcon>>,
 }

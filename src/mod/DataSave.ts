@@ -3,6 +3,7 @@ import { useLocalStorageState } from "ahooks";
 import { AppDataType, RatingPromptType } from "../Type";
 import { isEnabled } from "@tauri-apps/plugin-autostart";
 import { isWin11 } from "./ThemeConfig";
+import { languageItems } from "../language";
 
 const SystemStart = await isEnabled();
 
@@ -49,7 +50,7 @@ const defaultAppData: AppDataType = {
   city: { id: "", name: '' },
   times: ["6:00", "18:00"],
   Autostart: SystemStart,
-  language: navigatorLanguage,
+  language:  languageItems.find(item => item?.key === navigatorLanguage)?.label || 'en_US',
   StartShow: true,
   Skipversion: '',
   winBgEffect: isWin11 ? 'Mica' : 'Default',

@@ -233,16 +233,19 @@ function App() {
           />
           <Layout>
             <Content className="container">
-              <AnimatePresence>
-                <Flex gap={0} vertical >
+
+              <Flex gap={0} vertical >
+                <AnimatePresence >
                   <OpContent mains={mains} />
                   <motion.div
+                    key={AppData?.language}
+
                     initial={{ opacity: 0, scale: 3, filter: "blur(5px)" }}
                     animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, scale: 0.1, filter: "blur(5px)" }}
+                    exit={{ opacity: 0, scale: 1, filter: "blur(5px)" }}
                     transition={{
                       duration: 0.26,
-                      delay: 0.5,
+                      delay: 0.4,
                     }}
                     layout
                   >
@@ -254,7 +257,7 @@ function App() {
                     exit={{ opacity: 0, scale: 0.1, filter: "blur(5px)" }}
                     transition={{
                       duration: 0.26,
-                      delay: 0.6,
+                      delay: 0.55,
                     }}
                     layout
                   >
@@ -267,8 +270,9 @@ function App() {
                     }
 
                   </motion.div>
-                </Flex>
-              </AnimatePresence>
+
+                </AnimatePresence>
+              </Flex>
               { /* 评分组件 */}
               {isWin64App && <RatingPrompt locale={locale} />}
             </Content>
