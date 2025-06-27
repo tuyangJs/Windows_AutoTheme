@@ -216,6 +216,33 @@ function App() {
   }
 
   const { Themeconfig, antdToken } = ThemeFun(themeDack, AppData?.winBgEffect)
+  const animationVariants = {
+    initial: {
+      opacity: 0,
+      x: 0,
+      scale: 3,
+      filter: "blur(5px)"
+    },
+    animate: {
+      opacity: 1,
+      x: 0,
+      scale: 1,
+      filter: "blur(0px)",
+    },
+    exit: {
+      opacity: 0,
+      x: 100,
+      filter: "blur(5px)",
+      transition: {
+        duration: 0.36
+      }
+    },
+    transition: {
+      duration: 0.26,
+      delay: mains.length * 0.08
+    },
+    layout: true
+  };
   return (
     <ConfigProvider
       theme={Themeconfig}
@@ -233,44 +260,32 @@ function App() {
           />
           <Layout>
             <Content className="container">
-
               <Flex gap={0} vertical >
                 <AnimatePresence >
-                  <OpContent mains={mains} />
-                  <motion.div
-                    key={AppData?.language}
+                  <OpContent mains={mains} language={AppData?.language} />
+                  <AnimatePresence >
+                    <motion.div
+                      {...animationVariants}
+                      key={`${AppData?.language}-s`}
+                    >
+                      <Docs locale={locale} version={version} Weather={Weather} />
+                    </motion.div>
+                  </AnimatePresence>
+                  <AnimatePresence>
+                    <motion.div
+                      {...animationVariants}
+                      key={`${AppData?.language}-a`}
+                    >
+                      {isWin64App ? <a
+                        onClick={() => openStoreRating()}
+                        rel="noreferrer">{
+                          locale?.upModal?.textB?.[2]
+                        }</a> :
+                        <Updates version={version} locale={locale} setData={setData} AppData={AppData} />
+                      }
 
-                    initial={{ opacity: 0, scale: 3, filter: "blur(5px)" }}
-                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, scale: 1, filter: "blur(5px)" }}
-                    transition={{
-                      duration: 0.26,
-                      delay: 0.4,
-                    }}
-                    layout
-                  >
-                    <Docs locale={locale} version={version} Weather={Weather} />
-                  </motion.div>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 3, filter: "blur(5px)" }}
-                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                    exit={{ opacity: 0, scale: 0.1, filter: "blur(5px)" }}
-                    transition={{
-                      duration: 0.26,
-                      delay: 0.55,
-                    }}
-                    layout
-                  >
-                    {isWin64App ? <a
-                      onClick={() => openStoreRating()}
-                      rel="noreferrer">{
-                        locale?.upModal?.textB?.[2]
-                      }</a> :
-                      <Updates version={version} locale={locale} setData={setData} AppData={AppData} />
-                    }
-
-                  </motion.div>
-
+                    </motion.div>
+                  </AnimatePresence>
                 </AnimatePresence>
               </Flex>
               { /* 评分组件 */}

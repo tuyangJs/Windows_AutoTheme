@@ -50,7 +50,7 @@ const defaultAppData: AppDataType = {
   city: { id: "", name: '' },
   times: ["6:00", "18:00"],
   Autostart: SystemStart,
-  language:  languageItems.find(item => item?.key === navigatorLanguage)?.label || 'en_US',
+  language:  languageItems.find(item => item?.key === navigatorLanguage)?.key || 'en_US',
   StartShow: true,
   Skipversion: '',
   winBgEffect: isWin11 ? 'Mica' : 'Default',
