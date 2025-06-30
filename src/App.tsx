@@ -74,15 +74,27 @@ function App() {
   useEffect(() => {
     let isMounted = true;
     const setupListener = async () => {
-      const unlisten = await listen("switch", () => {
+      const unlisten = await listen("switch", async () => {
         if (!isMounted) return;
-
         console.log("switch dark", !themeDack);
         if (spinning) return;
+        const isVisible = await window.appWindow.isVisible()
         setSpinning(true);
         setTimeout(async () => {
           await invoke('set_system_theme', { isLight: themeDack });
         }, 10);
+        if (!isVisible) {
+          window.Webview.show()
+          setTimeout(() => {
+            window.appWindow.isVisible().then(async (_isVisible) => {
+              console.log("isVisible", _isVisible);
+              if (!_isVisible) {
+                window.Webview.hide()
+              }
+            })
+          }, 600);
+        }
+
       });
 
       // 返回清理函数以移除事件监听器

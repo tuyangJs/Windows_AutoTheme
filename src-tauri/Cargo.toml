@@ -1,6 +1,6 @@
 [package]
 name = "AutoThemeMode"
-version = "1.5.10"
+version = "1.5.11"
 description = "AutoThemeMode"
 authors = ["you"]
 edition = "2021"

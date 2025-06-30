@@ -4,7 +4,7 @@ PackageName: Auto Theme Mode
 
 PublisherName: Tuyang
 
-PackageVersion: 1.5.10.0
+PackageVersion: 1.5.11.0
 
 EligibleForConversion: Yes
 
@@ -14,7 +14,7 @@ Edition: Microsoft Windows 11 专业工作站版
 
 MinimumOSVersion: 24H2
 
-MinimumOSBuild: 26100.4351
+MinimumOSBuild: 26100.4484
 
 Architecture: 64
 

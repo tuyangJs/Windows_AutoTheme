@@ -4,7 +4,12 @@ import { Window, Effect } from '@tauri-apps/api/window'; // 引入 appWindow
 import { AppDataType } from "../Type";
 import { listen } from "@tauri-apps/api/event";
 import { saveWindowState, StateFlags } from "@tauri-apps/plugin-window-state";
+
+
 const appWindow = new Window('main');
+const Webview = await getCurrentWebview()
+window.appWindow = appWindow
+window.Webview = Webview
 //隐藏窗口
 appWindow.onCloseRequested(e => {
   e.preventDefault()
@@ -15,7 +20,7 @@ appWindow.onCloseRequested(e => {
   }, 22);
 })
 
-const Webview = await getCurrentWebview()
+
 listen("show-app", async () => {
   console.log("显示程序");
   Webview.show()
