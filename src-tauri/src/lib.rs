@@ -282,10 +282,6 @@ pub fn run() {
             .plugin(
                 tauri_plugin_log::Builder::new()
                     .targets([
-                        Target::new(TargetKind::Folder {
-                            path: std::path::PathBuf::from("/logs"),
-                            file_name: Some("app.log".to_string()),
-                        }),
                         Target::new(TargetKind::Stdout),
                         Target::new(TargetKind::LogDir { file_name: None }),
                         Target::new(TargetKind::Webview),
