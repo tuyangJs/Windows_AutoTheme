@@ -15,6 +15,7 @@
         "Default": "Default",
         "TabsOptionA": "Sunrise to Sunset",
         "TabsOptionAError": "Failed to get sunrise/sunset info!",
+        "TabsOptionBError": "Failed to get your city. Please retry later or search for a city manually.",
         "TabsOptionB": "Daytime",
         "Autostart": "Start with System",
         "AutostartTip": "Find Auto Theme Mode in settings, click to go to settings",

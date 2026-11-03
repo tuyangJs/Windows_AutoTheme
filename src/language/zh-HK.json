@@ -15,6 +15,7 @@
         "Default": "預設",
         "TabsOptionA": "日出到日落",
         "TabsOptionAError": "取得日出日落資訊失敗！",
+        "TabsOptionBError": "取得城市失敗，請稍後重試或手動搜尋城市。",
         "TabsOptionB": "白天時間",
         "Autostart": "跟隨系統啟動",
         "AutostartTip": "需手動找到 Auto Theme Mode 設定，點擊按鈕前往設定",

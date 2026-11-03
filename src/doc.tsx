@@ -25,6 +25,11 @@ const App: React.FC<Props> = ({ locale, version, Weather, isWin64App }) => (
                 </Paragraph>
             </>
         ) : null}
+        <Paragraph type="secondary" style={{ fontSize: 12 }}>
+            <Link href="https://open-meteo.com/" target="_blank">Open-Meteo</Link>
+            {' / '}<Link href="https://www.geonames.org/" target="_blank">GeoNames</Link>
+            {' · '}<Link href="https://sunrise-sunset.org/" target="_blank">Sunrise-Sunset</Link>
+        </Paragraph>
         <Divider style={{ margin: 0 }}><Text type="secondary"> v{version}</Text> </Divider>
         <Paragraph type="secondary">
             <Tooltip title={locale?.doc?.[2]}>

@@ -15,6 +15,7 @@
         "Default": "デフォルト",
         "TabsOptionA": "日出から日没まで",
         "TabsOptionAError": "日出日落情報取得失敗！",
+        "TabsOptionBError": "都市を取得できませんでした。後でもう一度試すか、都市を手動で検索してください。",
         "TabsOptionB": "日中時間",
         "Autostart": "システム起動時実行",
         "AutostartTip": "Auto Theme Modeを手動で設定、クリックで設定画面へ",

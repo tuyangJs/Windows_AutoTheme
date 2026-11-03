@@ -67,6 +67,14 @@ npm start
 ```
 npm run tauri build
 ```
+### 云端 Windows 打包
+
+将代码和 `.github/workflows/windows-build.yml` 推送到 GitHub 后，推送到 `main` 或向 `main` 提交 PR 会触发 **Windows Build**。工作流进入默认分支后，也可以在仓库的 **Actions → Windows Build → Run workflow** 手动运行；如果 fork 的 Actions 尚未启用，先在 Actions 页面启用。
+
+来自 fork 的 PR 构建可能需要维护者批准运行。此工作流上传构建产物，不会自动发布 GitHub Release 或 Microsoft Store 更新。
+
+工作流先运行回归测试，再生成 Windows x64 NSIS 安装包。构建成功后，在该次运行页面的 **Artifacts** 下载 **AutoThemeMode-windows-x64**，解压后运行 `*-setup.exe`。文件保留 14 天，安装包未配置代码签名。
+
 ## 其它仓库
 - Gitee (国内推荐): [https://gitee.com/ilinxuan/windows_-auto-theme](https://gitee.com/ilinxuan/windows_-auto-theme) 
 - GitHub: [https://github.com/tuyangJs/Windows_AutoTheme](https://github.com/tuyangJs/Windows_AutoTheme) 

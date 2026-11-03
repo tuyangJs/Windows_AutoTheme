@@ -1,67 +1,51 @@
 import { fetch as fetchHttp } from '@tauri-apps/plugin-http';
 import * as pako from 'pako';
 import { positionType } from '../Type';
-type Props = (key: string, lang?: string) => any;
+
 
 
 
 export const GetHttp = async (url: string, RequestInit?: RequestInit) => {
-    const RequestInits = RequestInit ? RequestInit : {
+    const RequestInits = RequestInit ?? {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
     }
-    const response = await fetchHttp(url, RequestInits);
-
-    if (response.ok) {
+    const controller = new AbortController();
+    const signal = RequestInit?.signal
+        ? AbortSignal.any([RequestInit.signal, controller.signal])
+        : controller.signal;
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+    const timeout = new Promise<false>(resolve => {
+        timeoutId = setTimeout(() => {
+            resolve(false);
+            controller.abort();
+        }, 15000);
+    });
+    const request = async () => {
+        const response = await fetchHttp(url, { ...RequestInits, signal });
+        if (!response.ok) return false;
         const contentType = response.headers.get('Content-Type') || '';
         const contentEncoding = response.headers.get('Content-Encoding');
-
-        let data;
         if (contentType.includes('text/html')) {
-            // 如果是 HTML，则直接返回文本内容
-
-            data = await response.text();
+            return response.text();
         } else if (contentEncoding && contentEncoding.includes('gzip')) {
-            // 响应体是 Gzip 压缩的，需要解压
-            const arrayBuffer = await response.arrayBuffer();
-            const decompressed = pako.ungzip(new Uint8Array(arrayBuffer), { to: 'string' });
-            data = JSON.parse(decompressed); // 解压后解析 JSON
+            const bytes = new Uint8Array(await response.arrayBuffer());
+            // Some HTTP clients decompress the body but retain the gzip header.
+            const decompressed = bytes[0] === 0x1f && bytes[1] === 0x8b
+                ? pako.ungzip(bytes, { to: 'string' })
+                : new TextDecoder().decode(bytes);
+            return JSON.parse(decompressed);
         } else {
-            // 默认情况下解析 JSON
-            data = await response.json();
+            return response.json();
         }
-        return data;
+    };
+    try {
+        // Abort alone may not settle a stalled native response-body stream.
+        return await Promise.race([request(), timeout]);
+    } finally {
+        clearTimeout(timeoutId);
     }
-
-    return false;
 };
-const Apikey = 'bdd98ec1d87747f3a2e8b1741a5af796'
-const Languages: Record<string, string> = {
-    'zh_HK': 'zh-hant'
-}
-
-const AppCiti: Props = async (name, lang) => {
-    lang = lang || 'en_US' as string
-    const langs = Languages[lang] || lang.split('_')[0]
-    let getUrl = ''
-    if (name) {
-        getUrl = `https://geoapi.qweather.com/v2/city/lookup?location=${encodeURI(name)}&lang=${langs}`
-    } else {
-        const range = (lang === 'zh_HK' ? 'CN' : lang.split('_')[1]).toUpperCase().toLowerCase();
-        getUrl = `https://geoapi.qweather.com/v2/city/top?number=10&lang=${langs}&range=${range}`
-    }
-    const url = `${getUrl}&key=${Apikey}`;
-    console.log(url);
-
-    const data = await GetHttp(url)
-
-    return data
-}
-
-
-// 假设 GetHttp(url: string) => Promise<string | null | undefined>
-// 假设 extractSunMoonData(html: string) => Promise<YourResultType>
-
 type SunriseOptions = {
     maxAttempts?: number;      // 最多尝试次数（包含首次请求），默认 10
     baseDelayMs?: number;      // 基础退避时间（ms），默认 500
@@ -72,10 +56,19 @@ type SunriseOptions = {
 // 定位位置
 export async function getLocation() {
     const data = await GetHttp("http://demo.ip-api.com/json/?fields=66842623&lang=en")
-    const backdata: positionType = {
+    if (!Number.isFinite(data?.lat) || !Number.isFinite(data?.lon)
+        || Math.abs(data.lat) > 90 || Math.abs(data.lon) > 180
+        || typeof data.timezone !== 'string' || !data.timezone) {
+        return undefined
+    }
+    const names = [data.regionName, data.city].filter(
+        (name, index, all) => typeof name === 'string' && name.trim() && all.indexOf(name) === index
+    )
+    const backdata: positionType & { name: string } = {
         lat: data?.lat,
         lng: data?.lon,
-        tzid: data?.timezone
+        tzid: data.timezone,
+        name: names.join(' - ') || `${data.lat}, ${data.lon}`
     }
     return backdata
 }
@@ -159,4 +152,4 @@ async function Sunrise(
     return null;
 }
 
-export { AppCiti, Sunrise };
+export { Sunrise };

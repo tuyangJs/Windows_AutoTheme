@@ -58,19 +58,16 @@
       "identifier": "http:default",
       "allow": [
         {
-          "url": "https://*.qweather.com"
+          "url": "https://geocoding-api.open-meteo.com/**"
         },
         {
-          "url": "https://api.sunrise-sunset.org"
+          "url": "https://api.sunrise-sunset.org/**"
         },
         {
           "url": "http://demo.ip-api.com/**"
         }
       ],
       "deny": [
-        {
-          "url": "https://api.qweather.com"
-        },
         {
           "url": "https://*.ip-api.com"
         }

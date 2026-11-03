@@ -58,6 +58,14 @@ To set up the project for development:
 
 ---
 
+## Cloud Windows Build
+
+After pushing the code and `.github/workflows/windows-build.yml` to GitHub, pushes to `main` and pull requests targeting `main` trigger **Windows Build**. Once the workflow is on the default branch, you can also start it through **Actions → Windows Build → Run workflow**. Enable Actions first if it is disabled for your fork.
+
+Pull requests from forks may require maintainer approval before the workflow can run. This workflow uploads build artifacts; it does not automatically publish GitHub Releases or Microsoft Store updates.
+
+The workflow runs regression tests and builds a Windows x64 NSIS installer. After a successful run, download **AutoThemeMode-windows-x64** from the run's **Artifacts** section, extract it, and run `*-setup.exe`. Artifacts are retained for 14 days. Code signing is not configured for this installer.
+
 ## Additional Repositories
 
 - **Gitee (Recommended for China users):** [https://gitee.com/ilinxuan/windows_-auto-theme](https://gitee.com/ilinxuan/windows_-auto-theme)
