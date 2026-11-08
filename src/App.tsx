@@ -21,12 +21,10 @@ import { WindowBg } from "./mod/WindowCode";
 import { listen } from "@tauri-apps/api/event";
 import { adjustTime } from "./mod/adjustTime";
 import { AnimatePresence, motion } from "framer-motion";
-import { GetHttp } from "./mod/sociti";
 import RatingPrompt from "./mod/RatingPrompt";
 import { openStoreRating } from "./mod/openStoreRating";
 import { Updates } from "./updates";
 import { applyTheme } from "./mod/applyTheme";
-GetHttp("https://dev.qweather.com/")
 async function fetchAppVersion() {
   try {
     const version = await getVersion();

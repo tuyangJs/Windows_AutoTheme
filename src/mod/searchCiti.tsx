@@ -1,19 +1,29 @@
-import { AppCiti } from "./sociti";
+import { GetHttp } from "./sociti";
 import { AppDataType } from "../Type";
 //渲染搜索结果
 const searchResult = async (query: string, AppData: AppDataType | undefined) => {
-  if (!AppData?.language) return [];
-  const data = await AppCiti(query, AppData.language)
-  if (data.code !== '200') return [];
-  const CityList = data?.location || data?.topCityList
-  console.log(data);
+  if (!AppData?.language || query.trim().length < 2) return [];
+  const language = AppData.language.split(/[_-]/)[0].toLowerCase();
+  let data;
+  try {
+    data = await GetHttp(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(query.trim())}&count=10&language=${language}&format=json`);
+  } catch {
+    return [];
+  }
+  if (!Array.isArray(data?.results)) return [];
+  const CityList = data.results.filter((e: any) =>
+    typeof e?.name === 'string' && e.name.trim()
+    && Number.isFinite(e.latitude) && Math.abs(e.latitude) <= 90
+    && Number.isFinite(e.longitude) && Math.abs(e.longitude) <= 180
+    && typeof e.timezone === 'string' && e.timezone
+  );
 
   return CityList
     .map((e: any) => {
       return {
         value: formatCityDisplayByHierarchy(e),
         key: e.id,
-        position: { lat: e.lat, lng: e.lon, tzid: e.tz },
+        position: { lat: e.latitude, lng: e.longitude, tzid: e.timezone },
         label: (
           <div
             key={e.id}
@@ -23,7 +33,7 @@ const searchResult = async (query: string, AppData: AppDataType | undefined) => 
             }}
           >
             <span>
-              {e.country}
+              {typeof e.country === 'string' ? e.country : ''}
               <a
               >
                 {formatCityDisplayByHierarchy(e)}
@@ -38,48 +48,7 @@ const searchResult = async (query: string, AppData: AppDataType | undefined) => 
 
 export { searchResult }
 export const formatCityDisplayByHierarchy = (cityData: any): string => {
-  const { adm1, adm2, name } = cityData;
-
-  // 推断行政层级关系
-  const inferHierarchy = () => {
-    // 如果 adm1 和 adm2 完全相同，可能是直辖市或特殊城市
-    if (adm1 === adm2) {
-      return 'same_level';
-    }
-
-    // 如果 adm2 和 name 相同，可能是城市与其下辖区同名
-    if (adm2 === name) {
-      return 'city_district_same';
-    }
-
-    // 如果三个字段都不同，则是完整的省-市-区层级
-    if (adm1 !== adm2 && adm2 !== name && adm1 !== name) {
-      return 'full_hierarchy';
-    }
-
-    return 'unknown';
-  };
-
-  const hierarchy = inferHierarchy();
-
-  switch (hierarchy) {
-    case 'same_level':
-      // adm1 和 adm2 相同：显示为 "adm1 - name"
-      return `${adm1} - ${name}`;
-
-    case 'city_district_same':
-      // adm2 和 name 相同：显示为 "adm1 - adm2"
-      return `${adm1} - ${adm2}`;
-
-    case 'full_hierarchy':
-      // 完整的三个层级：显示为 "adm1 - adm2 - name"
-      return `${adm1} - ${adm2} - ${name}`;
-
-    default:
-      // 未知情况：去重后连接
-      const parts = [adm1, adm2, name].filter(
-        (part, index, array) => part && part !== array[index - 1]
-      );
-      return parts.join(' - ');
-  }
+  return [cityData.admin1, cityData.admin2, cityData.name]
+    .filter((part, index, all) => typeof part === 'string' && part.trim() && all.indexOf(part) === index)
+    .join(' - ');
 };

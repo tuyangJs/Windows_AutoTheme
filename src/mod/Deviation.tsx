@@ -7,7 +7,7 @@ const marks: SliderSingleProps['marks'] = {
     15: '15',
     30: '30',
     45: '45',
-    59: "59"
+    60: '60'
 };
 interface props {
     value: number
@@ -33,8 +33,7 @@ const App: React.FC<props> = ({ value, setVal, prompt }) => (
             value={value}
             onChange={setVal}
             max={60}
-            min={0}
-            defaultValue={20} />
+            min={0} />
 
     </Flex>
 );

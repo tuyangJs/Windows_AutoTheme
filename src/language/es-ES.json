@@ -15,6 +15,7 @@
         "Default": "Predeterminado",
         "TabsOptionA": "Amanecer a Atardecer",
         "TabsOptionAError": "¡Error al obtener información de amanecer/atardecer!",
+        "TabsOptionBError": "No se pudo obtener tu ciudad. Inténtalo más tarde o busca una ciudad manualmente.",
         "TabsOptionB": "Horario Diurno",
         "Autostart": "Iniciar con Sistema",
         "AutostartTip": "Encuentra Auto Theme Mode en ajustes, clic para ir a ajustes",
