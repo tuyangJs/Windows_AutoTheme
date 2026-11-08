@@ -2,8 +2,14 @@ name: Windows Build
 
 on:
   workflow_dispatch:
+    inputs:
+      draft_release:
+        description: Create or update a draft release for the app version
+        type: boolean
+        default: false
   push:
     branches: [main]
+    tags: ['v[0-9]*']
   pull_request:
     branches: [main]
 
@@ -12,12 +18,17 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
+    name: Test and build Windows x64
     runs-on: windows-latest
     timeout-minutes: 45
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
+      prerelease: ${{ steps.version.outputs.prerelease }}
+      artifact: ${{ steps.version.outputs.artifact }}
     steps:
       - uses: actions/checkout@v7
 
@@ -25,6 +36,10 @@ jobs:
         with:
           node-version: '24'
           cache: npm
+
+      - name: Check app and release versions
+        id: version
+        run: node .github/scripts/release-metadata.mjs
 
       - uses: dtolnay/rust-toolchain@stable
         with:
@@ -41,12 +56,83 @@ jobs:
         run: npm test
 
       - name: Build Windows installer
-        run: npm run tauribuild -- --target x86_64-pc-windows-msvc --bundles nsis
+        run: npm run tauribuild -- --ci --target x86_64-pc-windows-msvc --bundles nsis -- --locked
+
+      - name: Prepare installer and SHA-256 checksum
+        shell: pwsh
+        run: |
+          $installers = @(Get-ChildItem -LiteralPath 'src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis' -Filter '*-setup.exe' -File)
+          if ($installers.Count -ne 1) {
+            throw "Expected one Windows installer, found $($installers.Count)"
+          }
+          New-Item -ItemType Directory -Path release -Force | Out-Null
+          $installer = Copy-Item -LiteralPath $installers[0].FullName -Destination release -PassThru
+          $hash = (Get-FileHash -LiteralPath $installer.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  $($installer.Name)" | Set-Content -LiteralPath 'release/SHA256SUMS.txt' -Encoding utf8NoBOM
 
       - name: Upload Windows installer
+        id: upload
         uses: actions/upload-artifact@v7
         with:
-          name: AutoThemeMode-windows-x64
-          path: src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*-setup.exe
+          name: ${{ steps.version.outputs.artifact }}
+          path: release/*
           if-no-files-found: error
-          retention-days: 14
+          retention-days: 30
+
+      - name: Link build download
+        shell: pwsh
+        env:
+          ARTIFACT_URL: ${{ steps.upload.outputs.artifact-url }}
+        run: |
+          "[Download Windows x64 installer and SHA256SUMS.txt]($env:ARTIFACT_URL)" >> $env:GITHUB_STEP_SUMMARY
+
+  release:
+    name: Prepare draft release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') || (github.event_name == 'workflow_dispatch' && inputs.draft_release)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: ${{ needs.build.outputs.artifact }}
+          path: release
+
+      - name: Verify downloaded installer
+        working-directory: release
+        run: sha256sum --check SHA256SUMS.txt
+
+      - name: Create or update draft release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ needs.build.outputs.tag }}
+          PRERELEASE: ${{ needs.build.outputs.prerelease }}
+        run: |
+          set -euo pipefail
+          notes="docs/releases/$RELEASE_TAG.md"
+          if existing_draft=$(gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json isDraft --jq '.isDraft' 2>/dev/null); then
+            if [[ "$existing_draft" != true ]]; then
+              echo "Release $RELEASE_TAG is already published; refusing to replace it." >&2
+              exit 1
+            fi
+            gh release upload "$RELEASE_TAG" release/* --repo "$GITHUB_REPOSITORY" --clobber
+            gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --draft --target "$GITHUB_SHA" --prerelease="$PRERELEASE"
+            if [[ -f "$notes" ]]; then
+              gh release edit "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --draft --notes-file "$notes"
+            fi
+          else
+            args=("$RELEASE_TAG" release/* --repo "$GITHUB_REPOSITORY" --title "AutoThemeMode $RELEASE_TAG" --draft --target "$GITHUB_SHA")
+            if [[ "$PRERELEASE" == true ]]; then args+=(--prerelease); fi
+            if [[ -f "$notes" ]]; then
+              args+=(--notes-file "$notes")
+            else
+              args+=(--generate-notes)
+            fi
+            gh release create "${args[@]}"
+          fi
+          gh release view "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --json url --jq '"[Review draft release](" + .url + ")"' >> "$GITHUB_STEP_SUMMARY"

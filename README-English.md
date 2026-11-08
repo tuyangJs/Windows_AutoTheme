@@ -60,11 +60,13 @@ To set up the project for development:
 
 ## Cloud Windows Build
 
-After pushing the code and `.github/workflows/windows-build.yml` to GitHub, pushes to `main` and pull requests targeting `main` trigger **Windows Build**. Once the workflow is on the default branch, you can also start it through **Actions → Windows Build → Run workflow**. Enable Actions first if it is disabled for your fork.
+Pushes to `main`, pull requests targeting `main`, and `v*` version tags trigger **Windows Build**. You can also start it through **Actions → Windows Build → Run workflow**. Enable Actions first if it is disabled for your fork.
 
-Pull requests from forks may require maintainer approval before the workflow can run. This workflow uploads build artifacts; it does not automatically publish GitHub Releases or Microsoft Store updates.
+Pull requests from forks may require maintainer approval. The workflow runs regression tests, builds a Windows x64 NSIS installer using locked Rust dependencies, and calculates its SHA-256 checksum. Download `AutoThemeMode-VERSION-windows-x64` from the run's **Artifacts**, extract it, and run `*-setup.exe`. Use `SHA256SUMS.txt` to verify the installer. Artifacts are retained for 30 days.
 
-The workflow runs regression tests and builds a Windows x64 NSIS installer. After a successful run, download **AutoThemeMode-windows-x64** from the run's **Artifacts** section, extract it, and run `*-setup.exe`. Artifacts are retained for 14 days. Code signing is not configured for this installer.
+To prepare a release, synchronize the versions in `package.json`, `package-lock.json`, and `src-tauri/Cargo.toml`, then push the matching tag, such as `v1.6.3`. A successful build creates a draft Release. Alternatively, select **draft_release** when running the workflow manually. The draft includes the installer, checksum, and notes from `docs/releases/vVERSION.md`, falling back to generated merge notes when that file is absent. Versions with a suffix such as `-beta` or `-next` are marked as prereleases.
+
+Review the draft under **Releases** and publish it manually. Reruns update drafts only and never replace published releases. Code signing is not configured, and Microsoft Store updates still require a separate release.
 
 ## Additional Repositories
 
